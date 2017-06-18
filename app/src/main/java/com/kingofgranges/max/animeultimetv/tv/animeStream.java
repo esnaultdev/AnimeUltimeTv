@@ -1,4 +1,4 @@
-package com.kingofgranges.max.animeultimetv.phone;
+package com.kingofgranges.max.animeultimetv.tv;
 
 import android.content.Context;
 import android.content.Intent;
@@ -41,7 +41,9 @@ public class animeStream extends AppCompatActivity {
 
     public boolean displayVideo(String url) {
         try {
-            this.wifiLock = ((WifiManager) getSystemService(Context.WIFI_SERVICE)).createWifiLock(WifiManager.WIFI_MODE_FULL, "AUTv-WifiLock");
+            this.wifiLock = ((WifiManager) getApplicationContext()
+                    .getSystemService(Context.WIFI_SERVICE))
+                    .createWifiLock(WifiManager.WIFI_MODE_FULL, "AUTv-WifiLock");
             this.wifiLock.acquire();
 
             final VideoView videoView = (VideoView) findViewById(R.id.videoView);

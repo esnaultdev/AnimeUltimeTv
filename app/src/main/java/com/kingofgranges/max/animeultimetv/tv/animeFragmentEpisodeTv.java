@@ -12,9 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.kingofgranges.max.animeultimetv.R;
-import com.kingofgranges.max.animeultimetv.libs.History;
 import com.kingofgranges.max.animeultimetv.libs.animeUltime;
-import com.kingofgranges.max.animeultimetv.phone.animeStream;
 
 public class animeFragmentEpisodeTv extends Fragment {
 
@@ -39,13 +37,10 @@ public class animeFragmentEpisodeTv extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 animeUltime au = new animeUltime();
-                History hist = new History(copyOfThis);
 
                 String videoLink = au.getVideoLink(getContext(), animeUltime.mainUrlv5 + link[position]);
                 Intent stream = new Intent(copyOfThis, animeStream.class);
                 stream.putExtra("streamURL", videoLink);
-
-                hist.addHistory(animeName, episodes[position], videoLink);
 
                 startActivity(stream);
             }

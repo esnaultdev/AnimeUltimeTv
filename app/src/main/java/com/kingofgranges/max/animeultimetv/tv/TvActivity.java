@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 import com.kingofgranges.max.animeultimetv.R;
 import com.kingofgranges.max.animeultimetv.libs.animeUltime;
 import com.kingofgranges.max.animeultimetv.libs.data.AnimeModel;
-import com.kingofgranges.max.animeultimetv.phone.animeHistory;
 
 import org.json.JSONException;
 import java.io.IOException;
@@ -95,15 +93,5 @@ public class TvActivity extends AppCompatActivity {
                 startActivity(details);
             }
         });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.action_history:
-                startActivity(new Intent(this, animeHistory.class));
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

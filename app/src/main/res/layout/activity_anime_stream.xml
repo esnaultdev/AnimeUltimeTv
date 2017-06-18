@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#000"
-    tools:context=".phone.animeStream">
+    tools:context=".tv.animeStream">
 
     <FrameLayout
         android:layout_width="fill_parent"
