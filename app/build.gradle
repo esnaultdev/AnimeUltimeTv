@@ -31,6 +31,10 @@ dependencies {
     compile "com.android.support:design:$androidSupportVersion"
     compile "com.android.support:support-v4:$androidSupportVersion"
 
+    compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    compile "com.google.code.gson:gson:$gsonVersion"
+
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
 }
 repositories {
