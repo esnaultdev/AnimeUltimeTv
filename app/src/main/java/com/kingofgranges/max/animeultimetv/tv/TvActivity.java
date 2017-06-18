@@ -4,7 +4,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -19,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.kingofgranges.max.animeultimetv.R;
 import com.kingofgranges.max.animeultimetv.libs.animeUltime;
+import com.kingofgranges.max.animeultimetv.libs.data.AnimeModel;
 import com.kingofgranges.max.animeultimetv.phone.animeHistory;
 
 import org.json.JSONException;
@@ -34,10 +34,6 @@ public class TvActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tv_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (android.os.Build.VERSION.SDK_INT > 9) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
     }
 
     @Override
@@ -85,17 +81,17 @@ public class TvActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String[][] data = au.getPageInformation(position);
+                AnimeModel data = au.getPageInformation(position);
                 if (data == null) {
                     Toast.makeText(getApplicationContext(), "Error during the process for fetching data about the anime :/", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Intent details = new Intent(context, animeDetailsTv.class);
-                details.putExtra("synopsis", data[0][0]);
-                details.putExtra("img", data[0][1]);
-                details.putExtra("title", data[0][2]);
-                details.putExtra("episode", data[1]);
-                details.putExtra("link", data[2]);
+                details.putExtra("synopsis", data.getSynopsis());
+                details.putExtra("img", data.getImage());
+                details.putExtra("title", data.getTitle());
+                details.putExtra("episode", data.getEpisodes());
+                details.putExtra("link", data.getLinks());
                 startActivity(details);
             }
         });

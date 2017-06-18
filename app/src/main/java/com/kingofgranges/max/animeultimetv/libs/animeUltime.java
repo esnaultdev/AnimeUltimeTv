@@ -1,13 +1,11 @@
 package com.kingofgranges.max.animeultimetv.libs;
 
 import android.content.Context;
-import android.graphics.Point;
-import android.os.Debug;
 import android.text.Html;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
 import android.view.WindowManager;
+
+import com.kingofgranges.max.animeultimetv.libs.data.AnimeModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,7 +50,7 @@ public class animeUltime {
         return result;
     }
 
-    public String[][] getPageInformation(int offset) {
+    public AnimeModel getPageInformation(int offset) {
         try {
             String rawDom = NetworkUtilities.readHtmlFromUrl(this.link[offset]);
             Document dom = Jsoup.parse(rawDom);
@@ -77,13 +75,7 @@ public class animeUltime {
             String img = divImg.attr("src");
             String title = divTitle.text().replaceAll("vostfr", "");
 
-            String[][] result = new String[3][liList.size() < 2 ? 3 : liList.size()];
-            result[0][0] = synopsis;
-            result[0][1] = img;
-            result[0][2] = title;
-            result[1] = list;
-            result[2] = link;
-            return result;
+            return new AnimeModel(title, img, synopsis, list, link);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.kingofgranges.max.animeultimetv.R;
 import com.kingofgranges.max.animeultimetv.libs.animeUltime;
+import com.kingofgranges.max.animeultimetv.libs.data.AnimeModel;
 
 import org.json.JSONException;
 import java.io.IOException;
@@ -86,17 +87,17 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String[][] data = au.getPageInformation(position);
+                AnimeModel data = au.getPageInformation(position);
                 if(data == null){
                     Toast.makeText(getApplicationContext(), "Error during the process for fetching data about the anime :/", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Intent details = new Intent(context, animeDetails.class);
-                details.putExtra("synopsis", data[0][0]);
-                details.putExtra("img", data[0][1]);
-                details.putExtra("title", data[0][2]);
-                details.putExtra("episode", data[1]);
-                details.putExtra("link", data[2]);
+                details.putExtra("synopsis", data.getSynopsis());
+                details.putExtra("img", data.getImage());
+                details.putExtra("title", data.getTitle());
+                details.putExtra("episode", data.getEpisodes());
+                details.putExtra("link", data.getLinks());
                 startActivity(details);
             }
         });
