@@ -1,11 +1,12 @@
-package com.kingofgranges.max.animeultimetv.libs;
+package com.kingofgranges.max.animeultimetv.data;
 
 import android.content.Context;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
-import com.kingofgranges.max.animeultimetv.libs.data.AnimeModel;
+import com.kingofgranges.max.animeultimetv.domain.AnimeEpisodeModel;
+import com.kingofgranges.max.animeultimetv.domain.AnimeModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,8 +17,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class animeUltime {
+public class AnimeUltime {
 
     public static final String mainUrlv5 = "http://v5.anime-ultime.net/";
     public static int maxResult = 25;
@@ -62,20 +65,18 @@ public class animeUltime {
             Elements liList = ulList.select("li.file");
             Element divTitle = dom.select("div.title > h1").first();
 
-            String[] list = new String[liList.size()];
-            String[] link = new String[liList.size()];
-            int i = 0;
+            List<AnimeEpisodeModel> episodes = new ArrayList<>(liList.size());
             for (Element item : liList) {
-                list[i] = item.select("div.number").first().text();
-                link[i] = item.select("a[href]").first().attr("href");
-                i++;
+                String title = item.select("div.number").first().text();
+                String link = item.select("a[href]").first().attr("href");
+                episodes.add(new AnimeEpisodeModel(title, link));
             }
 
             String synopsis = divSynopsis.text();
             String img = divImg.attr("src");
             String title = divTitle.text().replaceAll("vostfr", "");
 
-            return new AnimeModel(title, img, synopsis, list, link);
+            return new AnimeModel(title, img, synopsis, episodes);
         } catch (IOException e) {
             e.printStackTrace();
         }

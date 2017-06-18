@@ -1,4 +1,4 @@
-package com.kingofgranges.max.animeultimetv.tv;
+package com.kingofgranges.max.animeultimetv.presentation.animedetails;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -11,11 +11,11 @@ import android.widget.TextView;
 
 import com.kingofgranges.max.animeultimetv.R;
 
-public class animeFragmentDetailsTv extends Fragment {
+public class AnimeDetailsFragment extends Fragment {
 
-    private static String title;
-    private static String synopsis;
-    private static Bitmap cover;
+    private String title;
+    private String synopsis;
+    private Bitmap cover;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,8 +33,8 @@ public class animeFragmentDetailsTv extends Fragment {
     }
 
     public void setDetails(String title, String synopsis, Bitmap cover) {
-        animeFragmentDetailsTv.title = title;
-        animeFragmentDetailsTv.synopsis = synopsis;
-        animeFragmentDetailsTv.cover = cover;
+        this.title = title;
+        this.synopsis = synopsis;
+        this.cover = cover;
     }
 }

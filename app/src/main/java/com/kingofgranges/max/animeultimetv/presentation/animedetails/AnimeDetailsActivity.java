@@ -1,4 +1,4 @@
-package com.kingofgranges.max.animeultimetv.tv;
+package com.kingofgranges.max.animeultimetv.presentation.animedetails;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,26 +8,25 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.support.v7.app.ActionBar;
 
 import com.kingofgranges.max.animeultimetv.R;
+import com.kingofgranges.max.animeultimetv.domain.AnimeModel;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class animeDetailsTv extends AppCompatActivity{
+public class AnimeDetailsActivity extends AppCompatActivity{
 
-    public String title;
-    public String synopsis;
+    public static final String EXTRA_ANIME = "extraAnime";
+
+    public AnimeModel anime;
     public Bitmap cover;
-    public String[] episode;
-    private String[] link;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +35,10 @@ public class animeDetailsTv extends AppCompatActivity{
         Intent intent = getIntent();
 
         /* data */
-        this.title = intent.getStringExtra("title");
-        this.synopsis = intent.getStringExtra("synopsis");
-        this.episode = intent.getStringArrayExtra("episode");
-        this.link = intent.getStringArrayExtra("link");
+        anime = intent.getParcelableExtra("extraAnime");
 
         try {
-            URL coverUrl = new URL(intent.getStringExtra("img"));
+            URL coverUrl = new URL(anime.getImage());
             this.cover = BitmapFactory.decodeStream(coverUrl.openConnection().getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
@@ -64,18 +60,18 @@ public class animeDetailsTv extends AppCompatActivity{
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        animeFragmentDetailsTv details = new animeFragmentDetailsTv();
-        details.setDetails(this.title, this.synopsis, this.cover);
+        AnimeDetailsFragment details = new AnimeDetailsFragment();
+        details.setDetails(anime.getTitle(), anime.getSynopsis(), this.cover);
 
-        animeFragmentEpisodeTv episodes = new animeFragmentEpisodeTv();
-        episodes.setEpisode(this.title, this.episode, this.link);
+        AnimeEpisodesFragment episodes = new AnimeEpisodesFragment();
+        episodes.setEpisodes(anime.getTitle(), anime.getEpisodes());
 
         adapter.addFragment(details, "Information");
         adapter.addFragment(episodes, "Épisode(s)");
         viewPager.setAdapter(adapter);
     }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 

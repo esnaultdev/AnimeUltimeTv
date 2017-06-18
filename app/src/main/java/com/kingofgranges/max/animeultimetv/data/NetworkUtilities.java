@@ -1,4 +1,4 @@
-package com.kingofgranges.max.animeultimetv.libs;
+package com.kingofgranges.max.animeultimetv.data;
 
 import java.io.BufferedReader;
 import java.io.IOException;

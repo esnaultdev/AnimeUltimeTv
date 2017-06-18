@@ -1,4 +1,4 @@
-package com.kingofgranges.max.animeultimetv.tv;
+package com.kingofgranges.max.animeultimetv.presentation;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +17,7 @@ import android.widget.MediaController;
 
 import com.kingofgranges.max.animeultimetv.R;
 
-public class animeStream extends AppCompatActivity {
+public class StreamActivity extends AppCompatActivity {
 
     private WifiManager.WifiLock wifiLock;
 
@@ -29,7 +29,7 @@ public class animeStream extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_anime_stream);
+        setContentView(R.layout.activity_stream);
 
 
         Intent intent = getIntent();

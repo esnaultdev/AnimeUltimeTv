@@ -1,4 +1,4 @@
-package com.kingofgranges.max.animeultimetv.tv;
+package com.kingofgranges.max.animeultimetv.presentation.animedetails;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,18 +12,20 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.kingofgranges.max.animeultimetv.R;
-import com.kingofgranges.max.animeultimetv.libs.animeUltime;
+import com.kingofgranges.max.animeultimetv.data.AnimeUltime;
+import com.kingofgranges.max.animeultimetv.domain.AnimeEpisodeModel;
+import com.kingofgranges.max.animeultimetv.presentation.StreamActivity;
 
-public class animeFragmentEpisodeTv extends Fragment {
+import java.util.List;
 
-    private static String[] episodes;
-    private static String[] link;
-    private static String animeName;
+public class AnimeEpisodesFragment extends Fragment {
 
-    public void setEpisode(String animeName, String[] episodes, String[] link) {
-        animeFragmentEpisodeTv.animeName = animeName;
-        animeFragmentEpisodeTv.episodes = episodes;
-        animeFragmentEpisodeTv.link = link;
+    private String animeName;
+    private List<AnimeEpisodeModel> episodes;
+
+    public void setEpisodes(String animeName, List<AnimeEpisodeModel> episodes) {
+        this.animeName = animeName;
+        this.episodes = episodes;
     }
 
     @Override
@@ -36,10 +38,10 @@ public class animeFragmentEpisodeTv extends Fragment {
         listEpisode.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                animeUltime au = new animeUltime();
+                AnimeUltime au = new AnimeUltime();
 
-                String videoLink = au.getVideoLink(getContext(), animeUltime.mainUrlv5 + link[position]);
-                Intent stream = new Intent(copyOfThis, animeStream.class);
+                String videoLink = au.getVideoLink(getContext(), AnimeUltime.mainUrlv5 + episodes.get(position).getLink());
+                Intent stream = new Intent(copyOfThis, StreamActivity.class);
                 stream.putExtra("streamURL", videoLink);
 
                 startActivity(stream);

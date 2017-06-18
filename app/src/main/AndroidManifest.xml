@@ -6,7 +6,7 @@
     <uses-feature
         android:name="android.software.leanback"
         android:required="true" />
-    
+
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="false" />
@@ -24,7 +24,7 @@
         android:banner="@drawable/banner">
 
         <activity
-            android:name=".tv.TvActivity"
+            android:name=".presentation.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="UnusedAttribute">
@@ -36,11 +36,11 @@
         </activity>
 
         <activity
-            android:name=".tv.animeDetailsTv"
+            android:name=".presentation.animedetails.AnimeDetailsActivity"
             android:label="@string/app_name"/>
 
         <activity
-            android:name=".tv.animeStream"
+            android:name=".presentation.StreamActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/streamTitle"
             android:theme="@style/AppTheme.NoActionBar"/>
