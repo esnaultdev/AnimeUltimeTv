@@ -7,4 +7,7 @@
     <dimen name="tab_padding_bottom">16dp</dimen>
     <dimen name="tab_label">14sp</dimen>
     <dimen name="custom_tab_layout_height">36dp</dimen>
+
+    <dimen name="card_width">128dp</dimen>
+    <dimen name="card_height">128dp</dimen>
 </resources>

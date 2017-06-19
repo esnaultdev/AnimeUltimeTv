@@ -8,5 +8,5 @@ class SearchNetworkModel {
     @SerializedName("type") var type: String = ""
     @SerializedName("url") var url: String? = null
     // @SerializedName("number") var number: String  FIXME can be a string or a number?
-    @SerializedName("image_url") var imageUrl: String? = null
+    @SerializedName("img_url") var imageUrl: String? = null
 }

@@ -35,6 +35,8 @@ dependencies {
     compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     compile "com.google.code.gson:gson:$gsonVersion"
 
+    compile "com.github.bumptech.glide:glide:$glideVersion"
+
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
 }
 repositories {

@@ -20,13 +20,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/Theme.Leanback"
         android:banner="@drawable/banner">
 
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.main.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="UnusedAttribute">
 
             <intent-filter>
@@ -44,6 +43,9 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/streamTitle"
             android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".presentation.search.SearchActivity"/>
 
     </application>
 
