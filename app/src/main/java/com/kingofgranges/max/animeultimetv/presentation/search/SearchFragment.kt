@@ -58,7 +58,10 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
 
     private fun search(query: String) {
         if (query == this.query) return
-        if (query.length < 2) return
+        if (query.length < 2) {
+            clearSearchResults()
+            return
+        }
 
         if (searchCall != null) searchCall!!.cancel()
         this.query = query
@@ -92,6 +95,10 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
         val row = ListRow(header, animeAdapter)
         rowsAdapter.clear()
         rowsAdapter.add(row)
+    }
+
+    private fun clearSearchResults() {
+        rowsAdapter.clear()
     }
 
     fun hasResults(): Boolean {
