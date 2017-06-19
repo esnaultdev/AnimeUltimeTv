@@ -43,7 +43,7 @@ class CardPresenter : Presenter() {
 
         val cardView = viewHolder.view as ImageCardView
         cardView.titleText = animeInfo.title
-        cardView.contentText = animeInfo.type
+        cardView.contentText = animeInfo.format
 
         if (animeInfo.imageUrl != null) {
             // Set card size from dimension resources.

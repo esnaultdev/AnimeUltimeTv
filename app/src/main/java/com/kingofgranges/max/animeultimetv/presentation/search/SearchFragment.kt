@@ -82,8 +82,12 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
             else -> R.string.search_results
         }
 
+        val processedResults = results
+                .sortedBy { it.title }
+                .filter { it.type == "Anime" }
+
         animeAdapter.clear()
-        animeAdapter.addAll(0, results)
+        animeAdapter.addAll(0, processedResults)
         val header = HeaderItem(getString(titleRes, query))
         val row = ListRow(header, animeAdapter)
         rowsAdapter.clear()
