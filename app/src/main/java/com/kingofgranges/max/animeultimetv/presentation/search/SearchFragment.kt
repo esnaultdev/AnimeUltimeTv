@@ -64,13 +64,15 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
 
     private fun search(query: String) {
         if (query == this.query) return
+
+        this.query = query
+
         if (query.length < 2) {
             clearSearchResults()
             return
         }
 
         if (searchCall != null) searchCall!!.cancel()
-        this.query = query
 
         val newCall = auService.search(query)
         newCall.enqueue(object : Callback<List<SearchNetworkModel>> {
