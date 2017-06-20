@@ -1,5 +1,6 @@
 package com.kingofgranges.max.animeultimetv.presentation.common
 
+import android.content.Context
 import android.support.v17.leanback.widget.ImageCardView
 import android.support.v17.leanback.widget.Presenter
 import android.support.v4.content.ContextCompat
@@ -8,15 +9,17 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.kingofgranges.max.animeultimetv.R
-import com.kingofgranges.max.animeultimetv.data.SearchNetworkModel
+import com.kingofgranges.max.animeultimetv.domain.SearchNetworkEntity
 
 class CardPresenter : Presenter() {
+
     private var selectedBackgroundColor = -1
     private var defaultBackgroundColor = -1
+    private var cardImageWidth = -1
+    private var cardImageHeight = -1
 
     override fun onCreateViewHolder(parent: ViewGroup): Presenter.ViewHolder {
-        defaultBackgroundColor = ContextCompat.getColor(parent.context, R.color.default_background)
-        selectedBackgroundColor = ContextCompat.getColor(parent.context, R.color.selected_background)
+        initResources(parent.context)
 
         val cardView = object : ImageCardView(parent.context) {
             override fun setSelected(selected: Boolean) {
@@ -28,15 +31,23 @@ class CardPresenter : Presenter() {
         cardView.isFocusable = true
         cardView.isFocusableInTouchMode = true
 
-        // Setup image dimension
-        val res = cardView.resources
-        val width = res.getDimensionPixelSize(R.dimen.card_width)
-        val height = res.getDimensionPixelSize(R.dimen.card_height)
-        cardView.setMainImageDimensions(width, height)
+        // Setup image
+        cardView.setMainImageDimensions(cardImageWidth, cardImageHeight)
         cardView.setMainImageScaleType(ImageView.ScaleType.FIT_XY)
 
         updateCardBackgroundColor(cardView, false)
         return Presenter.ViewHolder(cardView)
+    }
+
+    private fun initResources(context: Context) {
+        if (defaultBackgroundColor != -1) return
+
+        defaultBackgroundColor = ContextCompat.getColor(context, R.color.default_background)
+        selectedBackgroundColor = ContextCompat.getColor(context, R.color.selected_background)
+
+        val res = context.resources
+        cardImageWidth = res.getDimensionPixelSize(R.dimen.card_width)
+        cardImageHeight = res.getDimensionPixelSize(R.dimen.card_height)
     }
 
     private fun updateCardBackgroundColor(view: ImageCardView, selected: Boolean) {
@@ -49,7 +60,7 @@ class CardPresenter : Presenter() {
     }
 
     override fun onBindViewHolder(viewHolder: Presenter.ViewHolder, item: Any) {
-        val animeInfo = item as SearchNetworkModel
+        val animeInfo = item as SearchNetworkEntity
 
         val cardView = viewHolder.view as ImageCardView
         cardView.titleText = animeInfo.title

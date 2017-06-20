@@ -5,6 +5,7 @@ import android.support.v17.leanback.widget.*
 import com.kingofgranges.max.animeultimetv.R
 import com.kingofgranges.max.animeultimetv.data.AnimeUltimeService
 import com.kingofgranges.max.animeultimetv.data.SearchNetworkModel
+import com.kingofgranges.max.animeultimetv.domain.SearchNetworkEntity
 import com.kingofgranges.max.animeultimetv.presentation.common.CardPresenter
 import retrofit2.Call
 import retrofit2.Callback
@@ -78,7 +79,7 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
         newCall.enqueue(object : Callback<List<SearchNetworkModel>> {
             override fun onResponse(call: Call<List<SearchNetworkModel>>,
                                     response: Response<List<SearchNetworkModel>>) {
-                onSearchResult(response.body() ?: emptyList())
+                onSearchResult(response.body()?.map { it.toEntity() } ?: emptyList())
             }
 
             override fun onFailure(call: Call<List<SearchNetworkModel>>, t: Throwable) {
@@ -87,7 +88,7 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
         })
     }
 
-    private fun onSearchResult(results: List<SearchNetworkModel>) {
+    private fun onSearchResult(results: List<SearchNetworkEntity>) {
         val processedResults = results
                 .sortedBy { it.title }
                 .filter { it.type == "Anime" }
