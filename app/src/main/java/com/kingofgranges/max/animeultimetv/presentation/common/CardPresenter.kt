@@ -4,7 +4,9 @@ import android.support.v17.leanback.widget.ImageCardView
 import android.support.v17.leanback.widget.Presenter
 import android.support.v4.content.ContextCompat
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.kingofgranges.max.animeultimetv.R
 import com.kingofgranges.max.animeultimetv.data.SearchNetworkModel
 
@@ -25,6 +27,14 @@ class CardPresenter : Presenter() {
 
         cardView.isFocusable = true
         cardView.isFocusableInTouchMode = true
+
+        // Setup image dimension
+        val res = cardView.resources
+        val width = res.getDimensionPixelSize(R.dimen.card_width)
+        val height = res.getDimensionPixelSize(R.dimen.card_height)
+        cardView.setMainImageDimensions(width, height)
+        cardView.setMainImageScaleType(ImageView.ScaleType.FIT_XY)
+
         updateCardBackgroundColor(cardView, false)
         return Presenter.ViewHolder(cardView)
     }
@@ -46,14 +56,9 @@ class CardPresenter : Presenter() {
         cardView.contentText = animeInfo.format
 
         if (animeInfo.imageUrl != null) {
-            // Set card size from dimension resources.
-            val res = cardView.resources
-            val width = res.getDimensionPixelSize(R.dimen.card_width)
-            val height = res.getDimensionPixelSize(R.dimen.card_height)
-            cardView.setMainImageDimensions(width, height)
-
             Glide.with(cardView.context)
                     .load(animeInfo.imageUrl)
+                    .apply(RequestOptions.centerCropTransform())
                     .into(cardView.mainImageView)
         }
     }

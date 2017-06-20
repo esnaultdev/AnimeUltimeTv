@@ -4,5 +4,4 @@
     <string name="streamTitle">Vidéo</string>
 
     <string name="search_noResults">Pas de résultats pour \"%s\"</string>
-    <string name="search_results">Résultats de la recherche \"%s\"</string>
 </resources>

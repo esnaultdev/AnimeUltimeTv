@@ -22,6 +22,7 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
     private lateinit var auService: AnimeUltimeService
     private var searchCall: Call<List<SearchNetworkModel>>? = null
     private var query = ""
+    private var hasResults = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +32,11 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
         rowsAdapter = ArrayObjectAdapter(ListRowPresenter())
 
         setSearchResultProvider(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        updateVerticalOffset()
     }
 
     private fun initAnimeService() {
@@ -80,21 +86,22 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
     }
 
     private fun onSearchResult(results: List<SearchNetworkModel>) {
-        val titleRes = when (results.size) {
-            0 -> R.string.search_noResults
-            else -> R.string.search_results
-        }
-
         val processedResults = results
                 .sortedBy { it.title }
                 .filter { it.type == "Anime" }
 
         animeAdapter.clear()
-        animeAdapter.addAll(0, processedResults)
-        val header = HeaderItem(getString(titleRes, query))
-        val row = ListRow(header, animeAdapter)
+        hasResults = results.isNotEmpty()
+        val row = if (hasResults) {
+            animeAdapter.addAll(0, processedResults)
+            ListRow(animeAdapter)
+        } else {
+            val header = HeaderItem(getString(R.string.search_noResults, query))
+            ListRow(header, animeAdapter)
+        }
         rowsAdapter.clear()
         rowsAdapter.add(row)
+        updateVerticalOffset()
     }
 
     private fun clearSearchResults() {
@@ -102,10 +109,22 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
     }
 
     fun hasResults(): Boolean {
-        return rowsAdapter.size() > 0
+        return hasResults
     }
 
     fun focusOnSearch() {
         view!!.findViewById(R.id.lb_search_bar).requestFocus()
+    }
+
+    private fun updateVerticalOffset() {
+        // Override the vertical offset. Not really pretty.
+        val offsetResId = if (!hasResults()) {
+            R.dimen.searchFragment_rowMarginTop_withHeader
+        } else {
+            R.dimen.searchFragment_rowMarginTop_withoutHeader
+        }
+
+        rowsFragment.verticalGridView.windowAlignmentOffset =
+                resources.getDimensionPixelSize(offsetResId)
     }
 }
