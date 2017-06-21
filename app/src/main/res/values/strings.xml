@@ -1,7 +1,5 @@
 <resources>
-    <string name="app_name">animeUltimeTv</string>
-    <string name="search">Search</string>
-    <string name="streamTitle">Vidéo</string>
+    <string name="app_name">Anime Ultime</string>
 
     <string name="search_noResults">Pas de résultats pour \"%s\"</string>
 </resources>

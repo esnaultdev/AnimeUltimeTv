@@ -1,11 +1,13 @@
 package com.kingofgranges.max.animeultimetv.presentation.search
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v17.leanback.widget.*
 import com.kingofgranges.max.animeultimetv.R
 import com.kingofgranges.max.animeultimetv.data.AnimeUltimeService
 import com.kingofgranges.max.animeultimetv.data.SearchNetworkModel
 import com.kingofgranges.max.animeultimetv.domain.SearchNetworkEntity
+import com.kingofgranges.max.animeultimetv.presentation.animedetails.AnimeDetailsActivity
 import com.kingofgranges.max.animeultimetv.presentation.common.CardPresenter
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,6 +35,8 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
         rowsAdapter = ArrayObjectAdapter(ListRowPresenter())
 
         setSearchResultProvider(this)
+        setOnItemViewClickedListener { _, item, _, _ ->
+            if (item is SearchNetworkEntity) { showAnimeDetails(item) } }
     }
 
     override fun onStart() {
@@ -129,5 +133,10 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
 
         rowsFragment.verticalGridView.windowAlignmentOffset =
                 resources.getDimensionPixelSize(offsetResId)
+    }
+
+    private fun showAnimeDetails(anime: SearchNetworkEntity) {
+        val intent = Intent(activity, AnimeDetailsActivity::class.java)
+        activity.startActivity(intent)
     }
 }
