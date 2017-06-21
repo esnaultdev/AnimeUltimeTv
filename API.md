@@ -1,7 +1,7 @@
 Anime Ultime undocumented API
 =============================
 
-Even if it's not mean for us to use, let's document what they exposed for AJAX reasons.
+Even if it's not meant for us to use, let's document what they exposed for AJAX reasons.
 
 Search
 ------
@@ -12,7 +12,7 @@ Search
 Available for all queries.
 A query without parameter returns all the medias.
 
-Format
+#### Format
 
 ```
 [
@@ -25,7 +25,7 @@ Format
 ]
 ```
 
-Example
+#### Example
 
 ```
 curl http://www.anime-ultime.net/search/searchSuggest.php
@@ -34,7 +34,7 @@ curl http://www.anime-ultime.net/search/searchSuggest.php
 
 ### New endpoint
 
-Format
+#### Format
 
 ```
 [
@@ -50,13 +50,60 @@ Format
 ]
 ```
 
-Parameters
+#### Parameters
 
-- search: (String) The search query, must be at least two characters long.
+The search query, must be at least two characters long.
 
-Example
+#### Example
 
 ```
 curl -X POST --data 'search=te' -H 'X-Requested-With: XMLHttpRequest' http://v5.anime-ultime.net/MenuSearch.html
+```
+
+------------------------
+
+
+Playlist
+--------
+
+#### Format
+
+```
+<channel>
+    <title>Playlist</title>
+    <item>
+      <title>$TITLE</title>
+      <description>$FANSUB_INFO</description>
+      <link>http://www.anime-ultime.net</link>
+      <pubDate>$PUBLICATION_DATE</pubDate>
+      <media:content url="$MEDIA_NON_HD_URL" duration="$DURATION" />
+      <media:thumbnail url="$IMAGE_URL" />
+            <jwplayer:mediaid>$MEDIA_ID</jwplayer:file>
+            <jwplayer:file>$MEDIA_NON_HD_URL</jwplayer:file>
+            <jwplayer:hd.file>$MEDIA_HD_URL<jwplayer:hd.file>
+      <jwplayer:provider>http</jwplayer:provider>
+      <jwplayer:http.startparam>start</jwplayer:http.startparam>
+    </item>
+    ...
+</channel>
+
+$TITLE: The title of the episode
+$FANSUB_INFO: The information about the fansub
+$PUBLICATION_DATE: The publication date of the item, ISO8601
+$MEDIA_NON_HD_URL: Full url of the media, non HD
+$MEDIA_HD_URL: Full url of the media, HD
+$DURATION: The duration of the media in seconds
+$MEDIA_ID: An integer, no logical link with any other data
+$IMAGE_URL: Full path of the thumbnail image, resized
+```
+
+#### Parameters
+
+The id of the media, in the url.
+
+#### Example
+
+```
+curl http://www.anime-ultime.net/playlist-1116.xml
 ```
 
