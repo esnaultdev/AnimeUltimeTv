@@ -6,7 +6,7 @@ Even if it's not meant for us to use, let's document what they exposed for AJAX 
 Search
 ------
 
-### Old endpoint
+### V4 search endpoint
 
 
 Available for all queries.
@@ -32,7 +32,7 @@ curl http://www.anime-ultime.net/search/searchSuggest.php
 ```
 
 
-### New endpoint
+### V5 Search endpoint
 
 #### Format
 
@@ -58,6 +58,17 @@ The search query, must be at least two characters long.
 
 ```
 curl -X POST --data 'search=te' -H 'X-Requested-With: XMLHttpRequest' http://v5.anime-ultime.net/MenuSearch.html
+```
+
+### V5 Advanced Search endpoint
+
+Advanced search, using filters. Produces a better output to work with for episode numbers.
+
+#### Examples
+
+Request all animes
+```
+curl -X POST --data 'search=' --data 'type=Anime' -H 'X-Requested-With: XMLHttpRequest' http://v5.anime-ultime.net/SeriesResults.html
 ```
 
 ------------------------
