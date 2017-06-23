@@ -17,7 +17,7 @@ A query without parameter returns all the medias.
 ```
 [
   {
-    id: (String) The search id of the media prefixed by "search-". Not linked to the media id.
+    id: (String) V4 search id. Not linked to the media id.
     value: (String) The title of the media
     image: (String) The relative url of the presentation image of the media
   }
@@ -39,7 +39,7 @@ curl http://www.anime-ultime.net/search/searchSuggest.php
 ```
 [
   {
-    "id": (Integer) Another search id of the media. Not linked to the media id.
+    "id": (Integer) V5 media id
     "title": (String) The title of the media
     "type": (String) The type of the media ("Drama"|"OST"|"Anime"|"Tokusatsu")
     "format": (String) The format of the media ("Episode"|"OST"|"Film"|"OAV")
@@ -52,7 +52,7 @@ curl http://www.anime-ultime.net/search/searchSuggest.php
 
 #### Parameters
 
-The search query, must be at least two characters long.
+search: (String) The query, must be at least two characters long.
 
 #### Example
 
@@ -64,7 +64,36 @@ curl -X POST --data 'search=te' -H 'X-Requested-With: XMLHttpRequest' http://v5.
 
 Advanced search, using filters. Produces a better output to work with for episode numbers.
 
-#### Examples
+#### Format
+
+```
+[
+  {
+    "id": (Integer) V5 media id
+    "title": (String) Media title
+    "total": (Integer) Number of planned submedias
+    "current": (Integer) Number of available submedias
+    "note": (Float) Rating between 0 and 5
+    "img_url": (String) The full url of the presentation image of the media suffixed by "_thindex.png"
+    "url": (String) The full url in the v5 of the media details
+  }
+]
+```
+
+#### Parameters
+
+type: ("Anime"|"Drama"|"OST"|"Tokusatsu")
+search: (String)
+
+details[genre]: ("ACTION"|...)
+details[studio]: ("YAMAHA MOTOR"|...)
+details[year]: (Integer)
+
+format[OAV]:true
+format[Film]:true
+format[Episode]:true
+
+#### Example
 
 Request all animes
 ```
@@ -76,6 +105,8 @@ curl -X POST --data 'search=' --data 'type=Anime' -H 'X-Requested-With: XMLHttpR
 
 Playlist
 --------
+
+### V4
 
 #### Format
 
@@ -110,11 +141,36 @@ $IMAGE_URL: Full path of the thumbnail image, resized
 
 #### Parameters
 
-The id of the media, in the url.
+The v4 media id, in the url.
 
 #### Example
 
 ```
 curl http://www.anime-ultime.net/playlist-1116.xml
+```
+
+
+----------------------
+
+
+Overview
+--------
+
+### V5
+
+Get information about the media.
+
+#### Format
+
+HTML *sigh*
+
+#### Parameters
+
+id: (Integer) The V5 media id.
+
+#### Example
+
+```
+curl -X POST --data 'id=408' -H 'X-Requested-With: XMLHttpRequest' http://v5.anime-ultime.net/SerieOverview.html
 ```
 
