@@ -149,6 +149,21 @@ The v4 media id, in the url.
 curl http://www.anime-ultime.net/playlist-1116.xml
 ```
 
+### V5
+
+The video links are down, but this is interesting.
+Do the media ids match the v4 ones ?
+
+#### Parameters
+
+idserie: (Integer) The media id
+
+#### Example
+
+```
+curl -X POST --data 'idserie=581' -H 'X-Requested-With: XMLHttpRequest' https://v5.anime-ultime.net/VideoPlayer.html
+```
+
 
 ----------------------
 
