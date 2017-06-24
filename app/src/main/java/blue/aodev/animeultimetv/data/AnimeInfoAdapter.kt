@@ -1,6 +1,5 @@
 package blue.aodev.animeultimetv.data
 
-import android.util.Log
 import org.jsoup.Jsoup
 import okhttp3.ResponseBody
 import org.jsoup.nodes.Element
@@ -31,11 +30,9 @@ internal class AnimeInfoAdapter : Converter<ResponseBody, List<AnimeInfo>> {
     }
 
     override fun convert(responseBody: ResponseBody): List<AnimeInfo> {
-        Log.d("JSoup", "starting")
         val result = Jsoup.parse(responseBody.string())
                 .select(".jtable tr:not(:first-child)")
                 .map { convertAnimeElement(it) }
-        Log.d("JSoup", "finishing")
         return result
     }
 

@@ -29,11 +29,20 @@ dependencies {
     compile "com.android.support:design:$androidSupportVersion"
     compile "com.android.support:support-v4:$androidSupportVersion"
 
+    // Reactive
+    compile "io.reactivex.rxjava2:rxjava:$rxJava2Version"
+    compile "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+    compile "io.reactivex.rxjava2:rxkotlin:$rxKotlinVersion"
+
+    // Network
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    compile "com.google.code.gson:gson:$gsonVersion"
+    compile "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+
+    // Parsing
     compile "org.jsoup:jsoup:$jsoupVersion"
 
+    // Image loading
     compile "com.github.bumptech.glide:glide:$glideVersion"
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"

@@ -6,12 +6,13 @@ import android.support.v17.leanback.widget.Presenter
 import android.support.v4.content.ContextCompat
 import android.view.ViewGroup
 import android.widget.ImageView
+import blue.aodev.animeultimetv.data.AnimeInfo
+import blue.aodev.animeultimetv.data.AnimeInfoType
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.kingofgranges.max.animeultimetv.R
-import com.kingofgranges.max.animeultimetv.domain.SearchNetworkEntity
 
-class CardPresenter : Presenter() {
+class AnimeCardPresenter : Presenter() {
 
     private var selectedBackgroundColor = -1
     private var defaultBackgroundColor = -1
@@ -60,11 +61,17 @@ class CardPresenter : Presenter() {
     }
 
     override fun onBindViewHolder(viewHolder: Presenter.ViewHolder, item: Any) {
-        val animeInfo = item as SearchNetworkEntity
+        val animeInfo = item as AnimeInfo
 
         val cardView = viewHolder.view as ImageCardView
         cardView.titleText = animeInfo.title
-        cardView.contentText = animeInfo.format
+
+        // TODO Have this mapping against string resources
+        cardView.contentText = when (animeInfo.type) {
+            AnimeInfoType.ANIME -> "Anime"
+            AnimeInfoType.OAV -> "OAV"
+            AnimeInfoType.MOVIE -> "Film"
+        }
 
         if (animeInfo.imageUrl != null) {
             Glide.with(cardView.context)

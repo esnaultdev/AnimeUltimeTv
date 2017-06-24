@@ -3,54 +3,42 @@ package com.kingofgranges.max.animeultimetv.presentation.search
 import android.content.Intent
 import android.os.Bundle
 import android.support.v17.leanback.widget.*
+import blue.aodev.animeultimetv.data.AnimeInfo
+import blue.aodev.animeultimetv.data.AnimeUltimeRepositoryImpl
+import blue.aodev.animeultimetv.domain.AnimeUltimeRepository
 import com.kingofgranges.max.animeultimetv.R
-import com.kingofgranges.max.animeultimetv.data.AnimeUltimeService
-import com.kingofgranges.max.animeultimetv.data.SearchNetworkModel
-import com.kingofgranges.max.animeultimetv.domain.SearchNetworkEntity
 import com.kingofgranges.max.animeultimetv.presentation.animedetails.AnimeDetailsActivity
-import com.kingofgranges.max.animeultimetv.presentation.common.CardPresenter
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.kingofgranges.max.animeultimetv.presentation.common.AnimeCardPresenter
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 
 
 class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
         android.support.v17.leanback.app.SearchFragment.SearchResultProvider {
 
     private lateinit var rowsAdapter: ArrayObjectAdapter
-    private val animeAdapter = ArrayObjectAdapter(CardPresenter())
+    private val animeAdapter = ArrayObjectAdapter(AnimeCardPresenter())
 
-    private lateinit var auService: AnimeUltimeService
-    private var searchCall: Call<List<SearchNetworkModel>>? = null
     private var query = ""
     private var hasResults = false
+    private val repository: AnimeUltimeRepository = AnimeUltimeRepositoryImpl() // TODO Inject
+    private var currentSearch: Disposable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        initAnimeService()
 
         rowsAdapter = ArrayObjectAdapter(ListRowPresenter())
 
         setSearchResultProvider(this)
         setOnItemViewClickedListener { _, item, _, _ ->
-            if (item is SearchNetworkEntity) { showAnimeDetails(item) } }
+            if (item is AnimeInfo) { showAnimeDetails(item) } }
     }
 
     override fun onStart() {
         super.onStart()
         updateVerticalOffset()
-    }
-
-    private fun initAnimeService() {
-        val retrofit = Retrofit.Builder()
-                .baseUrl("http://v5.anime-ultime.net")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-
-        auService = retrofit.create(AnimeUltimeService::class.java)
     }
 
     override fun getResultsAdapter(): ObjectAdapter {
@@ -77,30 +65,26 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
             return
         }
 
-        if (searchCall != null) searchCall!!.cancel()
+        currentSearch?.dispose()
 
-        val newCall = auService.search(query)
-        newCall.enqueue(object : Callback<List<SearchNetworkModel>> {
-            override fun onResponse(call: Call<List<SearchNetworkModel>>,
-                                    response: Response<List<SearchNetworkModel>>) {
-                onSearchResult(response.body()?.map { it.toEntity() } ?: emptyList())
-            }
-
-            override fun onFailure(call: Call<List<SearchNetworkModel>>, t: Throwable) {
-                onSearchResult(emptyList())
-            }
-        })
+        currentSearch = repository.search(query)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                        onNext = {
+                            onSearchResult(it)
+                        },
+                        onError = {
+                            onSearchResult(emptyList())
+                        }
+                )
     }
 
-    private fun onSearchResult(results: List<SearchNetworkEntity>) {
-        val processedResults = results
-                .sortedBy { it.title }
-                .filter { it.type == "Anime" }
-
+    private fun onSearchResult(results: List<AnimeInfo>) {
         animeAdapter.clear()
         hasResults = results.isNotEmpty()
         val row = if (hasResults) {
-            animeAdapter.addAll(0, processedResults)
+            animeAdapter.addAll(0, results)
             ListRow(animeAdapter)
         } else {
             val header = HeaderItem(getString(R.string.search_noResults, query))
@@ -135,7 +119,7 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
                 resources.getDimensionPixelSize(offsetResId)
     }
 
-    private fun showAnimeDetails(anime: SearchNetworkEntity) {
+    private fun showAnimeDetails(anime: AnimeInfo) {
         val intent = Intent(activity, AnimeDetailsActivity::class.java)
         activity.startActivity(intent)
     }
