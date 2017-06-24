@@ -1,4 +1,4 @@
-package com.kingofgranges.max.animeultimetv.presentation.main
+package blue.aodev.animeultimetv.presentation.main
 
 import android.os.Bundle
 import android.support.v17.leanback.app.BrowseFragment

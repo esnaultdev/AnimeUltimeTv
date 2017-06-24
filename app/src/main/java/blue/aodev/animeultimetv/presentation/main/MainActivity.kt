@@ -1,10 +1,8 @@
-package com.kingofgranges.max.animeultimetv.presentation.main
+package blue.aodev.animeultimetv.presentation.main
 
 import android.os.Bundle
-import com.kingofgranges.max.animeultimetv.R
-import com.kingofgranges.max.animeultimetv.presentation.LeanbackActivity
-
-
+import blue.aodev.animeultimetv.R
+import blue.aodev.animeultimetv.presentation.LeanbackActivity
 
 class MainActivity : LeanbackActivity() {
 

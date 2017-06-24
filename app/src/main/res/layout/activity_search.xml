@@ -2,6 +2,6 @@
 
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/search_fragment"
-    android:name="com.kingofgranges.max.animeultimetv.presentation.search.SearchFragment"
+    android:name="blue.aodev.animeultimetv.presentation.search.SearchFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />

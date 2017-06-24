@@ -1,6 +1,5 @@
 package blue.aodev.animeultimetv.domain
 
-import blue.aodev.animeultimetv.data.AnimeInfo
 import io.reactivex.Observable
 
 interface AnimeUltimeRepository {

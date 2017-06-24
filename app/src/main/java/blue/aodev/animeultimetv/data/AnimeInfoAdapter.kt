@@ -1,5 +1,7 @@
 package blue.aodev.animeultimetv.data
 
+import blue.aodev.animeultimetv.domain.AnimeInfo
+import blue.aodev.animeultimetv.domain.AnimeInfoType
 import org.jsoup.Jsoup
 import okhttp3.ResponseBody
 import org.jsoup.nodes.Element
@@ -7,7 +9,6 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
-
 
 internal class AnimeInfoAdapter : Converter<ResponseBody, List<AnimeInfo>> {
 

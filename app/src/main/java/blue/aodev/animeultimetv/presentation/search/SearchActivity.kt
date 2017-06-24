@@ -1,18 +1,15 @@
-package com.kingofgranges.max.animeultimetv.presentation.search
+package blue.aodev.animeultimetv.presentation.search
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
-import com.kingofgranges.max.animeultimetv.R
-import com.kingofgranges.max.animeultimetv.presentation.LeanbackActivity
+import blue.aodev.animeultimetv.R
+import blue.aodev.animeultimetv.presentation.LeanbackActivity
 
 class SearchActivity : LeanbackActivity() {
 
     private lateinit var fragment: SearchFragment
 
-    /**
-     * Called when the activity is first created.
-     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)

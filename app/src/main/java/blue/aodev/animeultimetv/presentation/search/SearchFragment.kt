@@ -1,19 +1,18 @@
-package com.kingofgranges.max.animeultimetv.presentation.search
+package blue.aodev.animeultimetv.presentation.search
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.v17.leanback.widget.*
-import blue.aodev.animeultimetv.data.AnimeInfo
+import blue.aodev.animeultimetv.R
+import blue.aodev.animeultimetv.domain.AnimeInfo
 import blue.aodev.animeultimetv.data.AnimeUltimeRepositoryImpl
 import blue.aodev.animeultimetv.domain.AnimeUltimeRepository
-import com.kingofgranges.max.animeultimetv.R
-import com.kingofgranges.max.animeultimetv.presentation.animedetails.AnimeDetailsActivity
-import com.kingofgranges.max.animeultimetv.presentation.common.AnimeCardPresenter
+import blue.aodev.animeultimetv.presentation.animedetails.AnimeDetailsActivity
+import blue.aodev.animeultimetv.presentation.common.AnimeCardPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-
 
 class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
         android.support.v17.leanback.app.SearchFragment.SearchResultProvider {
@@ -71,12 +70,8 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
-                        onNext = {
-                            onSearchResult(it)
-                        },
-                        onError = {
-                            onSearchResult(emptyList())
-                        }
+                        onNext = { onSearchResult(it) },
+                        onError = { onSearchResult(emptyList()) }
                 )
     }
 

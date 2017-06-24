@@ -1,10 +1,10 @@
-package com.kingofgranges.max.animeultimetv.extensions
+package blue.aodev.animeultimetv.extensions
 
 import android.os.Parcel
 import android.os.Parcelable
 
 /**
- * Not really an extention, but meh
+ * Not really an extension, but meh
  * Coming from
  * https://android.jlelse.eu/keddit-part-8-orientation-change-with-kotlin-parcelable-data-classes-f28136e8a6a8
  */

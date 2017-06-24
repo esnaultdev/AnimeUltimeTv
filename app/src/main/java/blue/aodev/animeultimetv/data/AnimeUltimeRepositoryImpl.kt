@@ -1,5 +1,6 @@
 package blue.aodev.animeultimetv.data
 
+import blue.aodev.animeultimetv.domain.AnimeInfo
 import blue.aodev.animeultimetv.domain.AnimeUltimeRepository
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
@@ -37,11 +38,7 @@ class AnimeUltimeRepositoryImpl : AnimeUltimeRepository {
     }
 
     override fun search(query: String): Observable<List<AnimeInfo>> {
-        return behaviorSubject.map {
-            it.filter {
-                it.title.startsWith(query, true)
-            }
-        }
+        return behaviorSubject.map { it.filter { it.title.startsWith(query, true) } }
     }
 
     override fun getAnime(id: Int): Observable<AnimeInfo> {

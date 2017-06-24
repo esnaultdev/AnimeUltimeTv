@@ -1,4 +1,4 @@
-package com.kingofgranges.max.animeultimetv.presentation.common
+package blue.aodev.animeultimetv.presentation.common
 
 import android.content.Context
 import android.support.v17.leanback.widget.ImageCardView
@@ -6,11 +6,11 @@ import android.support.v17.leanback.widget.Presenter
 import android.support.v4.content.ContextCompat
 import android.view.ViewGroup
 import android.widget.ImageView
-import blue.aodev.animeultimetv.data.AnimeInfo
-import blue.aodev.animeultimetv.data.AnimeInfoType
+import blue.aodev.animeultimetv.R
+import blue.aodev.animeultimetv.domain.AnimeInfo
+import blue.aodev.animeultimetv.domain.AnimeInfoType
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.kingofgranges.max.animeultimetv.R
 
 class AnimeCardPresenter : Presenter() {
 
@@ -19,7 +19,7 @@ class AnimeCardPresenter : Presenter() {
     private var cardImageWidth = -1
     private var cardImageHeight = -1
 
-    override fun onCreateViewHolder(parent: ViewGroup): Presenter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
         initResources(parent.context)
 
         val cardView = object : ImageCardView(parent.context) {
@@ -37,7 +37,7 @@ class AnimeCardPresenter : Presenter() {
         cardView.setMainImageScaleType(ImageView.ScaleType.FIT_XY)
 
         updateCardBackgroundColor(cardView, false)
-        return Presenter.ViewHolder(cardView)
+        return ViewHolder(cardView)
     }
 
     private fun initResources(context: Context) {
@@ -60,7 +60,7 @@ class AnimeCardPresenter : Presenter() {
         view.findViewById(R.id.info_field).setBackgroundColor(color)
     }
 
-    override fun onBindViewHolder(viewHolder: Presenter.ViewHolder, item: Any) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
         val animeInfo = item as AnimeInfo
 
         val cardView = viewHolder.view as ImageCardView
@@ -81,7 +81,7 @@ class AnimeCardPresenter : Presenter() {
         }
     }
 
-    override fun onUnbindViewHolder(viewHolder: Presenter.ViewHolder) {
+    override fun onUnbindViewHolder(viewHolder: ViewHolder) {
         val cardView = viewHolder.view as ImageCardView
 
         // Remove references to images so that the garbage collector can free up memory.
