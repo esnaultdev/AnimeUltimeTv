@@ -32,6 +32,7 @@ dependencies {
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     compile "com.google.code.gson:gson:$gsonVersion"
+    compile "org.jsoup:jsoup:$jsoupVersion"
 
     compile "com.github.bumptech.glide:glide:$glideVersion"
 

@@ -7,6 +7,7 @@ buildscript {
         retrofitVersion = '2.3.0'
         gsonVersion = '2.8.1'
         glideVersion = '4.0.0-RC0'
+        jsoupVersion = '1.10.3'
     }
 
     repositories {
