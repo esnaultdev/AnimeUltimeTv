@@ -1,6 +1,5 @@
 package blue.aodev.animeultimetv.presentation.search
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v17.leanback.widget.*
 import blue.aodev.animeultimetv.R
@@ -21,7 +20,7 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
     @Inject
     lateinit var animeRepository: AnimeRepository
 
-    private lateinit var rowsAdapter: ArrayObjectAdapter
+    private val rowsAdapter = ArrayObjectAdapter(ListRowPresenter())
     private val animeAdapter = ArrayObjectAdapter(AnimeCardPresenter())
 
     private var query = ""
@@ -31,8 +30,6 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MyApplication.graph.inject(this)
-
-        rowsAdapter = ArrayObjectAdapter(ListRowPresenter())
 
         setSearchResultProvider(this)
         setOnItemViewClickedListener { _, item, _, _ ->
@@ -119,7 +116,7 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
     }
 
     private fun showAnimeDetails(anime: AnimeInfo) {
-        val intent = Intent(activity, AnimeDetailsActivity::class.java)
+        val intent = AnimeDetailsActivity.getIntent(activity, anime)
         activity.startActivity(intent)
     }
 }

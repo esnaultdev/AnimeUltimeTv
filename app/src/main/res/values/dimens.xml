@@ -4,4 +4,7 @@
 
     <dimen name="searchFragment_rowMarginTop_withHeader">147dp</dimen>
     <dimen name="searchFragment_rowMarginTop_withoutHeader">100dp</dimen>
+
+    <dimen name="detailsFragment_thumbnail_width">274dp</dimen>
+    <dimen name="detailsFragment_thumbnail_height">274dp</dimen>
 </resources>

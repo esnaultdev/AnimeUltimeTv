@@ -32,3 +32,4 @@ app/src/androidTest
 app/src/test
 app/app-debug.apk
 app/app-release.apk
+captures/
