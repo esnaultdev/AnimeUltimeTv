@@ -2,7 +2,7 @@ package blue.aodev.animeultimetv.domain
 
 import io.reactivex.Observable
 
-interface AnimeUltimeRepository {
+interface AnimeRepository {
 
     fun getAnimes(): Observable<List<AnimeInfo>>
 

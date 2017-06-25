@@ -10,6 +10,7 @@ buildscript {
         rxJava2Version = '2.1.1'
         rxAndroidVersion = '2.0.1'
         rxKotlinVersion = '2.0.3'
+        daggerVersion = '2.11'
     }
 
     repositories {

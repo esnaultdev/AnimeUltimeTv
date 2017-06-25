@@ -1,29 +1,18 @@
 package blue.aodev.animeultimetv.data
 
 import blue.aodev.animeultimetv.domain.AnimeInfo
-import blue.aodev.animeultimetv.domain.AnimeUltimeRepository
+import blue.aodev.animeultimetv.domain.AnimeRepository
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
-import okhttp3.HttpUrl
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 
-class AnimeUltimeRepositoryImpl : AnimeUltimeRepository {
+class AnimeUltimeRepository(animeUltimeService: AnimeUltimeService) : AnimeRepository {
 
     private val behaviorSubject = BehaviorSubject.createDefault<List<AnimeInfo>>(emptyList())
 
     init {
-        val retrofit = Retrofit.Builder()
-                .baseUrl(HttpUrl.parse("http://www.anime-ultime.net/")!!)
-                .addConverterFactory(AnimeInfoAdapter.FACTORY)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build()
-
-        val AUService = retrofit.create<HtmlAUService>(HtmlAUService::class.java)
-
-        AUService.getAllAnimes()
+        animeUltimeService.getAllAnimes()
                 .subscribeOn(Schedulers.newThread())
                 .toObservable()
                 .subscribeBy(
