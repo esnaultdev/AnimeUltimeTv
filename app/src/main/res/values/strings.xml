@@ -8,4 +8,5 @@
         <item quantity="one">%d épisode</item>
         <item quantity="other">%d épisodes</item>
     </plurals>
+    <string name="details_action_episodes">Épisodes</string>
 </resources>

@@ -22,6 +22,10 @@ import javax.inject.Inject
 
 class AnimeDetailsFragment : DetailsFragment() {
 
+    companion object {
+        val ACTION_EPISODES = 1
+    }
+
     @Inject
     lateinit var animeRepository: AnimeRepository
 
@@ -51,8 +55,14 @@ class AnimeDetailsFragment : DetailsFragment() {
 
         detailsPresenter.backgroundColor =
                 ContextCompat.getColor(activity, R.color.selected_background)
-        detailsPresenter.initialState = FullWidthDetailsOverviewRowPresenter.STATE_HALF
+        detailsPresenter.initialState = FullWidthDetailsOverviewRowPresenter.STATE_FULL
         detailsPresenter.headerPresenter = null
+
+        detailsPresenter.onActionClickedListener = OnActionClickedListener { action ->
+            if (action.id == ACTION_EPISODES.toLong()) {
+                setSelectedPosition(1)
+            }
+        }
 
         presenterSelector = ClassPresenterSelector()
         presenterSelector.addClassPresenter(DetailsOverviewRow::class.java, detailsPresenter)
@@ -109,6 +119,12 @@ class AnimeDetailsFragment : DetailsFragment() {
                         row.imageDrawable = resource
                     }
                 })
+
+        val adapter = SparseArrayObjectAdapter()
+
+        adapter.set(ACTION_EPISODES, Action(ACTION_EPISODES.toLong(),
+                resources.getString(R.string.details_action_episodes)))
+        row.actionsAdapter = adapter
 
         globalAdapter.add(row)
     }
