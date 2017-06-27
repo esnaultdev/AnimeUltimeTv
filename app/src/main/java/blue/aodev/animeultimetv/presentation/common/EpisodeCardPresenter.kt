@@ -7,8 +7,7 @@ import android.support.v4.content.ContextCompat
 import android.view.ViewGroup
 import android.widget.ImageView
 import blue.aodev.animeultimetv.R
-import blue.aodev.animeultimetv.domain.AnimeInfo
-import blue.aodev.animeultimetv.domain.AnimeInfoType
+import blue.aodev.animeultimetv.data.EpisodeInfo
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
@@ -61,24 +60,20 @@ class EpisodeCardPresenter : Presenter() {
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
-        val animeInfo = item as AnimeInfo
+        // TODO use an episode and not an episodeInfo
+        val episodeInfo = item as EpisodeInfo
 
         val cardView = viewHolder.view as ImageCardView
-        cardView.titleText = animeInfo.title
+        // TODO extract the episode number for a smaller title
+        cardView.titleText = episodeInfo.title
 
-        // TODO Have this mapping against string resources
-        cardView.contentText = when (animeInfo.type) {
-            AnimeInfoType.ANIME -> "Anime"
-            AnimeInfoType.OAV -> "OAV"
-            AnimeInfoType.MOVIE -> "Film"
-        }
+        // TODO Parse the duration and display it
+        cardView.contentText = "22:05"
 
-        if (animeInfo.imageUrl != null) {
-            Glide.with(cardView.context)
-                    .load(animeInfo.imageUrl)
-                    .apply(RequestOptions.centerCropTransform())
-                    .into(cardView.mainImageView)
-        }
+        Glide.with(cardView.context)
+                .load(episodeInfo.imageUrl)
+                .apply(RequestOptions.centerCropTransform())
+                .into(cardView.mainImageView)
     }
 
     override fun onUnbindViewHolder(viewHolder: ViewHolder) {

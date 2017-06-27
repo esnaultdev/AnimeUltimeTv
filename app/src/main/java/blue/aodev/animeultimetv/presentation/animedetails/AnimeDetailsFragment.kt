@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import blue.aodev.animeultimetv.R
+import blue.aodev.animeultimetv.data.EpisodeInfo
 import blue.aodev.animeultimetv.domain.AnimeInfo
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.presentation.application.MyApplication
@@ -18,6 +19,9 @@ import blue.aodev.animeultimetv.presentation.common.EpisodeCardPresenter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class AnimeDetailsFragment : DetailsFragment() {
@@ -43,7 +47,14 @@ class AnimeDetailsFragment : DetailsFragment() {
 
         setupAdapter()
         setupDetailsOverviewRow()
-        setupEpisodeListRow()
+        setupEmptyEpisodeListRow()
+
+        animeRepository.getEpisodesInfo(animeInfo.id)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                        onSuccess = { updateEpisodes(it) }
+                )
 
         // When an episode item is clicked.
         onItemViewClickedListener = ItemViewClickedListener()
@@ -129,12 +140,19 @@ class AnimeDetailsFragment : DetailsFragment() {
         globalAdapter.add(row)
     }
 
-    private fun setupEpisodeListRow() {
-        val subcategories = arrayOf(getString(R.string.details_episodesTitle))
-
-        val header = HeaderItem(0, subcategories[0])
-        episodeAdapter.add(animeInfo)
+    private fun setupEmptyEpisodeListRow() {
+        val header = setupEpisodeListRowHeader()
         globalAdapter.add(ListRow(header, episodeAdapter))
+    }
+
+    private fun updateEpisodes(episodes: List<EpisodeInfo>) {
+        episodeAdapter.clear()
+        episodeAdapter.addAll(0, episodes)
+    }
+
+    private fun setupEpisodeListRowHeader(): HeaderItem {
+        val subcategories = arrayOf(getString(R.string.details_episodesTitle))
+        return HeaderItem(0, subcategories[0])
     }
 
     private inner class ItemViewClickedListener : OnItemViewClickedListener {

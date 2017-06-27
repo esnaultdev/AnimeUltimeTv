@@ -3,11 +3,12 @@ package blue.aodev.animeultimetv.data
 import blue.aodev.animeultimetv.domain.AnimeInfo
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 
-class AnimeUltimeRepository(animeUltimeService: AnimeUltimeService) : AnimeRepository {
+class AnimeUltimeRepository(val animeUltimeService: AnimeUltimeService) : AnimeRepository {
 
     private val behaviorSubject = BehaviorSubject.createDefault<List<AnimeInfo>>(emptyList())
 
@@ -34,4 +35,7 @@ class AnimeUltimeRepository(animeUltimeService: AnimeUltimeService) : AnimeRepos
         return behaviorSubject.map { it.find { it.id == id } }
     }
 
+    override fun getEpisodesInfo(id: Int): Single<List<EpisodeInfo>> {
+        return animeUltimeService.getEpisodesInfo(id)
+    }
 }
