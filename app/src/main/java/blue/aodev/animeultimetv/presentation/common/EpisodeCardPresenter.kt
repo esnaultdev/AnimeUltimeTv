@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import blue.aodev.animeultimetv.R
 import blue.aodev.animeultimetv.data.EpisodeInfo
+import blue.aodev.animeultimetv.extensions.formatEpisodeDuration
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
@@ -67,8 +68,7 @@ class EpisodeCardPresenter : Presenter() {
         // TODO extract the episode number for a smaller title
         cardView.titleText = episodeInfo.title
 
-        // TODO Parse the duration and display it
-        cardView.contentText = "22:05"
+        cardView.contentText = viewHolder.view.context.formatEpisodeDuration(episodeInfo.duration)
 
         Glide.with(cardView.context)
                 .load(episodeInfo.imageUrl)

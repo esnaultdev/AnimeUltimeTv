@@ -64,6 +64,7 @@ internal class EpisodeInfoAdapter : Converter<ResponseBody, List<EpisodeInfo>> {
         var rawImageUrl: String? = null
         var videoUrl: String? = null
         var hdVideoUrl: String? = null
+        var duration: Int? = null
 
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.eventType != XmlPullParser.START_TAG) {
@@ -72,6 +73,7 @@ internal class EpisodeInfoAdapter : Converter<ResponseBody, List<EpisodeInfo>> {
             val name = parser.name
             when (name) {
                 "title" -> title = readTitle(parser)
+                "media:content" -> duration = readDuration(parser)
                 "media:thumbnail" -> rawImageUrl = readThumbnail(parser)
                 "jwplayer:file" -> videoUrl = readVideoUrl(parser)
                 "jwplayer:hd.file" -> hdVideoUrl = readHdVideoUrl(parser)
@@ -79,7 +81,8 @@ internal class EpisodeInfoAdapter : Converter<ResponseBody, List<EpisodeInfo>> {
             }
         }
 
-        if (title == null || rawImageUrl == null || videoUrl == null || hdVideoUrl == null) {
+        if (title == null || rawImageUrl == null || videoUrl == null || hdVideoUrl == null
+                || duration == null) {
             return null
         }
 
@@ -87,7 +90,7 @@ internal class EpisodeInfoAdapter : Converter<ResponseBody, List<EpisodeInfo>> {
         // http://www.anime-ultime.net/img_resize.php?img=images/img12459.png
         val imageUrl = rawImageUrl
 
-        return EpisodeInfo(title, imageUrl, videoUrl, hdVideoUrl)
+        return EpisodeInfo(title, imageUrl, videoUrl, hdVideoUrl, duration)
     }
 
     private fun readTitle(parser: XmlPullParser): String {
@@ -97,10 +100,17 @@ internal class EpisodeInfoAdapter : Converter<ResponseBody, List<EpisodeInfo>> {
         return title
     }
 
+    private fun readDuration(parser: XmlPullParser): Int {
+        parser.require(XmlPullParser.START_TAG, null, "media:content")
+        val duration = parser.getAttributeValue(null, "duration").toInt()
+        parser.nextTag()
+        parser.require(XmlPullParser.END_TAG, null, "media:content")
+        return duration
+    }
+
     private fun readThumbnail(parser: XmlPullParser): String {
-        var thumbnailUrl = ""
         parser.require(XmlPullParser.START_TAG, null, "media:thumbnail")
-        thumbnailUrl = parser.getAttributeValue(null, "url")
+        val thumbnailUrl = parser.getAttributeValue(null, "url")
         parser.nextTag()
         parser.require(XmlPullParser.END_TAG, null, "media:thumbnail")
         return thumbnailUrl
