@@ -61,16 +61,17 @@ class EpisodeCardPresenter : Presenter() {
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
+        val context = viewHolder.view.context
+
         // TODO use an episode and not an episodeInfo
         val episodeInfo = item as EpisodeInfo
 
         val cardView = viewHolder.view as ImageCardView
-        // TODO extract the episode number for a smaller title
-        cardView.titleText = episodeInfo.title
 
-        cardView.contentText = viewHolder.view.context.formatEpisodeDuration(episodeInfo.duration)
+        cardView.titleText = context.getString(R.string.episode_title, episodeInfo.number)
+        cardView.contentText = context.formatEpisodeDuration(episodeInfo.duration)
 
-        Glide.with(cardView.context)
+        Glide.with(context)
                 .load(episodeInfo.imageUrl)
                 .apply(RequestOptions.centerCropTransform())
                 .into(cardView.mainImageView)

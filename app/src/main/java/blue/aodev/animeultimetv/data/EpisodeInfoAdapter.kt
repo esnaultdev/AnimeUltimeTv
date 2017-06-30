@@ -86,11 +86,13 @@ internal class EpisodeInfoAdapter : Converter<ResponseBody, List<EpisodeInfo>> {
             return null
         }
 
+        val number = title.split(" ").last().toIntOrNull() ?: 0
+
         // TODO process image url to remove resize
         // http://www.anime-ultime.net/img_resize.php?img=images/img12459.png
         val imageUrl = rawImageUrl
 
-        return EpisodeInfo(title, imageUrl, videoUrl, hdVideoUrl, duration)
+        return EpisodeInfo(title, number, imageUrl, videoUrl, hdVideoUrl, duration)
     }
 
     private fun readTitle(parser: XmlPullParser): String {
