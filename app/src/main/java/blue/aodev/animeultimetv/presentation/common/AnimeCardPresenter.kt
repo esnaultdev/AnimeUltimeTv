@@ -47,8 +47,8 @@ class AnimeCardPresenter : Presenter() {
         selectedBackgroundColor = ContextCompat.getColor(context, R.color.selected_background)
 
         val res = context.resources
-        cardImageWidth = res.getDimensionPixelSize(R.dimen.card_width)
-        cardImageHeight = res.getDimensionPixelSize(R.dimen.card_height)
+        cardImageWidth = res.getDimensionPixelSize(R.dimen.anime_card_width)
+        cardImageHeight = res.getDimensionPixelSize(R.dimen.anime_card_height)
     }
 
     private fun updateCardBackgroundColor(view: ImageCardView, selected: Boolean) {
