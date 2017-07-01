@@ -1,17 +1,14 @@
 package blue.aodev.animeultimetv.domain
 
-import blue.aodev.animeultimetv.data.EpisodeInfo
 import io.reactivex.Observable
-import io.reactivex.Single
 
 interface AnimeRepository {
 
-    fun getAnimes(): Observable<List<AnimeInfo>>
+    fun getAnimes(): Observable<List<AnimeSummary>>
 
-    fun search(query: String): Observable<List<AnimeInfo>>
+    fun search(query: String): Observable<List<AnimeSummary>>
 
-    fun getAnime(id: Int): Observable<AnimeInfo>
+    fun getAnimeSummary(id: Int): Observable<AnimeSummary>
 
-    // TODO don't expose this, but a way to request Animes
-    fun getEpisodesInfo(id: Int): Single<List<EpisodeInfo>>
+    fun getAnime(id: Int): Observable<Anime>
 }

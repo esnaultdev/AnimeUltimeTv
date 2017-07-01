@@ -1,7 +1,7 @@
 package blue.aodev.animeultimetv.data
 
-import blue.aodev.animeultimetv.domain.AnimeInfo
-import blue.aodev.animeultimetv.domain.AnimeInfoType
+import blue.aodev.animeultimetv.domain.AnimeSummary
+import blue.aodev.animeultimetv.domain.AnimeType
 import org.jsoup.Jsoup
 import okhttp3.ResponseBody
 import org.jsoup.nodes.Element
@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
-internal class AnimeInfoAdapter : Converter<ResponseBody, List<AnimeInfo>> {
+internal class AnimeSummaryAdapter : Converter<ResponseBody, List<AnimeSummary>> {
 
     companion object {
         val FACTORY: Converter.Factory = object : Converter.Factory() {
@@ -18,8 +18,8 @@ internal class AnimeInfoAdapter : Converter<ResponseBody, List<AnimeInfo>> {
                                                retrofit: Retrofit): Converter<ResponseBody, *>? {
                 if (type is ParameterizedType
                         && getRawType(type) === List::class.java
-                        && getParameterUpperBound(0, type) === AnimeInfo::class.java) {
-                    return AnimeInfoAdapter()
+                        && getParameterUpperBound(0, type) === AnimeSummary::class.java) {
+                    return AnimeSummaryAdapter()
                 }
 
                 return null
@@ -30,14 +30,14 @@ internal class AnimeInfoAdapter : Converter<ResponseBody, List<AnimeInfo>> {
         private val imageRegex = Regex("""[^=]+$""")
     }
 
-    override fun convert(responseBody: ResponseBody): List<AnimeInfo> {
+    override fun convert(responseBody: ResponseBody): List<AnimeSummary> {
         val result = Jsoup.parse(responseBody.string())
                 .select(".jtable tr:not(:first-child)")
                 .map { convertAnimeElement(it) }
         return result
     }
 
-    private fun convertAnimeElement(animeElement: Element): AnimeInfo {
+    private fun convertAnimeElement(animeElement: Element): AnimeSummary {
         val aImageElement = animeElement.child(0).child(0)
         val rawId = aImageElement.attr("href")
         val id = idRegex.find(rawId)?.value?.toInt() ?: -1
@@ -50,10 +50,10 @@ internal class AnimeInfoAdapter : Converter<ResponseBody, List<AnimeInfo>> {
 
         val rawType = animeElement.child(2).text()
         val type = when (rawType) {
-            "Episode" -> AnimeInfoType.ANIME
-            "OAV" -> AnimeInfoType.OAV
-            "Film" -> AnimeInfoType.MOVIE
-            else -> AnimeInfoType.ANIME
+            "Episode" -> AnimeType.ANIME
+            "OAV" -> AnimeType.OAV
+            "Film" -> AnimeType.MOVIE
+            else -> AnimeType.ANIME
         }
 
         val rawCount = animeElement.child(3).text()
@@ -62,8 +62,8 @@ internal class AnimeInfoAdapter : Converter<ResponseBody, List<AnimeInfo>> {
         val totalCount = splitCount.last().toDoubleOrNull()?.toInt() ?: 0
 
         val rawRating = animeElement.child(4).text()
-        val rating = rawRating.split("/").firstOrNull()?.toDoubleOrNull() ?: 0.0
+        val rating = rawRating.split("/").firstOrNull()?.toFloatOrNull() ?: 0f
 
-        return AnimeInfo(id, title, imageUrl, type, availableCount, totalCount, rating)
+        return AnimeSummary(id, title, imageUrl, type, availableCount, totalCount, rating)
     }
 }

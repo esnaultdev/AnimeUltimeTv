@@ -1,9 +1,9 @@
 package blue.aodev.animeultimetv.injection
 
-import blue.aodev.animeultimetv.data.AnimeInfoAdapter
+import blue.aodev.animeultimetv.data.AnimeSummaryAdapter
 import blue.aodev.animeultimetv.data.AnimeUltimeRepository
 import blue.aodev.animeultimetv.data.AnimeUltimeService
-import blue.aodev.animeultimetv.data.EpisodeInfoAdapter
+import blue.aodev.animeultimetv.data.EpisodeAdapter
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import dagger.Module
 import dagger.Provides
@@ -20,8 +20,8 @@ class DomainModule {
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
                 .baseUrl(HttpUrl.parse("http://www.anime-ultime.net/")!!)
-                .addConverterFactory(AnimeInfoAdapter.FACTORY)
-                .addConverterFactory(EpisodeInfoAdapter.FACTORY)
+                .addConverterFactory(AnimeSummaryAdapter.FACTORY)
+                .addConverterFactory(EpisodeAdapter.FACTORY)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
     }

@@ -4,10 +4,9 @@ data class Anime(
         val id: Int,
         val title: String,
         val imageUrl: String?,
-        val type: AnimeInfoType,
+        val type: AnimeType,
         val description: String,
-        val availableCount: Int,
         val totalCount: Int,
-        val rating: Double,
+        val rating: Float,
         val episodes: List<Episode>
 )

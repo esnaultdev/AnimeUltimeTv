@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v17.leanback.widget.*
 import android.view.View
 import blue.aodev.animeultimetv.R
-import blue.aodev.animeultimetv.domain.AnimeInfo
+import blue.aodev.animeultimetv.domain.AnimeSummary
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.presentation.animedetails.AnimeDetailsActivity
 import blue.aodev.animeultimetv.presentation.application.MyApplication
@@ -34,7 +34,7 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
 
         setSearchResultProvider(this)
         setOnItemViewClickedListener { _, item, _, _ ->
-            if (item is AnimeInfo) { showAnimeDetails(item) } }
+            if (item is AnimeSummary) { showAnimeDetails(item) } }
     }
 
     override fun onStart() {
@@ -77,7 +77,7 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
                 )
     }
 
-    private fun onSearchResult(results: List<AnimeInfo>) {
+    private fun onSearchResult(results: List<AnimeSummary>) {
         animeAdapter.clear()
         hasResults = results.isNotEmpty()
         val row = if (hasResults) {
@@ -116,7 +116,7 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
                 resources.getDimensionPixelSize(offsetResId)
     }
 
-    private fun showAnimeDetails(anime: AnimeInfo) {
+    private fun showAnimeDetails(anime: AnimeSummary) {
         val intent = AnimeDetailsActivity.getIntent(activity, anime)
         activity.startActivity(intent)
     }

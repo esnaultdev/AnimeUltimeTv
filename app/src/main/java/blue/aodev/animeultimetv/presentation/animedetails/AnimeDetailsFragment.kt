@@ -11,9 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import blue.aodev.animeultimetv.R
-import blue.aodev.animeultimetv.data.EpisodeInfo
-import blue.aodev.animeultimetv.domain.AnimeInfo
+import blue.aodev.animeultimetv.domain.AnimeSummary
 import blue.aodev.animeultimetv.domain.AnimeRepository
+import blue.aodev.animeultimetv.domain.Episode
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.common.DetailsDescriptionPresenter
 import blue.aodev.animeultimetv.presentation.common.EpisodeCardPresenter
@@ -39,8 +39,8 @@ class AnimeDetailsFragment : DetailsFragment() {
     private lateinit var presenterSelector: ClassPresenterSelector
     private var episodeAdapter = ArrayObjectAdapter(EpisodeCardPresenter())
 
-    val animeInfo: AnimeInfo by lazy {
-        (activity as AnimeDetailsActivity).animeInfo
+    val animeSummary: AnimeSummary by lazy {
+        (activity as AnimeDetailsActivity).animeSummary
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,11 +51,11 @@ class AnimeDetailsFragment : DetailsFragment() {
         setupDetailsOverviewRow()
         setupEmptyEpisodeListRow()
 
-        animeRepository.getEpisodesInfo(animeInfo.id)
+        animeRepository.getAnime(animeSummary.id)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
-                        onSuccess = { updateEpisodes(it) }
+                        onNext = { updateEpisodes(it.episodes) }
                 )
 
         // When an episode item is clicked.
@@ -122,10 +122,10 @@ class AnimeDetailsFragment : DetailsFragment() {
     }
 
     private fun setupDetailsOverviewRow() {
-        val row = DetailsOverviewRow(animeInfo)
+        val row = DetailsOverviewRow(animeSummary)
 
         Glide.with(this)
-                .load(animeInfo.imageUrl)
+                .load(animeSummary.imageUrl)
                 .into(object : SimpleTarget<Drawable>() {
                     override fun onResourceReady(resource: Drawable?,
                                                  transition: Transition<in Drawable>?) {
@@ -147,7 +147,7 @@ class AnimeDetailsFragment : DetailsFragment() {
         globalAdapter.add(ListRow(header, episodeAdapter))
     }
 
-    private fun updateEpisodes(episodes: List<EpisodeInfo>) {
+    private fun updateEpisodes(episodes: List<Episode>) {
         episodeAdapter.clear()
         episodeAdapter.addAll(0, episodes)
     }

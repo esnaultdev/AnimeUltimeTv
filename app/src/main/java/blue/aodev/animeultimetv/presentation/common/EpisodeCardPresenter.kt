@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import blue.aodev.animeultimetv.R
-import blue.aodev.animeultimetv.data.EpisodeInfo
+import blue.aodev.animeultimetv.domain.Episode
 import blue.aodev.animeultimetv.extensions.formatEpisodeDuration
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -64,16 +64,15 @@ class EpisodeCardPresenter : Presenter() {
     override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
         val context = viewHolder.view.context
 
-        // TODO use an episode and not an episodeInfo
-        val episodeInfo = item as EpisodeInfo
+        val episode = item as Episode
 
         val cardView = viewHolder.view as ImageCardView
 
-        cardView.titleText = context.getString(R.string.episode_title, episodeInfo.number)
-        cardView.contentText = context.formatEpisodeDuration(episodeInfo.duration)
+        cardView.titleText = context.getString(R.string.episode_title, episode.number)
+        cardView.contentText = context.formatEpisodeDuration(episode.duration)
 
         Glide.with(context)
-                .load(episodeInfo.imageUrl)
+                .load(episode.imageUrl)
                 .apply(RequestOptions.centerCropTransform())
                 .into(cardView.mainImageView)
     }

@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import blue.aodev.animeultimetv.R
-import blue.aodev.animeultimetv.domain.AnimeInfo
-import blue.aodev.animeultimetv.domain.AnimeInfoType
+import blue.aodev.animeultimetv.domain.AnimeSummary
+import blue.aodev.animeultimetv.domain.AnimeType
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
@@ -62,16 +62,16 @@ class AnimeCardPresenter : Presenter() {
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
-        val animeInfo = item as AnimeInfo
+        val animeInfo = item as AnimeSummary
 
         val cardView = viewHolder.view as ImageCardView
         cardView.titleText = animeInfo.title
 
         // TODO Have this mapping against string resources
         cardView.contentText = when (animeInfo.type) {
-            AnimeInfoType.ANIME -> "Anime"
-            AnimeInfoType.OAV -> "OAV"
-            AnimeInfoType.MOVIE -> "Film"
+            AnimeType.ANIME -> "Anime"
+            AnimeType.OAV -> "OAV"
+            AnimeType.MOVIE -> "Film"
         }
 
         if (animeInfo.imageUrl != null) {

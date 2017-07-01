@@ -1,6 +1,7 @@
 package blue.aodev.animeultimetv.data
 
-import blue.aodev.animeultimetv.domain.AnimeInfo
+import blue.aodev.animeultimetv.domain.AnimeSummary
+import blue.aodev.animeultimetv.domain.Episode
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -8,8 +9,8 @@ import retrofit2.http.Path
 interface AnimeUltimeService {
 
     @GET("series-0-1/anime/0-")
-    fun getAllAnimes(): Single<List<AnimeInfo>>
+    fun getAllAnimes(): Single<List<AnimeSummary>>
 
     @GET("playlist-{id}.xml")
-    fun getEpisodesInfo(@Path("id") id: Int): Single<List<EpisodeInfo>>
+    fun getEpisodes(@Path("id") id: Int): Single<List<Episode>>
 }

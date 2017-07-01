@@ -1,6 +1,7 @@
 package blue.aodev.animeultimetv.data
 
 import android.util.Xml
+import blue.aodev.animeultimetv.domain.Episode
 import okhttp3.ResponseBody
 import org.xmlpull.v1.XmlPullParser
 import retrofit2.Converter
@@ -8,7 +9,7 @@ import retrofit2.Retrofit
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
-internal class EpisodeInfoAdapter : Converter<ResponseBody, List<EpisodeInfo>> {
+internal class EpisodeAdapter : Converter<ResponseBody, List<Episode>> {
 
     companion object {
         val FACTORY: Converter.Factory = object : Converter.Factory() {
@@ -16,8 +17,8 @@ internal class EpisodeInfoAdapter : Converter<ResponseBody, List<EpisodeInfo>> {
                                                retrofit: Retrofit): Converter<ResponseBody, *>? {
                 if (type is ParameterizedType
                         && getRawType(type) === List::class.java
-                        && getParameterUpperBound(0, type) === EpisodeInfo::class.java) {
-                    return EpisodeInfoAdapter()
+                        && getParameterUpperBound(0, type) === Episode::class.java) {
+                    return EpisodeAdapter()
                 }
 
                 return null
@@ -27,7 +28,7 @@ internal class EpisodeInfoAdapter : Converter<ResponseBody, List<EpisodeInfo>> {
         private val mediaIdRegex = Regex("""mediaid>\d*</jwplayer:file>""")
     }
 
-    override fun convert(responseBody: ResponseBody): List<EpisodeInfo> {
+    override fun convert(responseBody: ResponseBody): List<Episode> {
         // The XML file returned by the server is invalid and we have to fix it
         val validResponse = responseBody.string().replace(mediaIdRegex,
                 { match -> match.value.replace("file", "mediaid")})
@@ -39,8 +40,8 @@ internal class EpisodeInfoAdapter : Converter<ResponseBody, List<EpisodeInfo>> {
         return readEpisodes(parser)
     }
 
-    private fun readEpisodes(parser: XmlPullParser): List<EpisodeInfo> {
-        val episodes = arrayListOf<EpisodeInfo>()
+    private fun readEpisodes(parser: XmlPullParser): List<Episode> {
+        val episodes = arrayListOf<Episode>()
 
         parser.require(XmlPullParser.START_TAG, null, "rss")
         parser.nextTag()
@@ -59,7 +60,7 @@ internal class EpisodeInfoAdapter : Converter<ResponseBody, List<EpisodeInfo>> {
         return episodes
     }
 
-    private fun readEpisode(parser: XmlPullParser): EpisodeInfo? {
+    private fun readEpisode(parser: XmlPullParser): Episode? {
         var title: String? = null
         var rawImageUrl: String? = null
         var videoUrl: String? = null
@@ -92,7 +93,7 @@ internal class EpisodeInfoAdapter : Converter<ResponseBody, List<EpisodeInfo>> {
         // http://www.anime-ultime.net/img_resize.php?img=images/img12459.png
         val imageUrl = rawImageUrl
 
-        return EpisodeInfo(title, number, imageUrl, videoUrl, hdVideoUrl, duration)
+        return Episode(title, number, imageUrl, videoUrl, hdVideoUrl, duration)
     }
 
     private fun readTitle(parser: XmlPullParser): String {
@@ -154,24 +155,3 @@ internal class EpisodeInfoAdapter : Converter<ResponseBody, List<EpisodeInfo>> {
         return result
     }
 }
-
-/*
-
-<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:jwplayer="http://developer.longtailvideo.com/">
-  <channel>
-    <title>Playlist</title>
-    <item>
-      <title>Terra E... 01</title>
-      <description>Fansub Par Chikyuu-Fansub</description>
-      <link>http://www.anime-ultime.net</link>
-      <pubDate>2010-08-29T18:45:50+01:00</pubDate>
-      <media:content url="http://www.anime-ultime.net/stream-7073.mp4" duration="1444" />
-      <media:thumbnail url="http://www.anime-ultime.net/img_resize.php?img=images/img12459.png" />
-	    <jwplayer:mediaid>8817</jwplayer:file>
-	    <jwplayer:file>http://www.anime-ultime.net/stream-26464.mp4</jwplayer:file>
-	    <jwplayer:hd.file>http://www.anime-ultime.net/stream-7073.mp4</jwplayer:hd.file>
-      <jwplayer:provider>http</jwplayer:provider>
-      <jwplayer:http.startparam>start</jwplayer:http.startparam>
-    </item>
-
-*/
