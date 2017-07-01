@@ -12,6 +12,7 @@ buildscript {
         rxKotlinVersion = '2.0.3'
         daggerVersion = '2.11'
         exoPlayerVersion = 'r2.2.0'
+        butterKnifeVersion = '8.6.0'
     }
 
     repositories {

@@ -38,6 +38,8 @@ dependencies {
     // Injection
     compile "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    compile "com.jakewharton:butterknife:$butterKnifeVersion"
+    kapt "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
 
     // Reactive
     compile "io.reactivex.rxjava2:rxjava:$rxJava2Version"

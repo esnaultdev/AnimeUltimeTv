@@ -16,7 +16,6 @@ import blue.aodev.animeultimetv.domain.AnimeSummary
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.domain.Episode
 import blue.aodev.animeultimetv.presentation.application.MyApplication
-import blue.aodev.animeultimetv.presentation.common.DetailsDescriptionPresenter
 import blue.aodev.animeultimetv.presentation.common.EpisodeCardPresenter
 import blue.aodev.animeultimetv.presentation.playback.PlaybackActivity
 import com.bumptech.glide.Glide
@@ -69,7 +68,7 @@ class AnimeDetailsFragment : DetailsFragment() {
 
     private fun setupAdapter() {
         val detailsPresenter = FullWidthDetailsOverviewRowPresenter(
-                DetailsDescriptionPresenter(), AnimeDetailsOverviewLogoPresenter())
+                DetailsDescriptionPresenter(activity), AnimeDetailsOverviewLogoPresenter())
 
         detailsPresenter.backgroundColor =
                 ContextCompat.getColor(activity, R.color.selected_background)
@@ -168,8 +167,10 @@ class AnimeDetailsFragment : DetailsFragment() {
     private inner class ItemViewClickedListener : OnItemViewClickedListener {
         override fun onItemClicked(itemViewHolder: Presenter.ViewHolder, item: Any,
                                    rowViewHolder: RowPresenter.ViewHolder, row: Row) {
-            val intent = Intent(activity, PlaybackActivity::class.java)
-            activity.startActivity(intent)
+            if (item is Episode) {
+                val intent = Intent(activity, PlaybackActivity::class.java)
+                activity.startActivity(intent)
+            }
         }
     }
 }
