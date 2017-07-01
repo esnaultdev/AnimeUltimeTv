@@ -40,8 +40,4 @@ data class AnimeSummary(
     }
 
     override fun describeContents() = 0
-
-    fun toAnime(episodes: List<Episode>): Anime {
-        return Anime(id, title, imageUrl, type, "", totalCount, rating, episodes)
-    }
 }

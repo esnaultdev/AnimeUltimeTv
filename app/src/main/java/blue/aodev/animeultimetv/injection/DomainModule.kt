@@ -1,5 +1,6 @@
 package blue.aodev.animeultimetv.injection
 
+import blue.aodev.animeultimetv.data.AnimeDetailsAdapter
 import blue.aodev.animeultimetv.data.AnimeSummaryAdapter
 import blue.aodev.animeultimetv.data.AnimeUltimeRepository
 import blue.aodev.animeultimetv.data.AnimeUltimeService
@@ -22,6 +23,7 @@ class DomainModule {
                 .baseUrl(HttpUrl.parse("http://www.anime-ultime.net/")!!)
                 .addConverterFactory(AnimeSummaryAdapter.FACTORY)
                 .addConverterFactory(EpisodeAdapter.FACTORY)
+                .addConverterFactory(AnimeDetailsAdapter.FACTORY)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
     }

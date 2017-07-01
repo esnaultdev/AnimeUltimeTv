@@ -5,7 +5,6 @@ import blue.aodev.animeultimetv.domain.AnimeSummary
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.domain.Episode
 import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
@@ -38,12 +37,31 @@ class AnimeUltimeRepository(val animeUltimeService: AnimeUltimeService) : AnimeR
     }
 
     override fun getAnime(id: Int): Observable<Anime> {
-        return Observable.combineLatest(getAnimeSummary(id),
-                animeUltimeService.getEpisodes(id).toObservable(),
-                animeZipper)
+        return Observable.combineLatest(
+                listOf(
+                        getAnimeSummary(id),
+                        animeUltimeService.getEpisodes(id).toObservable(),
+                        animeUltimeService.getAnimeDetails(id).toObservable()
+                ), {
+                    val summary = it[0] as AnimeSummary
+                    @Suppress("UNCHECKED_CAST")
+                    val episodes = it[1] as List<Episode>
+                    val details = it[2] as AnimeDetails
+                    animeCombiner(summary, episodes, details)
+                })
     }
 
-    private val animeZipper = BiFunction<AnimeSummary, List<Episode>, Anime>{
-        summary, episodes -> summary.toAnime(episodes)
+    private fun animeCombiner(summary: AnimeSummary, episodes: List<Episode>,
+                              details: AnimeDetails) : Anime {
+        return Anime(
+                id = summary.id,
+                title = summary.title,
+                imageUrl = summary.imageUrl,
+                type = summary.type,
+                synopsis = details.synopsis,
+                totalCount = summary.totalCount,
+                rating = summary.rating,
+                episodes = episodes
+        )
     }
 }

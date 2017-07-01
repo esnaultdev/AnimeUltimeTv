@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import blue.aodev.animeultimetv.R
+import blue.aodev.animeultimetv.domain.Anime
 import blue.aodev.animeultimetv.domain.AnimeSummary
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.domain.Episode
@@ -37,6 +38,7 @@ class AnimeDetailsFragment : DetailsFragment() {
 
     private lateinit var globalAdapter: ArrayObjectAdapter
     private lateinit var presenterSelector: ClassPresenterSelector
+    private lateinit var detailsRow: DetailsOverviewRow
     private var episodeAdapter = ArrayObjectAdapter(EpisodeCardPresenter())
 
     val animeSummary: AnimeSummary by lazy {
@@ -48,14 +50,17 @@ class AnimeDetailsFragment : DetailsFragment() {
         MyApplication.graph.inject(this)
 
         setupAdapter()
-        setupDetailsOverviewRow()
-        setupEmptyEpisodeListRow()
+        setupEmptyDetailsRow()
+        setupEmptyEpisodesRow()
 
         animeRepository.getAnime(animeSummary.id)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
-                        onNext = { updateEpisodes(it.episodes) }
+                        onNext = {
+                            updateDetailsRow(it)
+                            updateEpisodesRow(it.episodes)
+                        }
                 )
 
         // When an episode item is clicked.
@@ -121,33 +126,36 @@ class AnimeDetailsFragment : DetailsFragment() {
         }
     }
 
-    private fun setupDetailsOverviewRow() {
-        val row = DetailsOverviewRow(animeSummary)
+    private fun setupEmptyDetailsRow() {
+        detailsRow = DetailsOverviewRow(animeSummary)
 
         Glide.with(this)
                 .load(animeSummary.imageUrl)
                 .into(object : SimpleTarget<Drawable>() {
                     override fun onResourceReady(resource: Drawable?,
                                                  transition: Transition<in Drawable>?) {
-                        row.imageDrawable = resource
+                        detailsRow.imageDrawable = resource
                     }
                 })
 
         val adapter = SparseArrayObjectAdapter()
-
         adapter.set(ACTION_EPISODES, Action(ACTION_EPISODES.toLong(),
                 resources.getString(R.string.details_action_episodes)))
-        row.actionsAdapter = adapter
+        detailsRow.actionsAdapter = adapter
 
-        globalAdapter.add(row)
+        globalAdapter.add(detailsRow)
     }
 
-    private fun setupEmptyEpisodeListRow() {
+    private fun updateDetailsRow(anime: Anime) {
+        detailsRow.item = anime
+    }
+
+    private fun setupEmptyEpisodesRow() {
         val header = setupEpisodeListRowHeader()
         globalAdapter.add(ListRow(header, episodeAdapter))
     }
 
-    private fun updateEpisodes(episodes: List<Episode>) {
+    private fun updateEpisodesRow(episodes: List<Episode>) {
         episodeAdapter.clear()
         episodeAdapter.addAll(0, episodes)
     }
