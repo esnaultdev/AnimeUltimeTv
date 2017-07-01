@@ -12,4 +12,6 @@
 
     <string name="episode_title">Épisode %02d</string>
     <string name="episode_duration">%1$02d:%2$02d</string>
+
+    <string name="mediaPlayer_error">Erreur du lecteur média, code %1$d (%2$d)</string>
 </resources>

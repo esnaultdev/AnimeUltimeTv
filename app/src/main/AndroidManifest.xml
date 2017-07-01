@@ -12,6 +12,7 @@
         android:required="false" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
@@ -38,6 +39,9 @@
 
         <activity
             android:name=".presentation.animedetails.AnimeDetailsActivity"/>
+
+        <activity
+            android:name=".presentation.playback.PlaybackActivity"/>
 
     </application>
 

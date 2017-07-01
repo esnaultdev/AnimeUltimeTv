@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.v17.leanback.widget.ImageCardView
 import android.support.v17.leanback.widget.Presenter
 import android.support.v4.content.ContextCompat
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import blue.aodev.animeultimetv.R
@@ -57,7 +58,7 @@ class AnimeCardPresenter : Presenter() {
         // Both background colors should be set because the view's
         // background is temporarily visible during animations.
         view.setBackgroundColor(color)
-        view.findViewById(R.id.info_field).setBackgroundColor(color)
+        view.findViewById<View>(R.id.info_field).setBackgroundColor(color)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {

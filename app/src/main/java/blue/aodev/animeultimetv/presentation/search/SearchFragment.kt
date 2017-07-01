@@ -2,6 +2,7 @@ package blue.aodev.animeultimetv.presentation.search
 
 import android.os.Bundle
 import android.support.v17.leanback.widget.*
+import android.view.View
 import blue.aodev.animeultimetv.R
 import blue.aodev.animeultimetv.domain.AnimeInfo
 import blue.aodev.animeultimetv.domain.AnimeRepository
@@ -100,7 +101,7 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
     }
 
     fun focusOnSearch() {
-        view!!.findViewById(R.id.lb_search_bar).requestFocus()
+        view!!.findViewById<View>(R.id.lb_search_bar).requestFocus()
     }
 
     private fun updateVerticalOffset() {

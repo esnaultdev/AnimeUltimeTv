@@ -1,5 +1,6 @@
 package blue.aodev.animeultimetv.presentation.animedetails
 
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v17.leanback.app.DetailsFragment
@@ -16,6 +17,7 @@ import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.common.DetailsDescriptionPresenter
 import blue.aodev.animeultimetv.presentation.common.EpisodeCardPresenter
+import blue.aodev.animeultimetv.presentation.playback.PlaybackActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
@@ -158,9 +160,8 @@ class AnimeDetailsFragment : DetailsFragment() {
     private inner class ItemViewClickedListener : OnItemViewClickedListener {
         override fun onItemClicked(itemViewHolder: Presenter.ViewHolder, item: Any,
                                    rowViewHolder: RowPresenter.ViewHolder, row: Row) {
-
-            // TODO check if it is an episode, and open the video associated with it
-
+            val intent = Intent(activity, PlaybackActivity::class.java)
+            activity.startActivity(intent)
         }
     }
 }
