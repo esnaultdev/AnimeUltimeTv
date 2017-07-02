@@ -61,7 +61,11 @@ class AnimeUltimeRepository(val animeUltimeService: AnimeUltimeService) : AnimeR
                 synopsis = details.synopsis,
                 totalCount = summary.totalCount,
                 rating = summary.rating,
-                episodes = episodes
+                episodes = episodes,
+                productionYear = details.productionYear,
+                studios = details.studios,
+                genres = details.genres,
+                author = details.author
         )
     }
 }

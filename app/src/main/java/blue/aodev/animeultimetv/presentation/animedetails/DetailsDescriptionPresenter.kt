@@ -48,7 +48,6 @@ class DetailsDescriptionPresenter(private val context: Context) : Presenter() {
 
             var title = ""
             var episodeCount = 0
-            var synopsis = ""
 
             if (item is AnimeSummary) {
                 title = item.title
@@ -56,13 +55,14 @@ class DetailsDescriptionPresenter(private val context: Context) : Presenter() {
             } else if (item is Anime) {
                 title = item.title
                 episodeCount = item.episodes.size
-                synopsis = item.synopsis
+
+                extraText.text = item.synopsis
+                secondaryText2.text = item.productionYear.toString()
             }
 
             primaryText.text = title
             secondaryText1.text = resources.getQuantityString(
                     R.plurals.details_episodesCount, episodeCount, episodeCount)
-            extraText.text = synopsis
         }
     }
 }

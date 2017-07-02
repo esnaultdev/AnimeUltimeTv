@@ -19,6 +19,8 @@ internal class AnimeDetailsAdapter : Converter<ResponseBody, AnimeDetails> {
                 return null
             }
         }
+
+        val bracketRegex = Regex("""\[(.*?)\]""")
     }
 
     override fun convert(responseBody: ResponseBody): AnimeDetails {
@@ -28,13 +30,45 @@ internal class AnimeDetailsAdapter : Converter<ResponseBody, AnimeDetails> {
         return parseMetaDescription(description)
     }
 
-    private fun parseMetaDescription(rawDescription: String): AnimeDetails {
-        // The description still has escaped characters at this point
-        val description = Jsoup.parse(rawDescription).text()
+    private fun parseMetaDescription(description: String): AnimeDetails {
+        var splitDescription = description.split("\r\n").toMutableList()
 
-        val synopsis = description
-                .split("vostfr").drop(1).joinToString("vostfr")
-                .split("TITRE ORIGINAL").first().trim()
-        return AnimeDetails(synopsis)
+        // The first element is the name of the anime, which we already know
+        splitDescription.removeAt(0)
+
+        val synopsis = splitDescription
+                .takeWhile { !it.startsWith("TITRE ORIGINAL :") }
+                .map { Jsoup.parse(it).text() } // Remove escaped characters
+                .fold(StringBuilder(), { sb, it -> sb.append("$it\n") })
+                .toString()
+                .trim(' ', '\n')
+
+        splitDescription = splitDescription
+                .dropWhile { !it.contains("ANNÉE DE PRODUCTION : ", true) }
+                .toMutableList()
+
+        val year = splitDescription[0].split(" : ")[1].toInt()
+        splitDescription.removeAt(0)
+
+        val studios = getValuesInBrackets(splitDescription.first())
+                .map { it.toLowerCase().capitalize() }
+        splitDescription.removeAt(0)
+
+        val genres =getValuesInBrackets(splitDescription.first())
+                .map { it.toLowerCase().capitalize() }
+        splitDescription.removeAt(0)
+
+        val author = getValuesInBrackets(splitDescription.first())
+                .map { it.toLowerCase().capitalize() }
+                .first()
+
+        return AnimeDetails(synopsis, year, studios, genres, author)
+    }
+
+    private fun getValuesInBrackets(input: String): List<String> {
+        return bracketRegex.findAll(input)
+                .map { it.value }
+                .map { it.drop(1).dropLast(1) } // Remove the [] around the names
+                .toList()
     }
 }

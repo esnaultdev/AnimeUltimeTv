@@ -8,5 +8,9 @@ data class Anime(
         val synopsis: String,
         val totalCount: Int,
         val rating: Float,
-        val episodes: List<Episode>
+        val episodes: List<Episode>,
+        val productionYear: Int,
+        val studios: List<String>,
+        val genres: List<String>,
+        val author: String
 )
