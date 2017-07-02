@@ -44,10 +44,18 @@ internal class AnimeDetailsAdapter : Converter<ResponseBody, AnimeDetails> {
                 .trim(' ', '\n')
 
         splitDescription = splitDescription
-                .dropWhile { !it.contains("ANNÉE DE PRODUCTION : ", true) }
+                .dropWhile { !(it.contains("ANNÉE DE PRODUCTION : ")
+                        || it.contains("ANNÉES DE PRODUCTION : ")) }
                 .toMutableList()
 
-        val year = splitDescription[0].split(" : ")[1].toInt()
+        val rawYears = splitDescription[0].split(" : ")[1]
+        val yearsSplit = rawYears.split(" - ")
+        val years = if (yearsSplit.size == 1) {
+            val year = yearsSplit.first().toInt()
+            year..year
+        } else {
+            yearsSplit.first().toInt()..yearsSplit.last().toInt()
+        }
         splitDescription.removeAt(0)
 
         val studios = getValuesInBrackets(splitDescription.first())
@@ -62,7 +70,7 @@ internal class AnimeDetailsAdapter : Converter<ResponseBody, AnimeDetails> {
                 .map { it.toLowerCase().capitalize() }
                 .first()
 
-        return AnimeDetails(synopsis, year, studios, genres, author)
+        return AnimeDetails(synopsis, years, studios, genres, author)
     }
 
     private fun getValuesInBrackets(input: String): List<String> {

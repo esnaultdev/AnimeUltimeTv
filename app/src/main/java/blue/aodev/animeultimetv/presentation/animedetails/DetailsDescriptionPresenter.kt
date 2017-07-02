@@ -57,7 +57,14 @@ class DetailsDescriptionPresenter(private val context: Context) : Presenter() {
                 episodeCount = item.episodes.size
 
                 extraText.text = item.synopsis
-                secondaryText2.text = item.productionYear.toString()
+                val yearString = with (item.productionYears) {
+                    if (start == endInclusive) {
+                        start.toString()
+                    } else {
+                        resources.getString(R.string.details_productionYears, start, endInclusive)
+                    }
+                }
+                secondaryText2.text = yearString
             }
 
             primaryText.text = title

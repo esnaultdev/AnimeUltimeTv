@@ -62,7 +62,7 @@ class AnimeUltimeRepository(val animeUltimeService: AnimeUltimeService) : AnimeR
                 totalCount = summary.totalCount,
                 rating = summary.rating,
                 episodes = episodes,
-                productionYear = details.productionYear,
+                productionYears = details.productionYears,
                 studios = details.studios,
                 genres = details.genres,
                 author = details.author

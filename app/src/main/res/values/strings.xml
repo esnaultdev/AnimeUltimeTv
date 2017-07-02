@@ -8,6 +8,7 @@
         <item quantity="one">%d épisode</item>
         <item quantity="other">%d épisodes</item>
     </plurals>
+    <string name="details_productionYears">%1$d - %2$d</string>
     <string name="details_action_episodes">Épisodes</string>
 
     <string name="episode_title">Épisode %02d</string>
