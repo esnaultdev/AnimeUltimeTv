@@ -1,15 +1,10 @@
 package blue.aodev.animeultimetv.presentation.animedetails
 
-import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v17.leanback.app.DetailsFragment
 import android.support.v17.leanback.widget.*
 import android.support.v4.content.ContextCompat
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
 import blue.aodev.animeultimetv.R
 import blue.aodev.animeultimetv.domain.Anime
 import blue.aodev.animeultimetv.domain.AnimeSummary
@@ -40,6 +35,8 @@ class AnimeDetailsFragment : DetailsFragment() {
     private lateinit var detailsRow: DetailsOverviewRow
     private var episodeAdapter = ArrayObjectAdapter(EpisodeCardPresenter())
 
+    private var anime: Anime? = null
+
     val animeSummary: AnimeSummary by lazy {
         (activity as AnimeDetailsActivity).animeSummary
     }
@@ -57,6 +54,7 @@ class AnimeDetailsFragment : DetailsFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onNext = {
+                            this.anime = it
                             updateDetailsRow(it)
                             updateEpisodesRow(it.episodes)
                         }
@@ -86,43 +84,6 @@ class AnimeDetailsFragment : DetailsFragment() {
         presenterSelector.addClassPresenter(ListRow::class.java, ListRowPresenter())
         globalAdapter = ArrayObjectAdapter(presenterSelector)
         adapter = globalAdapter
-    }
-
-    internal class AnimeDetailsOverviewLogoPresenter : DetailsOverviewLogoPresenter() {
-
-        internal class ViewHolder(view: View) : DetailsOverviewLogoPresenter.ViewHolder(view) {
-
-            override fun getParentPresenter(): FullWidthDetailsOverviewRowPresenter {
-                return mParentPresenter
-            }
-
-            override fun getParentViewHolder(): FullWidthDetailsOverviewRowPresenter.ViewHolder {
-                return mParentViewHolder
-            }
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup): Presenter.ViewHolder {
-            val imageView = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.lb_fullwidth_details_overview_logo, parent, false) as ImageView
-
-            val res = parent.resources
-            val width = res.getDimensionPixelSize(R.dimen.detailsFragment_thumbnail_width)
-            val height = res.getDimensionPixelSize(R.dimen.detailsFragment_thumbnail_height)
-            imageView.layoutParams = ViewGroup.MarginLayoutParams(width, height)
-            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-
-            return ViewHolder(imageView)
-        }
-
-        override fun onBindViewHolder(viewHolder: Presenter.ViewHolder, item: Any) {
-            val row = item as DetailsOverviewRow
-            val imageView = viewHolder.view as ImageView
-            imageView.setImageDrawable(row.imageDrawable)
-            if (isBoundToImage(viewHolder as ViewHolder, row)) {
-                val vh = viewHolder
-                vh.parentPresenter.notifyOnBindLogo(vh.parentViewHolder)
-            }
-        }
     }
 
     private fun setupEmptyDetailsRow() {
@@ -168,8 +129,11 @@ class AnimeDetailsFragment : DetailsFragment() {
         override fun onItemClicked(itemViewHolder: Presenter.ViewHolder, item: Any,
                                    rowViewHolder: RowPresenter.ViewHolder, row: Row) {
             if (item is Episode) {
-                val intent = Intent(activity, PlaybackActivity::class.java)
-                activity.startActivity(intent)
+                anime?.let { anime ->
+                    val episodeNumber = anime.episodes.indexOf(item)
+                    val intent = PlaybackActivity.getIntent(activity, anime, episodeNumber)
+                    activity.startActivity(intent)
+                }
             }
         }
     }

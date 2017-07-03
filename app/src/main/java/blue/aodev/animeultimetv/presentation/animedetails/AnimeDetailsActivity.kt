@@ -10,17 +10,17 @@ import blue.aodev.animeultimetv.presentation.LeanbackActivity
 class AnimeDetailsActivity : LeanbackActivity() {
 
     companion object {
-        private val EXTRA_ANIME_INFO = "extraAnimeInfo"
+        private val EXTRA_ANIME_SUMMARY = "extraAnimeSummary"
 
         fun getIntent(context: Context, animeSummary: AnimeSummary): Intent {
             val intent = Intent(context, AnimeDetailsActivity::class.java)
-            intent.putExtra(EXTRA_ANIME_INFO, animeSummary)
+            intent.putExtra(EXTRA_ANIME_SUMMARY, animeSummary)
             return intent
         }
     }
 
     val animeSummary: AnimeSummary by lazy {
-        intent.getParcelableExtra<AnimeSummary>(EXTRA_ANIME_INFO)
+        intent.getParcelableExtra<AnimeSummary>(EXTRA_ANIME_SUMMARY)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

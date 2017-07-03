@@ -10,12 +10,19 @@ import android.support.v17.leanback.app.VideoFragmentGlueHost
 import android.support.v17.leanback.media.PlaybackGlue
 import android.support.v17.leanback.widget.PlaybackControlsRow
 import android.util.Log
+import blue.aodev.animeultimetv.domain.PlaybackInfo
 
 class PlaybackFragment : VideoFragment() {
+
+    val playbackInfo: PlaybackInfo by lazy {
+        (activity as PlaybackActivity).playbackInfo
+    }
+
     private lateinit var mediaPlayerGlue: VideoMediaPlayerGlue<ExoPlayerAdapter>
     internal val host = VideoFragmentGlueHost(this)
 
-    internal var onAudioFocusChangeListener: AudioManager.OnAudioFocusChangeListener = AudioManager.OnAudioFocusChangeListener { }
+    internal var onAudioFocusChangeListener: AudioManager.OnAudioFocusChangeListener =
+            AudioManager.OnAudioFocusChangeListener { }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +39,9 @@ class PlaybackFragment : VideoFragment() {
         }
 
         mediaPlayerGlue.setMode(PlaybackControlsRow.RepeatAction.NONE)
-        mediaPlayerGlue.title = "Terra E..."
-        mediaPlayerGlue.subtitle = "Épisode 03"
-        mediaPlayerGlue.playerAdapter.setDataSource(Uri.parse(URL))
+        mediaPlayerGlue.title = playbackInfo.title
+        mediaPlayerGlue.subtitle = playbackInfo.subtitle
+        mediaPlayerGlue.playerAdapter.setDataSource(Uri.parse(playbackInfo.hdVideoUrl))
         // TODO set the PlaybackSeekDataProvider
         playWhenReady(mediaPlayerGlue)
         backgroundType = PlaybackFragment.BG_LIGHT
@@ -47,7 +54,6 @@ class PlaybackFragment : VideoFragment() {
 
     companion object {
 
-        private val URL = "http://www.anime-ultime.net/stream-7056.mp4"
         val TAG = "PlaybackFragment"
 
         internal fun playWhenReady(glue: PlaybackGlue) {
