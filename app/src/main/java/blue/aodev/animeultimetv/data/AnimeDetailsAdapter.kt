@@ -31,17 +31,15 @@ internal class AnimeDetailsAdapter : Converter<ResponseBody, AnimeDetails> {
     }
 
     private fun parseMetaDescription(description: String): AnimeDetails {
-        var splitDescription = description.split("\r\n").toMutableList()
-
-        // The first element is the name of the anime, which we already know
-        splitDescription.removeAt(0)
+        val titleLessDescription = description.split("vostfr").drop(1).joinToString("vostfr")
+        var splitDescription = titleLessDescription.split("\r\n").toMutableList()
 
         val synopsis = splitDescription
                 .takeWhile { !it.startsWith("TITRE ORIGINAL :") }
                 .map { Jsoup.parse(it).text() } // Remove escaped characters
                 .fold(StringBuilder(), { sb, it -> sb.append("$it\n") })
                 .toString()
-                .trim(' ', '\n')
+                .trim(' ', '\n', '\r')
 
         splitDescription = splitDescription
                 .dropWhile { !(it.contains("ANNÉE DE PRODUCTION : ")
