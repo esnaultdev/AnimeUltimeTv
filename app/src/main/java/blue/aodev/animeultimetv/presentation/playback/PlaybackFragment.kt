@@ -42,7 +42,7 @@ class PlaybackFragment : VideoFragment() {
         mediaPlayerGlue.title = playbackInfo.title
         mediaPlayerGlue.subtitle = playbackInfo.subtitle
         mediaPlayerGlue.playerAdapter.setDataSource(Uri.parse(playbackInfo.hdVideoUrl))
-        // TODO set the PlaybackSeekDataProvider
+        PlaybackSeekDataProvider.setDemoSeekProvider(mediaPlayerGlue)
         playWhenReady(mediaPlayerGlue)
         backgroundType = PlaybackFragment.BG_LIGHT
     }
