@@ -13,31 +13,22 @@ import android.widget.Toast
  * PlayerGlue for video playback
  * @param <T>
 </T> */
-class VideoMediaPlayerGlue<T : PlayerAdapter>(context: Activity, impl: T) : PlaybackTransportControlGlue<T>(context, impl) {
+class VideoMediaPlayerGlue<T : PlayerAdapter>(context: Activity, impl: T)
+    : PlaybackTransportControlGlue<T>(context, impl) {
 
-    private val mRepeatAction: PlaybackControlsRow.RepeatAction
-    private val mThumbsUpAction: PlaybackControlsRow.ThumbsUpAction
-    private val mThumbsDownAction: PlaybackControlsRow.ThumbsDownAction
-    private val mClosedCaptioningAction: PlaybackControlsRow.ClosedCaptioningAction
-
-    init {
-        mClosedCaptioningAction = PlaybackControlsRow.ClosedCaptioningAction(context)
-        mThumbsUpAction = PlaybackControlsRow.ThumbsUpAction(context)
-        mThumbsUpAction.index = PlaybackControlsRow.ThumbsUpAction.OUTLINE
-        mThumbsDownAction = PlaybackControlsRow.ThumbsDownAction(context)
-        mThumbsDownAction.index = PlaybackControlsRow.ThumbsDownAction.OUTLINE
-        mRepeatAction = PlaybackControlsRow.RepeatAction(context)
-    }
-
-    override fun onCreateSecondaryActions(adapter: ArrayObjectAdapter) {
-        adapter.add(mThumbsUpAction)
-        adapter.add(mThumbsDownAction)
-    }
+    private val previousAction = PlaybackControlsRow.SkipPreviousAction(context)
+    private val nextAction = PlaybackControlsRow.SkipNextAction(context)
+    private val hdAction = PlaybackControlsRow.HighQualityAction(context)
 
     override fun onCreatePrimaryActions(adapter: ArrayObjectAdapter) {
         super.onCreatePrimaryActions(adapter)
-        adapter.add(mRepeatAction)
-        adapter.add(mClosedCaptioningAction)
+        adapter.add(previousAction)
+        adapter.add(nextAction)
+    }
+
+    override fun onCreateSecondaryActions(adapter: ArrayObjectAdapter) {
+        super.onCreateSecondaryActions(secondaryActionsAdapter)
+        adapter.add(hdAction)
     }
 
     override fun onActionClicked(action: Action) {
@@ -49,8 +40,7 @@ class VideoMediaPlayerGlue<T : PlayerAdapter>(context: Activity, impl: T) : Play
     }
 
     private fun shouldDispatchAction(action: Action): Boolean {
-        return action === mRepeatAction || action === mThumbsUpAction || action === mThumbsDownAction
-                || action === mClosedCaptioningAction
+        return action === hdAction
     }
 
     private fun dispatchAction(action: Action) {
@@ -78,27 +68,17 @@ class VideoMediaPlayerGlue<T : PlayerAdapter>(context: Activity, impl: T) : Play
     }
 
     private val primaryActionsAdapter: ArrayObjectAdapter?
-        get() = controlsRow?.primaryActionsAdapter as ArrayObjectAdapter
+        get() = controlsRow?.primaryActionsAdapter as ArrayObjectAdapter?
 
     private val secondaryActionsAdapter: ArrayObjectAdapter?
-        get() = controlsRow?.secondaryActionsAdapter as ArrayObjectAdapter
+        get() = controlsRow?.secondaryActionsAdapter as ArrayObjectAdapter?
 
     internal var mHandler = Handler()
 
     override fun onPlayCompleted() {
         super.onPlayCompleted()
         mHandler.post {
-            if (mRepeatAction.index != PlaybackControlsRow.RepeatAction.NONE) {
-                play()
-            }
+            next() // TODO
         }
-    }
-
-    fun setMode(mode: Int) {
-        mRepeatAction.index = mode
-        if (primaryActionsAdapter == null) {
-            return
-        }
-        notifyActionChanged(mRepeatAction)
     }
 }
