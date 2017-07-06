@@ -1,5 +1,7 @@
 package blue.aodev.animeultimetv.domain
 
+import blue.aodev.animeultimetv.domain.model.Anime
+import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import io.reactivex.Observable
 
 interface AnimeRepository {

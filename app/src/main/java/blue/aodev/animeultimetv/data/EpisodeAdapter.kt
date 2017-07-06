@@ -1,7 +1,7 @@
 package blue.aodev.animeultimetv.data
 
 import android.util.Xml
-import blue.aodev.animeultimetv.domain.Episode
+import blue.aodev.animeultimetv.domain.model.Episode
 import okhttp3.ResponseBody
 import org.xmlpull.v1.XmlPullParser
 import retrofit2.Converter

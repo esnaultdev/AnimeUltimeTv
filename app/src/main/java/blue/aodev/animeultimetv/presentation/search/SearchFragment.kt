@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v17.leanback.widget.*
 import android.view.View
 import blue.aodev.animeultimetv.R
-import blue.aodev.animeultimetv.domain.AnimeSummary
+import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.presentation.animedetails.AnimeDetailsActivity
 import blue.aodev.animeultimetv.presentation.application.MyApplication

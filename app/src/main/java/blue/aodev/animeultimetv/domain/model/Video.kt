@@ -1,12 +1,11 @@
-package blue.aodev.animeultimetv.domain
+package blue.aodev.animeultimetv.domain.model
 
 import android.os.Parcel
 import android.os.Parcelable
 import blue.aodev.animeultimetv.extensions.createParcel
 
-data class PlaybackInfo(
+data class Video(
         val title: String,
-        val subtitle: String,
         val videoUrl: String,
         val hdVideoUrl: String,
         val duration: Int
@@ -14,11 +13,10 @@ data class PlaybackInfo(
 
     companion object {
         @JvmField @Suppress("unused")
-        val CREATOR = createParcel { PlaybackInfo(it) }
+        val CREATOR = createParcel { Video(it) }
     }
 
     private constructor(parcelIn: Parcel) : this(
-            parcelIn.readString(),
             parcelIn.readString(),
             parcelIn.readString(),
             parcelIn.readString(),
@@ -27,7 +25,6 @@ data class PlaybackInfo(
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeString(title)
-        dest.writeString(subtitle)
         dest.writeString(videoUrl)
         dest.writeString(hdVideoUrl)
         dest.writeInt(duration)

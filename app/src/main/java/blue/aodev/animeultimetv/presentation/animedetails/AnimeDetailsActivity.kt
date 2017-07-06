@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import blue.aodev.animeultimetv.R
-import blue.aodev.animeultimetv.domain.AnimeSummary
+import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.presentation.LeanbackActivity
 
 class AnimeDetailsActivity : LeanbackActivity() {

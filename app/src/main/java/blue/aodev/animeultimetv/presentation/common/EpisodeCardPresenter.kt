@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import blue.aodev.animeultimetv.R
-import blue.aodev.animeultimetv.domain.Episode
+import blue.aodev.animeultimetv.domain.model.Episode
 import blue.aodev.animeultimetv.extensions.formatEpisodeDuration
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions

@@ -1,7 +1,7 @@
 package blue.aodev.animeultimetv.data
 
-import blue.aodev.animeultimetv.domain.AnimeSummary
-import blue.aodev.animeultimetv.domain.AnimeType
+import blue.aodev.animeultimetv.domain.model.AnimeSummary
+import blue.aodev.animeultimetv.domain.model.AnimeType
 import org.jsoup.Jsoup
 import okhttp3.ResponseBody
 import org.jsoup.nodes.Element

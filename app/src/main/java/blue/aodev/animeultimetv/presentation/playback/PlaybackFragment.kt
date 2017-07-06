@@ -9,12 +9,12 @@ import android.support.v17.leanback.app.VideoFragment
 import android.support.v17.leanback.app.VideoFragmentGlueHost
 import android.support.v17.leanback.media.PlaybackGlue
 import android.util.Log
-import blue.aodev.animeultimetv.domain.PlaybackInfo
+import blue.aodev.animeultimetv.domain.model.Playlist
 
 class PlaybackFragment : VideoFragment() {
 
-    val playbackInfo: PlaybackInfo by lazy {
-        (activity as PlaybackActivity).playbackInfo
+    val playlist: Playlist by lazy {
+        (activity as PlaybackActivity).playlist
     }
 
     private lateinit var mediaPlayerGlue: VideoMediaPlayerGlue<ExoPlayerAdapter>
@@ -37,10 +37,11 @@ class PlaybackFragment : VideoFragment() {
             Log.w(TAG, "video player cannot obtain audio focus!")
         }
 
-        mediaPlayerGlue.title = playbackInfo.title
-        mediaPlayerGlue.subtitle = playbackInfo.subtitle
-        mediaPlayerGlue.playerAdapter.setDataSource(Uri.parse(playbackInfo.hdVideoUrl))
-        NetworkPlaybackSeekDataProvider.setDemoSeekProvider(mediaPlayerGlue, playbackInfo.hdVideoUrl)
+        val currentVideo = playlist.currentVideo
+        mediaPlayerGlue.title = playlist.title
+        mediaPlayerGlue.subtitle = currentVideo.title
+        mediaPlayerGlue.playerAdapter.setDataSource(Uri.parse(currentVideo.hdVideoUrl))
+        NetworkPlaybackSeekDataProvider.setDemoSeekProvider(mediaPlayerGlue, currentVideo.hdVideoUrl)
         playWhenReady(mediaPlayerGlue)
         backgroundType = PlaybackFragment.BG_LIGHT
     }

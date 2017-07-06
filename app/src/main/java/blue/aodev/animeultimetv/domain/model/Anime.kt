@@ -1,4 +1,4 @@
-package blue.aodev.animeultimetv.domain
+package blue.aodev.animeultimetv.domain.model
 
 data class Anime(
         val id: Int,

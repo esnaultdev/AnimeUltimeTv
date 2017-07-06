@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import blue.aodev.animeultimetv.R
-import blue.aodev.animeultimetv.domain.Anime
-import blue.aodev.animeultimetv.domain.AnimeSummary
+import blue.aodev.animeultimetv.domain.model.Anime
+import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import butterknife.BindView
 import butterknife.ButterKnife
 

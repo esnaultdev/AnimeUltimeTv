@@ -1,4 +1,4 @@
-package blue.aodev.animeultimetv.domain
+package blue.aodev.animeultimetv.domain.model
 
 import android.os.Parcel
 import android.os.Parcelable

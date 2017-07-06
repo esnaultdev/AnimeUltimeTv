@@ -5,32 +5,27 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import blue.aodev.animeultimetv.R
-import blue.aodev.animeultimetv.domain.Anime
-import blue.aodev.animeultimetv.domain.PlaybackInfo
+import blue.aodev.animeultimetv.domain.mapper.AnimeToPlaylistMapper
+import blue.aodev.animeultimetv.domain.model.Anime
+import blue.aodev.animeultimetv.domain.model.Playlist
 
 class PlaybackActivity : Activity() {
 
     companion object {
-        private val EXTRA_PLAYBACK_INFO = "extraPlaybackInfo"
+        private val EXTRA_PLAYLIST = "extraPlaylist"
 
-        fun getIntent(context: Context, anime: Anime, episodeNumber: Int): Intent {
-            val episode = anime.episodes[episodeNumber]
-            val playbackInfo = PlaybackInfo(
-                    anime.title,
-                    context.getString(R.string.episode_title, episodeNumber + 1),
-                    episode.videoUrl,
-                    episode.hdVideoUrl,
-                    episode.duration
-            )
+        fun getIntent(context: Context, anime: Anime, index: Int): Intent {
+            val mapper = AnimeToPlaylistMapper(context)
+            val playlist = mapper.transform(anime, index)
 
             val intent = Intent(context, PlaybackActivity::class.java)
-            intent.putExtra(EXTRA_PLAYBACK_INFO, playbackInfo)
+            intent.putExtra(EXTRA_PLAYLIST, playlist)
             return intent
         }
     }
 
-    val playbackInfo: PlaybackInfo by lazy {
-        intent.getParcelableExtra<PlaybackInfo>(EXTRA_PLAYBACK_INFO)
+    val playlist: Playlist by lazy {
+        intent.getParcelableExtra<Playlist>(EXTRA_PLAYLIST)
     }
 
     public override fun onCreate(savedInstanceState: Bundle?) {

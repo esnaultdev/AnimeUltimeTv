@@ -6,10 +6,10 @@ import android.support.v17.leanback.app.DetailsFragment
 import android.support.v17.leanback.widget.*
 import android.support.v4.content.ContextCompat
 import blue.aodev.animeultimetv.R
-import blue.aodev.animeultimetv.domain.Anime
-import blue.aodev.animeultimetv.domain.AnimeSummary
+import blue.aodev.animeultimetv.domain.model.Anime
+import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.domain.AnimeRepository
-import blue.aodev.animeultimetv.domain.Episode
+import blue.aodev.animeultimetv.domain.model.Episode
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.common.EpisodeCardPresenter
 import blue.aodev.animeultimetv.presentation.playback.PlaybackActivity
@@ -130,8 +130,8 @@ class AnimeDetailsFragment : DetailsFragment() {
                                    rowViewHolder: RowPresenter.ViewHolder, row: Row) {
             if (item is Episode) {
                 anime?.let { anime ->
-                    val episodeNumber = anime.episodes.indexOf(item)
-                    val intent = PlaybackActivity.getIntent(activity, anime, episodeNumber)
+                    val episodeIndex = anime.episodes.indexOf(item)
+                    val intent = PlaybackActivity.getIntent(activity, anime, episodeIndex)
                     activity.startActivity(intent)
                 }
             }

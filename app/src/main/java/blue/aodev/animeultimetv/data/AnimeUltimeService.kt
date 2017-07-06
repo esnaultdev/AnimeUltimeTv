@@ -1,7 +1,7 @@
 package blue.aodev.animeultimetv.data
 
-import blue.aodev.animeultimetv.domain.AnimeSummary
-import blue.aodev.animeultimetv.domain.Episode
+import blue.aodev.animeultimetv.domain.model.AnimeSummary
+import blue.aodev.animeultimetv.domain.model.Episode
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path

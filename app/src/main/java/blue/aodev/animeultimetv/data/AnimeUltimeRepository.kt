@@ -1,9 +1,9 @@
 package blue.aodev.animeultimetv.data
 
-import blue.aodev.animeultimetv.domain.Anime
-import blue.aodev.animeultimetv.domain.AnimeSummary
+import blue.aodev.animeultimetv.domain.model.Anime
+import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.domain.AnimeRepository
-import blue.aodev.animeultimetv.domain.Episode
+import blue.aodev.animeultimetv.domain.model.Episode
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
