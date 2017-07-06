@@ -41,7 +41,8 @@
             android:name=".presentation.animedetails.AnimeDetailsActivity"/>
 
         <activity
-            android:name=".presentation.playback.PlaybackActivity"/>
+            android:name=".presentation.playback.PlaybackActivity"
+            android:keepScreenOn="true"/>
 
     </application>
 
