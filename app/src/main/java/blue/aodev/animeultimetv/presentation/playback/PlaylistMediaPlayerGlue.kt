@@ -1,24 +1,36 @@
 package blue.aodev.animeultimetv.presentation.playback
 
 import android.app.Activity
+import android.net.Uri
 import android.os.Handler
+import android.support.v17.leanback.media.PlaybackGlue
 import android.support.v17.leanback.media.PlaybackTransportControlGlue
-import android.support.v17.leanback.media.PlayerAdapter
 import android.support.v17.leanback.widget.Action
 import android.support.v17.leanback.widget.ArrayObjectAdapter
 import android.support.v17.leanback.widget.PlaybackControlsRow
 import android.widget.Toast
+import blue.aodev.animeultimetv.domain.model.Playlist
 
-/**
- * PlayerGlue for video playback
- * @param <T>
-</T> */
-class VideoMediaPlayerGlue<T : PlayerAdapter>(context: Activity, impl: T)
-    : PlaybackTransportControlGlue<T>(context, impl) {
+
+class PlaylistMediaPlayerGlue(context: Activity, impl: ExoPlayerAdapter, var playlist: Playlist)
+    : PlaybackTransportControlGlue<ExoPlayerAdapter>(context, impl) {
 
     private val previousAction = PlaybackControlsRow.SkipPreviousAction(context)
     private val nextAction = PlaybackControlsRow.SkipNextAction(context)
     private val hdAction = PlaybackControlsRow.HighQualityAction(context)
+
+    init {
+        updateCurrentVideo()
+        playWhenReady()
+    }
+
+    private fun updateCurrentVideo() {
+        val currentVideo = playlist.currentVideo
+        title = playlist.title
+        subtitle = currentVideo.title
+        playerAdapter.setDataSource(Uri.parse(currentVideo.hdVideoUrl))
+        NetworkPlaybackSeekDataProvider.setDemoSeekProvider(this, currentVideo.hdVideoUrl)
+    }
 
     override fun onCreatePrimaryActions(adapter: ArrayObjectAdapter) {
         super.onCreatePrimaryActions(adapter)
@@ -75,10 +87,49 @@ class VideoMediaPlayerGlue<T : PlayerAdapter>(context: Activity, impl: T)
 
     internal var mHandler = Handler()
 
+    fun playWhenReady() {
+        if (isPrepared) {
+            play()
+        } else {
+            addPlayerCallback(object : PlayerCallback() {
+                override fun onPreparedStateChanged(glue: PlaybackGlue) {
+                    if (glue.isPrepared) {
+                        glue.removePlayerCallback(this)
+                        glue.play()
+                    }
+                }
+            })
+        }
+    }
+
+    private fun pauseAndPlay(block: PlaylistMediaPlayerGlue.() -> Unit) {
+        pause()
+        block()
+        playWhenReady()
+    }
+
+    override fun next() {
+        if (playlist.hasNextVideo) {
+            pauseAndPlay {
+                playlist = playlist.copy(index = playlist.index + 1)
+                updateCurrentVideo()
+            }
+        }
+    }
+
+    override fun previous() {
+        if (playlist.index > 0) {
+            pauseAndPlay {
+                playlist = playlist.copy(index = playlist.index - 1)
+                updateCurrentVideo()
+            }
+        }
+    }
+
     override fun onPlayCompleted() {
         super.onPlayCompleted()
         mHandler.post {
-            next() // TODO
+            next()
         }
     }
 }

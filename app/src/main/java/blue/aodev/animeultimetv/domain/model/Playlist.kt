@@ -29,4 +29,7 @@ data class Playlist(
 
     val currentVideo: Video
         get() = videos[index]
+
+    val hasNextVideo: Boolean
+        get() = index < videos.size - 1
 }
