@@ -43,6 +43,9 @@
         <activity
             android:name=".presentation.playback.PlaybackActivity"/>
 
+        <activity
+            android:name=".presentation.episodes.EpisodesActivity"/>
+
     </application>
 
 </manifest>

@@ -2,8 +2,8 @@
     <dimen name="anime_card_width">128dp</dimen>
     <dimen name="anime_card_height">128dp</dimen>
 
-    <dimen name="episode_card_width">160dp</dimen>
-    <dimen name="episode_card_height">90dp</dimen>
+    <dimen name="episode_card_width">224dp</dimen>
+    <dimen name="episode_card_height">126dp</dimen>
 
     <dimen name="searchFragment_rowMarginTop_withHeader">147dp</dimen>
     <dimen name="searchFragment_rowMarginTop_withoutHeader">100dp</dimen>
