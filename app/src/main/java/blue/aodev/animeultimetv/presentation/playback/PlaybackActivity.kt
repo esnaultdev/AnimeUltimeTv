@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
 import blue.aodev.animeultimetv.R
 import blue.aodev.animeultimetv.domain.mapper.AnimeToPlaylistMapper
 import blue.aodev.animeultimetv.domain.model.Anime
@@ -31,6 +32,7 @@ class PlaybackActivity : Activity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_playback)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         fragmentManager.beginTransaction()
                 .add(R.id.videoFragment, PlaybackFragment(), PlaybackFragment.TAG)
