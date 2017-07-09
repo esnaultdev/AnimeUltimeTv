@@ -35,7 +35,7 @@ internal class AnimeDetailsAdapter : Converter<ResponseBody, AnimeDetails> {
         var splitDescription = titleLessDescription.split("\r\n").toMutableList()
 
         val synopsis = splitDescription
-                .takeWhile { !it.startsWith("TITRE ORIGINAL :") }
+                .takeWhile { !it.trim().startsWith("TITRE ORIGINAL :") }
                 .map { Jsoup.parse(it).text() } // Remove escaped characters
                 .fold(StringBuilder(), { sb, it -> sb.append("$it\n") })
                 .toString()
@@ -49,10 +49,10 @@ internal class AnimeDetailsAdapter : Converter<ResponseBody, AnimeDetails> {
         val rawYears = splitDescription[0].split(" : ")[1]
         val yearsSplit = rawYears.split(" - ")
         val years = if (yearsSplit.size == 1) {
-            val year = yearsSplit.first().toInt()
+            val year = parseYear(yearsSplit.first())
             year..year
         } else {
-            yearsSplit.first().toInt()..yearsSplit.last().toInt()
+            parseYear(yearsSplit.first())..parseYear(yearsSplit.last())
         }
         splitDescription.removeAt(0)
 
@@ -76,5 +76,9 @@ internal class AnimeDetailsAdapter : Converter<ResponseBody, AnimeDetails> {
                 .map { it.value }
                 .map { it.drop(1).dropLast(1) } // Remove the [] around the names
                 .toList()
+    }
+
+    private fun parseYear(yearString: String): Int {
+        return yearString.trim().toInt()
     }
 }
