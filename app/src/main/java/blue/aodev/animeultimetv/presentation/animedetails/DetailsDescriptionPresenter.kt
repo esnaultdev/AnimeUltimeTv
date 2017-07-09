@@ -5,6 +5,7 @@ import android.support.v17.leanback.widget.Presenter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import blue.aodev.animeultimetv.R
 import blue.aodev.animeultimetv.domain.model.Anime
@@ -36,6 +37,8 @@ class DetailsDescriptionPresenter(private val context: Context) : Presenter() {
         lateinit var secondaryText2: TextView
         @BindView(R.id.extra_text)
         lateinit var extraText: TextView
+        @BindView(R.id.loading_progress)
+        lateinit var loadingProgress: ProgressBar
 
         init {
             ButterKnife.bind(this, view)
@@ -50,9 +53,11 @@ class DetailsDescriptionPresenter(private val context: Context) : Presenter() {
             var episodeCount = 0
 
             if (item is AnimeSummary) {
+                loadingProgress.visibility = View.VISIBLE
                 title = item.title
                 episodeCount = item.availableCount
             } else if (item is Anime) {
+                loadingProgress.visibility = View.GONE
                 title = item.title
                 episodeCount = item.episodes.size
 
