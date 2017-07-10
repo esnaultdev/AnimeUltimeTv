@@ -3,6 +3,7 @@ package blue.aodev.animeultimetv.presentation.animedetails
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v17.leanback.app.DetailsFragment
+import android.support.v17.leanback.app.DetailsFragmentBackgroundController
 import android.support.v17.leanback.widget.*
 import android.support.v4.content.ContextCompat
 import blue.aodev.animeultimetv.R
@@ -31,6 +32,7 @@ class AnimeDetailsFragment : DetailsFragment() {
     private lateinit var globalAdapter: ArrayObjectAdapter
     private lateinit var presenterSelector: ClassPresenterSelector
     private lateinit var detailsRow: DetailsOverviewRow
+    private val detailsBackground = DetailsFragmentBackgroundController(this)
 
     private var anime: Anime? = null
 
@@ -61,9 +63,10 @@ class AnimeDetailsFragment : DetailsFragment() {
                 DetailsDescriptionPresenter(activity), AnimeDetailsOverviewLogoPresenter())
 
         detailsPresenter.backgroundColor =
-                ContextCompat.getColor(activity, R.color.selected_background)
+                ContextCompat.getColor(activity, R.color.animeDetails_main)
+        detailsPresenter.actionsBackgroundColor =
+                ContextCompat.getColor(activity, R.color.animeDetails_actions)
         detailsPresenter.initialState = FullWidthDetailsOverviewRowPresenter.STATE_FULL
-        detailsPresenter.headerPresenter = null
 
         detailsPresenter.onActionClickedListener = OnActionClickedListener { action ->
             if (action.id == ACTION_EPISODES.toLong()) {

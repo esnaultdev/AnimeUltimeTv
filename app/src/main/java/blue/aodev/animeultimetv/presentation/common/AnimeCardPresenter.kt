@@ -44,8 +44,8 @@ class AnimeCardPresenter : Presenter() {
     private fun initResources(context: Context) {
         if (defaultBackgroundColor != -1) return
 
-        defaultBackgroundColor = ContextCompat.getColor(context, R.color.default_background)
-        selectedBackgroundColor = ContextCompat.getColor(context, R.color.selected_background)
+        defaultBackgroundColor = ContextCompat.getColor(context, R.color.card_background_default)
+        selectedBackgroundColor = ContextCompat.getColor(context, R.color.card_background_selected)
 
         val res = context.resources
         cardImageWidth = res.getDimensionPixelSize(R.dimen.anime_card_width)
