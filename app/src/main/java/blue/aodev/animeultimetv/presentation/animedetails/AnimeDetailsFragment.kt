@@ -3,7 +3,6 @@ package blue.aodev.animeultimetv.presentation.animedetails
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v17.leanback.app.DetailsFragment
-import android.support.v17.leanback.app.DetailsFragmentBackgroundController
 import android.support.v17.leanback.widget.*
 import android.support.v4.content.ContextCompat
 import blue.aodev.animeultimetv.R
@@ -32,7 +31,6 @@ class AnimeDetailsFragment : DetailsFragment() {
     private lateinit var globalAdapter: ArrayObjectAdapter
     private lateinit var presenterSelector: ClassPresenterSelector
     private lateinit var detailsRow: DetailsOverviewRow
-    private val detailsBackground = DetailsFragmentBackgroundController(this)
 
     private var anime: Anime? = null
 

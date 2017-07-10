@@ -2,6 +2,7 @@ package blue.aodev.animeultimetv.presentation.search
 
 import android.os.Bundle
 import android.support.v17.leanback.widget.*
+import android.support.v4.content.ContextCompat
 import android.view.View
 import blue.aodev.animeultimetv.R
 import blue.aodev.animeultimetv.domain.model.AnimeSummary
@@ -40,6 +41,7 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
     override fun onStart() {
         super.onStart()
         updateVerticalOffset()
+        setupSearchOrb()
     }
 
     override fun getResultsAdapter(): ObjectAdapter {
@@ -119,5 +121,14 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
     private fun showAnimeDetails(anime: AnimeSummary) {
         val intent = AnimeDetailsActivity.getIntent(activity, anime)
         activity.startActivity(intent)
+    }
+
+    private fun setupSearchOrb() {
+        val defaultColor = ContextCompat.getColor(activity, R.color.searchOrb_default)
+        val brightColor = ContextCompat.getColor(activity, R.color.searchOrb_bright)
+        val orbColors = SearchOrbView.Colors(defaultColor, brightColor)
+
+        setSearchAffordanceColors(orbColors)
+        setSearchAffordanceColorsInListening(orbColors)
     }
 }

@@ -1,3 +1,10 @@
 <resources>
+    <style name="AppTheme" parent="Theme.Leanback">
+        <item name="searchOrbViewStyle">@style/CustomSearchOrbView</item>
+    </style>
 
+    <style name="CustomSearchOrbView" parent="Widget.Leanback.SearchOrbViewStyle">
+        <item name="searchOrbColor">@color/searchOrb_default</item>
+        <item name="searchOrbBrightColor">@color/searchOrb_bright</item>
+    </style>
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorPrimaryBright">#2196f3</color>
     <color name="colorPrimary">#0374BF</color>
     <color name="colorPrimaryDark">#04549D</color>
     <color name="colorAccent">#ffaa3f</color>
@@ -9,4 +10,7 @@
 
     <color name="animeDetails_main">@color/colorPrimary</color>
     <color name="animeDetails_actions">@color/colorPrimaryDark</color>
+
+    <color name="searchOrb_default">@color/colorPrimary</color>
+    <color name="searchOrb_bright">@color/colorPrimaryBright</color>
 </resources>
