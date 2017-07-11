@@ -71,7 +71,7 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
         currentSearch?.dispose()
 
         currentSearch = animeRepository.search(query)
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onNext = { onSearchResult(it) },

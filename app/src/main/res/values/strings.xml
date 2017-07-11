@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Anime Ultime</string>
 
+    <string name="main_topAnimes_title">Populaires</string>
+
     <string name="search_noResults">Pas de résultats pour \"%s\"</string>
 
     <string name="details_episodesTitle">Épisodes</string>

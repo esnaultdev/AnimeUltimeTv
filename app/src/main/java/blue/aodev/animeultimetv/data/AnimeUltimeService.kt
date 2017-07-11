@@ -14,6 +14,9 @@ interface AnimeUltimeService {
     @GET("playlist-{id}.xml")
     fun getEpisodes(@Path("id") id: Int): Single<List<Episode>>
 
+    @GET("index-0-1")
+    fun getTopAnimes(): Single<List<TopAnimeSummary>>
+
     @GET("file-0-1/{id}")
     fun getAnimeDetails(@Path("id") id: Int): Single<AnimeDetails>
 }
