@@ -8,7 +8,7 @@ interface AnimeRepository {
 
     fun getAnimes(): Observable<List<AnimeSummary>>
 
-    fun getAnimes(ids: IntArray): Observable<List<AnimeSummary>>
+    fun getAnimes(ids: List<Int>): Observable<List<AnimeSummary>>
 
     fun search(query: String): Observable<List<AnimeSummary>>
 

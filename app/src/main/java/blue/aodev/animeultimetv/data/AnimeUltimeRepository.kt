@@ -11,6 +11,7 @@ import io.reactivex.subjects.BehaviorSubject
 
 class AnimeUltimeRepository(val animeUltimeService: AnimeUltimeService) : AnimeRepository {
 
+    // TODO Use a hashmap
     private val allAnimesSubject = BehaviorSubject.createDefault<List<AnimeSummary>>(emptyList())
 
     init {
@@ -28,8 +29,8 @@ class AnimeUltimeRepository(val animeUltimeService: AnimeUltimeService) : AnimeR
         return allAnimesSubject
     }
 
-    override fun getAnimes(ids: IntArray): Observable<List<AnimeSummary>> {
-        return allAnimesSubject.map { it.filter { it.id in ids } }
+    override fun getAnimes(ids: List<Int>): Observable<List<AnimeSummary>> {
+        return allAnimesSubject.map { it.filter { it.id in ids }.sortedBy { ids.indexOf(it.id) } }
     }
 
     override fun search(query: String): Observable<List<AnimeSummary>> {
@@ -75,6 +76,6 @@ class AnimeUltimeRepository(val animeUltimeService: AnimeUltimeService) : AnimeR
 
     override fun getTopAnimes(): Observable<List<AnimeSummary>> {
         return animeUltimeService.getTopAnimes()
-                .flatMapObservable { getAnimes(it.map { it.id }.toIntArray()) }
+                .flatMapObservable { getAnimes(it.map { it.id }) }
     }
 }

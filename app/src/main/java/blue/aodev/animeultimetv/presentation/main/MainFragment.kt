@@ -9,6 +9,7 @@ import android.support.v17.leanback.widget.ListRowPresenter
 import blue.aodev.animeultimetv.R
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.domain.model.AnimeSummary
+import blue.aodev.animeultimetv.presentation.animedetails.AnimeDetailsActivity
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.common.AnimeCardPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -45,6 +46,9 @@ class MainFragment : BrowseFragment() {
 
         categoryRowAdapter = ArrayObjectAdapter(ListRowPresenter())
         adapter = categoryRowAdapter
+
+        setOnItemViewClickedListener { _, item, _, _ ->
+            if (item is AnimeSummary) { showAnimeDetails(item) } }
     }
 
     private fun showTopAnimes(topAnimes: List<AnimeSummary>) {
@@ -59,5 +63,10 @@ class MainFragment : BrowseFragment() {
 
         categoryRowAdapter.clear()
         categoryRowAdapter.add(row)
+    }
+
+    private fun showAnimeDetails(anime: AnimeSummary) {
+        val intent = AnimeDetailsActivity.getIntent(activity, anime)
+        activity.startActivity(intent)
     }
 }
