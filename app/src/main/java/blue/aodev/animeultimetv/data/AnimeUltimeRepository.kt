@@ -1,5 +1,6 @@
 package blue.aodev.animeultimetv.data
 
+import blue.aodev.animeultimetv.data.model.AnimeDetails
 import blue.aodev.animeultimetv.domain.model.Anime
 import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.domain.AnimeRepository

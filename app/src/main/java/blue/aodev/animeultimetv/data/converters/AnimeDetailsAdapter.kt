@@ -1,5 +1,6 @@
-package blue.aodev.animeultimetv.data
+package blue.aodev.animeultimetv.data.converters
 
+import blue.aodev.animeultimetv.data.model.AnimeDetails
 import okhttp3.ResponseBody
 import org.jsoup.Jsoup
 import retrofit2.Converter

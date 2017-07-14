@@ -1,4 +1,4 @@
-package blue.aodev.animeultimetv.data
+package blue.aodev.animeultimetv.data.model
 
 data class AnimeDetails(
         val synopsis: String,

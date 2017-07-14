@@ -1,4 +1,4 @@
-package blue.aodev.animeultimetv.data
+package blue.aodev.animeultimetv.data.converters
 
 import android.util.Xml
 import blue.aodev.animeultimetv.domain.model.Episode

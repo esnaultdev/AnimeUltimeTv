@@ -1,4 +1,4 @@
-package blue.aodev.animeultimetv.data
+package blue.aodev.animeultimetv.data.converters
 
 import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.domain.model.AnimeType
@@ -6,26 +6,10 @@ import org.jsoup.Jsoup
 import okhttp3.ResponseBody
 import org.jsoup.nodes.Element
 import retrofit2.Converter
-import retrofit2.Retrofit
-import java.lang.reflect.ParameterizedType
-import java.lang.reflect.Type
 
-internal class AnimeSummaryAdapter : Converter<ResponseBody, List<AnimeSummary>> {
+internal class AnimeSummaryAllAdapter : Converter<ResponseBody, List<AnimeSummary>> {
 
     companion object {
-        val FACTORY: Converter.Factory = object : Converter.Factory() {
-            override fun responseBodyConverter(type: Type, annotations: Array<Annotation>,
-                                               retrofit: Retrofit): Converter<ResponseBody, *>? {
-                if (type is ParameterizedType
-                        && getRawType(type) === List::class.java
-                        && getParameterUpperBound(0, type) === AnimeSummary::class.java) {
-                    return AnimeSummaryAdapter()
-                }
-
-                return null
-            }
-        }
-
         private val idRegex = Regex("""(?<=/)(.+?)(?=-)""")
         private val imageRegex = Regex("""[^=]+$""")
     }
