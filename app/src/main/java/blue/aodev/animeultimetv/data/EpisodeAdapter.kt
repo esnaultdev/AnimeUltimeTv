@@ -26,6 +26,7 @@ internal class EpisodeAdapter : Converter<ResponseBody, List<Episode>> {
         }
 
         private val mediaIdRegex = Regex("""mediaid>\d*</jwplayer:file>""")
+        private val imageRegex = Regex("""[^=]+$""")
     }
 
     override fun convert(responseBody: ResponseBody): List<Episode> {
@@ -57,7 +58,7 @@ internal class EpisodeAdapter : Converter<ResponseBody, List<Episode>> {
                 skip(parser)
             }
         }
-        return episodes
+        return episodes.sortedBy { it.number }
     }
 
     private fun readEpisode(parser: XmlPullParser): Episode? {
@@ -89,9 +90,9 @@ internal class EpisodeAdapter : Converter<ResponseBody, List<Episode>> {
 
         val number = title.split(" ").last().toIntOrNull() ?: 0
 
-        // TODO process image url to remove resize
-        // http://www.anime-ultime.net/img_resize.php?img=images/img12459.png
-        val imageUrl = rawImageUrl
+        val imageUrl = imageRegex.find(rawImageUrl)?.value
+                ?.let { "http://www.anime-ultime.net/" + it }
+                ?: rawImageUrl
 
         return Episode(title, number, imageUrl, videoUrl, hdVideoUrl, duration)
     }
