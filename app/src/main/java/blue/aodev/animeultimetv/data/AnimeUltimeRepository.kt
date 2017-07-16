@@ -1,18 +1,29 @@
 package blue.aodev.animeultimetv.data
 
 import blue.aodev.animeultimetv.data.model.AnimeDetails
+import blue.aodev.animeultimetv.data.model.EpisodeReleaseId
 import blue.aodev.animeultimetv.domain.model.Anime
 import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.domain.model.Episode
+import blue.aodev.animeultimetv.domain.model.EpisodeReleaseSummary
 import io.reactivex.Observable
+import io.reactivex.Single
+import io.reactivex.functions.BiFunction
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AnimeUltimeRepository(val animeUltimeService: AnimeUltimeService) : AnimeRepository {
 
-    // TODO Use a hashmap
+    private val historyPeriodFormat: DateFormat by lazy {
+        SimpleDateFormat("MMYYYY")
+    }
+
+    // TODO Use a hashmap and remove the subject completely
     private val allAnimesSubject = BehaviorSubject.createDefault<List<AnimeSummary>>(emptyList())
 
     init {
@@ -78,5 +89,31 @@ class AnimeUltimeRepository(val animeUltimeService: AnimeUltimeService) : AnimeR
     override fun getTopAnimes(): Observable<List<AnimeSummary>> {
         return animeUltimeService.getTopAnimes()
                 .flatMapObservable { getAnimes(it.map { it.id }) }
+    }
+
+    override fun getRecentEpisodes(): Observable<List<EpisodeReleaseSummary>> {
+        val calendar = Calendar.getInstance(Locale.FRANCE)
+        val currentDate = calendar.time
+        calendar.add(Calendar.MONTH, -1)
+        val previousMonthDate = calendar.time
+
+        return Single.zip(
+                animeUltimeService.getEpisodesHistory(historyPeriodFormat.format(currentDate)),
+                animeUltimeService.getEpisodesHistory(historyPeriodFormat.format(previousMonthDate)),
+                BiFunction<List<EpisodeReleaseId>, List<EpisodeReleaseId>, List<EpisodeReleaseId>> {
+                    t1, t2 -> t1 + t2
+                })
+                .flatMapObservable { getEpisodeReleaseSummary(it) }
+    }
+
+    private fun getEpisodeReleaseSummary(releaseIds: List<EpisodeReleaseId>): Observable<List<EpisodeReleaseSummary>> {
+        // FIXME This only generates one item per anime
+        val ids = releaseIds.map { it.animeId }
+        return allAnimesSubject.map {
+            summaries ->
+            summaries.filter { it.id in ids }
+                    .map { summary -> EpisodeReleaseSummary(summary, releaseIds.first { it.animeId == summary.id }.numbers) }
+                    .sortedBy { ids.indexOf(it.animeSummary.id) }
+        }
     }
 }

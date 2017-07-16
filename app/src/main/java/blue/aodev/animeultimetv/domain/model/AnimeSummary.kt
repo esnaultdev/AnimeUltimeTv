@@ -11,7 +11,7 @@ data class AnimeSummary(
         val type: AnimeType,
         val availableCount: Int,
         val totalCount: Int,
-        val rating: Float?
+        val rating: Float
 ) : Parcelable {
 
     companion object {
@@ -26,7 +26,7 @@ data class AnimeSummary(
             AnimeType.values()[parcelIn.readInt()],
             parcelIn.readInt(),
             parcelIn.readInt(),
-            parcelIn.readValue(null) as Float
+            parcelIn.readFloat()
     )
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
@@ -36,7 +36,7 @@ data class AnimeSummary(
         dest.writeInt(type.ordinal)
         dest.writeInt(availableCount)
         dest.writeInt(totalCount)
-        dest.writeValue(rating)
+        dest.writeFloat(rating)
     }
 
     override fun describeContents() = 0

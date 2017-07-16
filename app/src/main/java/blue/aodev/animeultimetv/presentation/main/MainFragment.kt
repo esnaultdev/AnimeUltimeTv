@@ -9,6 +9,7 @@ import android.support.v17.leanback.widget.ListRowPresenter
 import blue.aodev.animeultimetv.R
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.domain.model.AnimeSummary
+import blue.aodev.animeultimetv.domain.model.EpisodeReleaseSummary
 import blue.aodev.animeultimetv.presentation.animedetails.AnimeDetailsActivity
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.common.AnimeCardPresenter
@@ -34,6 +35,13 @@ class MainFragment : BrowseFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onNext = { showTopAnimes(it) }
+                )
+
+        animeRepository.getRecentEpisodes()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                        onNext = { showRecentEpisodes(it) }
                 )
     }
 
@@ -68,5 +76,9 @@ class MainFragment : BrowseFragment() {
     private fun showAnimeDetails(anime: AnimeSummary) {
         val intent = AnimeDetailsActivity.getIntent(activity, anime)
         activity.startActivity(intent)
+    }
+
+    private fun showRecentEpisodes(recentEpisodes: List<EpisodeReleaseSummary>) {
+        // TODO display the recent episodes
     }
 }

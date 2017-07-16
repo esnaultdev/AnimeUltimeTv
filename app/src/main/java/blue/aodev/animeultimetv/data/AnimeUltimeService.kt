@@ -1,8 +1,7 @@
 package blue.aodev.animeultimetv.data
 
-import blue.aodev.animeultimetv.data.annotations.All
-import blue.aodev.animeultimetv.data.annotations.History
 import blue.aodev.animeultimetv.data.model.AnimeDetails
+import blue.aodev.animeultimetv.data.model.EpisodeReleaseId
 import blue.aodev.animeultimetv.data.model.TopAnimeId
 import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.domain.model.Episode
@@ -12,7 +11,7 @@ import retrofit2.http.Path
 
 interface AnimeUltimeService {
 
-    @GET("series-0-1/anime/0-") @All
+    @GET("series-0-1/anime/0-")
     fun getAllAnimes(): Single<List<AnimeSummary>>
 
     @GET("playlist-{id}.xml")
@@ -24,6 +23,6 @@ interface AnimeUltimeService {
     @GET("file-0-1/{id}")
     fun getAnimeDetails(@Path("id") id: Int): Single<AnimeDetails>
 
-    @GET("history-0-1/{month}{year}A") @History
-    fun getHistory(@Path("month") month: String, @Path("year") year: String): Single<List<AnimeSummary>>
+    @GET("history-0-1/{period}A")
+    fun getEpisodesHistory(@Path("period") period: String): Single<List<EpisodeReleaseId>>
 }

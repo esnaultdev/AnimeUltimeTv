@@ -2,6 +2,7 @@ package blue.aodev.animeultimetv.domain
 
 import blue.aodev.animeultimetv.domain.model.Anime
 import blue.aodev.animeultimetv.domain.model.AnimeSummary
+import blue.aodev.animeultimetv.domain.model.EpisodeReleaseSummary
 import io.reactivex.Observable
 
 interface AnimeRepository {
@@ -17,4 +18,6 @@ interface AnimeRepository {
     fun getAnime(id: Int): Observable<Anime>
 
     fun getTopAnimes(): Observable<List<AnimeSummary>>
+
+    fun getRecentEpisodes(): Observable<List<EpisodeReleaseSummary>>
 }
