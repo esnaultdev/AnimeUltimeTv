@@ -15,6 +15,7 @@ import blue.aodev.animeultimetv.extensions.getColorCompat
 import blue.aodev.animeultimetv.presentation.animedetails.AnimeDetailsActivity
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.common.AnimeCardPresenter
+import blue.aodev.animeultimetv.presentation.common.EpisodeReleaseCardPresenter
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 
@@ -25,6 +26,7 @@ class MainFragment : BrowseFragment() {
 
     private lateinit var categoryRowAdapter: ArrayObjectAdapter
     private lateinit var topAnimesAdapter: ArrayObjectAdapter
+    private lateinit var recentEpisodesAdapter: ArrayObjectAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +56,11 @@ class MainFragment : BrowseFragment() {
         adapter = categoryRowAdapter
 
         setOnItemViewClickedListener { _, item, _, _ ->
-            if (item is AnimeSummary) { showAnimeDetails(item) } }
+            when (item) {
+                is AnimeSummary -> showAnimeDetails(item)
+                is EpisodeReleaseSummary -> showAnimeDetails(item.animeSummary)
+            }
+        }
 
         brandColor = activity.getColorCompat(R.color.colorPrimaryDark)
     }
@@ -66,17 +72,21 @@ class MainFragment : BrowseFragment() {
         val row = ListRow(header, topAnimesAdapter)
 
         topAnimesAdapter.addAll(0, topAnimes)
+        categoryRowAdapter.add(row)
+    }
 
-        categoryRowAdapter.clear()
+    private fun showRecentEpisodes(recentEpisodes: List<EpisodeReleaseSummary>) {
+        val header = HeaderItem(getString(R.string.main_recentEpisodes_title))
+        val presenter = EpisodeReleaseCardPresenter()
+        recentEpisodesAdapter = ArrayObjectAdapter(presenter)
+        val row = ListRow(header, recentEpisodesAdapter)
+
+        recentEpisodesAdapter.addAll(0, recentEpisodes)
         categoryRowAdapter.add(row)
     }
 
     private fun showAnimeDetails(anime: AnimeSummary) {
         val intent = AnimeDetailsActivity.getIntent(activity, anime)
         activity.startActivity(intent)
-    }
-
-    private fun showRecentEpisodes(recentEpisodes: List<EpisodeReleaseSummary>) {
-        // TODO display the recent episodes
     }
 }

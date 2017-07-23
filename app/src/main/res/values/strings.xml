@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">Anime Ultime</string>
 
+    <string name="common_episodeRelease_numbers">Épisode(s) %s</string>
+
     <string name="main_topAnimes_title">Populaires</string>
+    <string name="main_recentEpisodes_title">Sorties récentes</string>
 
     <string name="search_noResults">Pas de résultats pour \"%s\"</string>
 
