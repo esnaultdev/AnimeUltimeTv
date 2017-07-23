@@ -11,6 +11,10 @@
         android:name="android.hardware.touchscreen"
         android:required="false" />
 
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="false"/>
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
@@ -21,19 +25,22 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Leanback"
-        android:banner="@drawable/banner">
+        android:banner="@drawable/banner"
+        tools:ignore="UnusedAttribute">
 
         <activity
-            android:name=".presentation.main.MainActivity"
-            android:label="@string/app_name"
-            tools:ignore="UnusedAttribute"
-            android:theme="@style/AppTheme">
+            android:name=".presentation.launch.LaunchActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
             </intent-filter>
+
         </activity>
+
+        <activity
+            android:name=".presentation.main.MainActivity"
+            android:theme="@style/AppTheme"/>
 
         <activity
             android:name=".presentation.search.SearchActivity"
