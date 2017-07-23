@@ -7,7 +7,7 @@ import io.reactivex.Observable
 
 interface AnimeRepository {
 
-    fun getAnimes(): Observable<List<AnimeSummary>>
+    fun isInitialized(): Observable<Boolean>
 
     fun getAnimes(ids: List<Int>): Observable<List<AnimeSummary>>
 

@@ -22,10 +22,10 @@ class LaunchActivity: AppCompatActivity() {
 
         setContentView(R.layout.activity_launch)
 
-        animeRepository.getAnimes()
+        animeRepository.isInitialized()
                 .fromBgToUi()
                 .subscribeBy(
-                        onNext = { if (it.isNotEmpty()) showMain() },
+                        onNext = { if (it) showMain() },
                         onError = { /* TODO: Display an error */ }
                 )
     }

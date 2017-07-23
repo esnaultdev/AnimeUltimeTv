@@ -7,6 +7,8 @@ import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.domain.model.Episode
 import blue.aodev.animeultimetv.domain.model.EpisodeReleaseSummary
+import blue.aodev.animeultimetv.extensions.mapOf
+import blue.aodev.animeultimetv.extensions.sliceIfPresent
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
@@ -23,34 +25,42 @@ class AnimeUltimeRepository(val animeUltimeService: AnimeUltimeService) : AnimeR
         SimpleDateFormat("MMYYYY")
     }
 
-    // TODO Use a hashmap and remove the subject completely
-    private val allAnimesSubject = BehaviorSubject.createDefault<List<AnimeSummary>>(emptyList())
+    private val allAnimesSubject = BehaviorSubject.createDefault<Map<Int, AnimeSummary>>(emptyMap())
 
     init {
         animeUltimeService.getAllAnimes()
                 .subscribeOn(Schedulers.io())
                 .toObservable()
                 .subscribeBy(
-                        onNext = { allAnimesSubject.onNext(it) },
+                        onNext = { allAnimesSubject.onNext(convertAnimesToMap(it)) },
                         onError = { allAnimesSubject.onError(it) }
                         // Ignore the onComplete as we do not want the subject to complete
                 )
     }
 
-    override fun getAnimes(): Observable<List<AnimeSummary>> {
-        return allAnimesSubject
+    private fun convertAnimesToMap(animes: List<AnimeSummary>): Map<Int, AnimeSummary> {
+        return mapOf(animes.map { it.id to it })
+    }
+
+    override fun isInitialized(): Observable<Boolean> {
+        return allAnimesSubject.map { it.isNotEmpty() }
     }
 
     override fun getAnimes(ids: List<Int>): Observable<List<AnimeSummary>> {
-        return allAnimesSubject.map { it.filter { it.id in ids }.sortedBy { ids.indexOf(it.id) } }
+        return allAnimesSubject.map { it.sliceIfPresent(ids) }
     }
 
     override fun search(query: String): Observable<List<AnimeSummary>> {
-        return allAnimesSubject.map { it.filter { it.title.startsWith(query, true) } }
+        return allAnimesSubject
+                .map { it.values }
+                .map {
+                    it.filter { it.title.startsWith(query, true) }
+                            .sortedBy { it.title }
+                }
     }
 
     override fun getAnimeSummary(id: Int): Observable<AnimeSummary> {
-        return allAnimesSubject.map { it.find { it.id == id } }
+        return allAnimesSubject.map { it.getValue(id) }
     }
 
     override fun getAnime(id: Int): Observable<Anime> {
@@ -107,13 +117,13 @@ class AnimeUltimeRepository(val animeUltimeService: AnimeUltimeService) : AnimeR
     }
 
     private fun getEpisodeReleaseSummary(releaseIds: List<EpisodeReleaseId>): Observable<List<EpisodeReleaseSummary>> {
-        // FIXME This only generates one item per anime
-        val ids = releaseIds.map { it.animeId }
-        return allAnimesSubject.map {
-            summaries ->
-            summaries.filter { it.id in ids }
-                    .map { summary -> EpisodeReleaseSummary(summary, releaseIds.first { it.animeId == summary.id }.numbers) }
-                    .sortedBy { ids.indexOf(it.animeSummary.id) }
+        return allAnimesSubject.map { animes ->
+            val result = ArrayList<EpisodeReleaseSummary>(releaseIds.size)
+            releaseIds.forEach {
+                val anime = animes[it.animeId]
+                if (anime != null) result.add(EpisodeReleaseSummary(anime, it.numbers))
+            }
+            result
         }
     }
 }
