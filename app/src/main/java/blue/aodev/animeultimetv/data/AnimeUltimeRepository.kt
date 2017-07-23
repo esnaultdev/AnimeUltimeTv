@@ -22,7 +22,7 @@ import java.util.*
 class AnimeUltimeRepository(val animeUltimeService: AnimeUltimeService) : AnimeRepository {
 
     private val historyPeriodFormat: DateFormat by lazy {
-        SimpleDateFormat("MMYYYY")
+        SimpleDateFormat("MMyyyy")
     }
 
     private val allAnimesSubject = BehaviorSubject.createDefault<Map<Int, AnimeSummary>>(emptyMap())

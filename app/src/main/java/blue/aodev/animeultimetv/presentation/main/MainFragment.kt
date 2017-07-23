@@ -73,6 +73,7 @@ class MainFragment : BrowseFragment() {
 
         topAnimesAdapter.addAll(0, topAnimes)
         categoryRowAdapter.add(row)
+        //TODO replace instead of hiding
     }
 
     private fun showRecentEpisodes(recentEpisodes: List<EpisodeReleaseSummary>) {
@@ -83,6 +84,7 @@ class MainFragment : BrowseFragment() {
 
         recentEpisodesAdapter.addAll(0, recentEpisodes)
         categoryRowAdapter.add(row)
+        //TODO replace instead of hiding
     }
 
     private fun showAnimeDetails(anime: AnimeSummary) {
