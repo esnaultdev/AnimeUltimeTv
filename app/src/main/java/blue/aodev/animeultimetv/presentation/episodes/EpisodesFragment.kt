@@ -13,12 +13,11 @@ import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.domain.model.Anime
 import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.domain.model.Episode
+import blue.aodev.animeultimetv.extensions.fromBgToUi
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.common.EpisodeCardPresenter
 import blue.aodev.animeultimetv.presentation.playback.PlaybackActivity
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class EpisodesFragment : VerticalGridFragment() {
@@ -46,8 +45,7 @@ class EpisodesFragment : VerticalGridFragment() {
         setupRowAdapter()
 
         animeRepository.getAnime(animeSummary.id)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
+                .fromBgToUi()
                 .subscribeBy(
                         onNext = {
                             this.anime = it

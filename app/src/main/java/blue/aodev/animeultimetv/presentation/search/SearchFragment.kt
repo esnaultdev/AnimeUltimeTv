@@ -7,13 +7,12 @@ import android.view.View
 import blue.aodev.animeultimetv.R
 import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.domain.AnimeRepository
+import blue.aodev.animeultimetv.extensions.fromBgToUi
 import blue.aodev.animeultimetv.presentation.animedetails.AnimeDetailsActivity
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.common.AnimeCardPresenter
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
@@ -71,8 +70,7 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
         currentSearch?.dispose()
 
         currentSearch = animeRepository.search(query)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .fromBgToUi()
                 .subscribeBy(
                         onNext = { onSearchResult(it) },
                         onError = { onSearchResult(emptyList()) }

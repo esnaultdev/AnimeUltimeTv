@@ -10,13 +10,12 @@ import blue.aodev.animeultimetv.R
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.domain.model.EpisodeReleaseSummary
+import blue.aodev.animeultimetv.extensions.fromBgToUi
 import blue.aodev.animeultimetv.extensions.getColorCompat
 import blue.aodev.animeultimetv.presentation.animedetails.AnimeDetailsActivity
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.common.AnimeCardPresenter
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class MainFragment : BrowseFragment() {
@@ -32,15 +31,13 @@ class MainFragment : BrowseFragment() {
         MyApplication.graph.inject(this)
 
         animeRepository.getTopAnimes()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .fromBgToUi()
                 .subscribeBy(
                         onNext = { showTopAnimes(it) }
                 )
 
         animeRepository.getRecentEpisodes()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .fromBgToUi()
                 .subscribeBy(
                         onNext = { showRecentEpisodes(it) }
                 )
@@ -63,8 +60,6 @@ class MainFragment : BrowseFragment() {
     }
 
     private fun showTopAnimes(topAnimes: List<AnimeSummary>) {
-        // TODO Only show the main view after loading everything
-
         val header = HeaderItem(getString(R.string.main_topAnimes_title))
         val presenter = AnimeCardPresenter()
         topAnimesAdapter = ArrayObjectAdapter(presenter)

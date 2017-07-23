@@ -9,14 +9,13 @@ import blue.aodev.animeultimetv.R
 import blue.aodev.animeultimetv.domain.model.Anime
 import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.domain.AnimeRepository
+import blue.aodev.animeultimetv.extensions.fromBgToUi
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.episodes.EpisodesActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class AnimeDetailsFragment : DetailsFragment() {
@@ -46,8 +45,7 @@ class AnimeDetailsFragment : DetailsFragment() {
         setupEmptyDetailsRow()
 
         animeRepository.getAnime(animeSummary.id)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
+                .fromBgToUi()
                 .subscribeBy(
                         onNext = {
                             this.anime = it
