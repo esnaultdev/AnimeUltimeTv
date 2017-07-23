@@ -57,7 +57,7 @@ class EpisodesFragment : VerticalGridFragment() {
     }
 
     private fun setupRowAdapter() {
-        val gridPresenter = VerticalGridPresenter(ZOOM_FACTOR)
+        val gridPresenter = VerticalGridPresenter(ZOOM_FACTOR, false)
         gridPresenter.numberOfColumns = COLUMNS
         setGridPresenter(gridPresenter)
 

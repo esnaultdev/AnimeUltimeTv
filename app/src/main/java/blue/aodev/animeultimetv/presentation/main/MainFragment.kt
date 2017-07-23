@@ -10,6 +10,7 @@ import blue.aodev.animeultimetv.R
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.domain.model.EpisodeReleaseSummary
+import blue.aodev.animeultimetv.extensions.getColorCompat
 import blue.aodev.animeultimetv.presentation.animedetails.AnimeDetailsActivity
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.common.AnimeCardPresenter
@@ -57,6 +58,8 @@ class MainFragment : BrowseFragment() {
 
         setOnItemViewClickedListener { _, item, _, _ ->
             if (item is AnimeSummary) { showAnimeDetails(item) } }
+
+        brandColor = activity.getColorCompat(R.color.colorPrimaryDark)
     }
 
     private fun showTopAnimes(topAnimes: List<AnimeSummary>) {
