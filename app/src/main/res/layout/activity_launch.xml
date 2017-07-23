@@ -1,21 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:background="@color/colorPrimaryDark">
 
-    <!-- TODO add the main logo -->
+    <ImageView
+        android:id="@+id/launch_logo"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:srcCompat="@drawable/logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/launch_progress"
+        app:layout_constraintVertical_chainStyle="packed"/>
 
     <ProgressBar
+        android:id="@+id/launch_progress"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/launch_logo"
+        app:layout_constraintBottom_toTopOf="@+id/launch_text"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="32dp"/>
 
     <TextView
+        android:id="@+id/launch_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/launchScreen_loadingInfo"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/launch_progress"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

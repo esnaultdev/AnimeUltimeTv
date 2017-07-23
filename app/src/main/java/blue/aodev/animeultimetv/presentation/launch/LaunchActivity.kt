@@ -1,8 +1,8 @@
 package blue.aodev.animeultimetv.presentation.launch
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import blue.aodev.animeultimetv.R
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.presentation.application.MyApplication
@@ -12,7 +12,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class LaunchActivity: Activity() {
+class LaunchActivity: AppCompatActivity() {
 
     @Inject
     lateinit var animeRepository: AnimeRepository

@@ -3,7 +3,7 @@
 buildscript {
     ext {
         kotlinVersion = '1.1.2-5'
-        androidSupportVersion = '+'
+        androidSupportVersion = '26.0.0-beta1'
         retrofitVersion = '2.3.0'
         glideVersion = '4.0.0-RC0'
         jsoupVersion = '1.10.3'
@@ -13,6 +13,7 @@ buildscript {
         daggerVersion = '2.11'
         exoPlayerVersion = 'r2.2.0'
         butterKnifeVersion = '8.6.0'
+        constraintLayoutVersion = '1.1.0-beta1'
     }
 
     repositories {
