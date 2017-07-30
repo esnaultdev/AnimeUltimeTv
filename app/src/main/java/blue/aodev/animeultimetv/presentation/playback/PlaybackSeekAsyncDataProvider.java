@@ -18,6 +18,9 @@ import java.util.Map;
 public abstract class PlaybackSeekAsyncDataProvider extends PlaybackSeekDataProvider {
 
     static final String TAG = "SeekAsyncProvider";
+    private static final int DEFAULT_WIDTH = 300;
+    private static final int DEFAULT_HEIGHT = 200;
+
 
     long[] mSeekPositions;
     // mCache is for the bitmap requested by user
@@ -55,14 +58,27 @@ public abstract class PlaybackSeekAsyncDataProvider extends PlaybackSeekDataProv
         protected void onPostExecute(Bitmap bitmap) {
             mRequests.remove(mIndex);
             Log.d(TAG, "thumb Loaded " + mIndex);
-            if (mResultCallback != null) {
-                mCache.put(mIndex, bitmap);
-                mResultCallback.onThumbnailLoaded(bitmap, mIndex);
-            } else {
+
+            if (bitmap == null) {
+                if (mResultCallback != null) {
+                    notifyThumbnailLoaded(createEmptyBitmap());
+                }
+            } else if (mResultCallback == null) {
                 mPrefetchCache.put(mIndex, bitmap);
+            } else {
+                mCache.put(mIndex, bitmap);
+                notifyThumbnailLoaded(bitmap);
             }
         }
 
+        private void notifyThumbnailLoaded(Bitmap bitmap) {
+            mResultCallback.onThumbnailLoaded(bitmap, mIndex);
+        }
+
+        private Bitmap createEmptyBitmap() {
+            Bitmap.Config config = Bitmap.Config.ARGB_8888;
+            return Bitmap.createBitmap(DEFAULT_WIDTH, DEFAULT_HEIGHT, config);
+        }
     }
 
     public PlaybackSeekAsyncDataProvider() {

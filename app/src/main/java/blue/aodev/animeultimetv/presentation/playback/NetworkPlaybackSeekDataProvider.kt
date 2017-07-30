@@ -44,7 +44,9 @@ class NetworkPlaybackSeekDataProvider(duration: Long, interval: Long, videoUrl: 
             return cachedBitmap
         } else {
             val bitmap = metadataRetriever.getFrameAtTime(position * 1000)
-            bitmapCache.put(index, bitmap)
+            if (bitmap != null) {
+                bitmapCache.put(index, bitmap)
+            }
             return bitmap
         }
     }
