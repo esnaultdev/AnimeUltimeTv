@@ -16,6 +16,7 @@ import blue.aodev.animeultimetv.presentation.animedetails.AnimeDetailsActivity
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.common.AnimeCardPresenter
 import blue.aodev.animeultimetv.presentation.common.EpisodeReleaseCardPresenter
+import blue.aodev.animeultimetv.presentation.common.LoadingObjectAdapter
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 
@@ -84,7 +85,7 @@ class MainFragment : BrowseFragment() {
     }
 
     private fun showTopAnimesLoading() {
-        val row = ListRow(topAnimesHeader, ArrayObjectAdapter())
+        val row = ListRow(topAnimesHeader, LoadingObjectAdapter())
         categoryRowAdapter.add(ROW_INDEX_TOP_ANIMES, row)
     }
 
@@ -106,7 +107,7 @@ class MainFragment : BrowseFragment() {
     }
 
     private fun showRecentEpisodesLoading() {
-        val row = ListRow(recentEpisodesHeader, ArrayObjectAdapter())
+        val row = ListRow(recentEpisodesHeader, LoadingObjectAdapter())
         categoryRowAdapter.add(ROW_INDEX_RECENT_EPISODES, row)
     }
 

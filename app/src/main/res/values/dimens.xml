@@ -10,4 +10,7 @@
 
     <dimen name="detailsFragment_thumbnail_width">274dp</dimen>
     <dimen name="detailsFragment_thumbnail_height">274dp</dimen>
+
+    <dimen name="loading_item_height">@dimen/anime_card_height</dimen>
+    <dimen name="loading_item_width">@dimen/anime_card_width</dimen>
 </resources>
