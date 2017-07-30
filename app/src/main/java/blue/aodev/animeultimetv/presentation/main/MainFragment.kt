@@ -21,6 +21,11 @@ import javax.inject.Inject
 
 class MainFragment : BrowseFragment() {
 
+    companion object {
+        private const val ROW_INDEX_TOP_ANIMES = 0
+        private const val ROW_INDEX_RECENT_EPISODES = 1
+    }
+
     @Inject
     lateinit var animeRepository: AnimeRepository
 
@@ -62,30 +67,59 @@ class MainFragment : BrowseFragment() {
             }
         }
 
+        createEmptyRows()
+
         brandColor = activity.getColorCompat(R.color.colorPrimaryDark)
     }
 
+    private fun createEmptyRows() {
+        showTopAnimesLoading()
+        showRecentEpisodesLoading()
+    }
+
+    //region Top animes
+
+    private val topAnimesHeader: HeaderItem by lazy {
+        HeaderItem(getString(R.string.main_topAnimes_title))
+    }
+
+    private fun showTopAnimesLoading() {
+        val row = ListRow(topAnimesHeader, ArrayObjectAdapter())
+        categoryRowAdapter.add(ROW_INDEX_TOP_ANIMES, row)
+    }
+
     private fun showTopAnimes(topAnimes: List<AnimeSummary>) {
-        val header = HeaderItem(getString(R.string.main_topAnimes_title))
         val presenter = AnimeCardPresenter()
         topAnimesAdapter = ArrayObjectAdapter(presenter)
-        val row = ListRow(header, topAnimesAdapter)
+        val row = ListRow(topAnimesHeader, topAnimesAdapter)
 
         topAnimesAdapter.addAll(0, topAnimes)
-        categoryRowAdapter.add(row)
-        //TODO replace instead of hiding
+        categoryRowAdapter.replace(ROW_INDEX_TOP_ANIMES, row)
+    }
+
+    //endregion
+
+    //region Recent episodes
+
+    private val recentEpisodesHeader: HeaderItem by lazy {
+        HeaderItem(getString(R.string.main_recentEpisodes_title))
+    }
+
+    private fun showRecentEpisodesLoading() {
+        val row = ListRow(recentEpisodesHeader, ArrayObjectAdapter())
+        categoryRowAdapter.add(ROW_INDEX_RECENT_EPISODES, row)
     }
 
     private fun showRecentEpisodes(recentEpisodes: List<EpisodeReleaseSummary>) {
-        val header = HeaderItem(getString(R.string.main_recentEpisodes_title))
         val presenter = EpisodeReleaseCardPresenter()
         recentEpisodesAdapter = ArrayObjectAdapter(presenter)
-        val row = ListRow(header, recentEpisodesAdapter)
+        val row = ListRow(recentEpisodesHeader, recentEpisodesAdapter)
 
         recentEpisodesAdapter.addAll(0, recentEpisodes)
-        categoryRowAdapter.add(row)
-        //TODO replace instead of hiding
+        categoryRowAdapter.replace(ROW_INDEX_RECENT_EPISODES, row)
     }
+
+    //endregion
 
     private fun showAnimeDetails(anime: AnimeSummary) {
         val intent = AnimeDetailsActivity.getIntent(activity, anime)
