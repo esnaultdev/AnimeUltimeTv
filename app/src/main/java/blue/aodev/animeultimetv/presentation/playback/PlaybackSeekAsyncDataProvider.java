@@ -50,8 +50,14 @@ public abstract class PlaybackSeekAsyncDataProvider extends PlaybackSeekDataProv
 
         @Override
         protected Bitmap doInBackground(Object[] params) {
-            return PlaybackSeekAsyncDataProvider.this
+            Bitmap bitmap = PlaybackSeekAsyncDataProvider.this
                     .doInBackground(this, mIndex, mSeekPositions[mIndex]);
+            return (bitmap != null) ? bitmap : createEmptyBitmap();
+        }
+
+        private Bitmap createEmptyBitmap() {
+            Bitmap.Config config = Bitmap.Config.ARGB_8888;
+            return Bitmap.createBitmap(DEFAULT_WIDTH, DEFAULT_HEIGHT, config);
         }
 
         @Override
@@ -59,25 +65,12 @@ public abstract class PlaybackSeekAsyncDataProvider extends PlaybackSeekDataProv
             mRequests.remove(mIndex);
             Log.d(TAG, "thumb Loaded " + mIndex);
 
-            if (bitmap == null) {
-                if (mResultCallback != null) {
-                    notifyThumbnailLoaded(createEmptyBitmap());
-                }
-            } else if (mResultCallback == null) {
+            if (mResultCallback == null) {
                 mPrefetchCache.put(mIndex, bitmap);
             } else {
                 mCache.put(mIndex, bitmap);
-                notifyThumbnailLoaded(bitmap);
+                mResultCallback.onThumbnailLoaded(bitmap, mIndex);
             }
-        }
-
-        private void notifyThumbnailLoaded(Bitmap bitmap) {
-            mResultCallback.onThumbnailLoaded(bitmap, mIndex);
-        }
-
-        private Bitmap createEmptyBitmap() {
-            Bitmap.Config config = Bitmap.Config.ARGB_8888;
-            return Bitmap.createBitmap(DEFAULT_WIDTH, DEFAULT_HEIGHT, config);
         }
     }
 
