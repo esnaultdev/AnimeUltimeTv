@@ -1,4 +1,4 @@
-package blue.aodev.animeultimetv.presentation.episodes
+package blue.aodev.animeultimetv.presentation.screen.episodes
 
 import android.app.Activity
 import android.content.Context

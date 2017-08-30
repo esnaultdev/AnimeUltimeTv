@@ -1,4 +1,4 @@
-package blue.aodev.animeultimetv.presentation.episodes
+package blue.aodev.animeultimetv.presentation.screen.episodes
 
 import android.os.Bundle
 import android.support.v17.leanback.app.VerticalGridFragment
@@ -16,7 +16,7 @@ import blue.aodev.animeultimetv.domain.model.Episode
 import blue.aodev.animeultimetv.extensions.fromBgToUi
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.common.EpisodeCardPresenter
-import blue.aodev.animeultimetv.presentation.playback.PlaybackActivity
+import blue.aodev.animeultimetv.presentation.screen.playback.PlaybackActivity
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package blue.aodev.animeultimetv.presentation.animedetails
+package blue.aodev.animeultimetv.presentation.screen.animedetails
 
 import android.content.Context
 import android.support.v17.leanback.widget.Presenter

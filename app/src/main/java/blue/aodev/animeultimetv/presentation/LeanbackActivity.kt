@@ -2,7 +2,7 @@ package blue.aodev.animeultimetv.presentation
 
 import android.content.Intent
 import android.support.v4.app.FragmentActivity
-import blue.aodev.animeultimetv.presentation.search.SearchActivity
+import blue.aodev.animeultimetv.presentation.screen.search.SearchActivity
 
 /**
  * This parent class contains common methods that run in every activity such as search.

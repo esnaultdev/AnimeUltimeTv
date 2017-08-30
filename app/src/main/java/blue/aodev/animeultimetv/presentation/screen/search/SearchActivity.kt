@@ -1,4 +1,4 @@
-package blue.aodev.animeultimetv.presentation.search
+package blue.aodev.animeultimetv.presentation.screen.search
 
 import android.content.Intent
 import android.os.Bundle

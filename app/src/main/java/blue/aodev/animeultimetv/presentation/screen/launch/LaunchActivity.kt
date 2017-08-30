@@ -1,4 +1,4 @@
-package blue.aodev.animeultimetv.presentation.launch
+package blue.aodev.animeultimetv.presentation.screen.launch
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,7 +7,7 @@ import blue.aodev.animeultimetv.R
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.extensions.fromBgToUi
 import blue.aodev.animeultimetv.presentation.application.MyApplication
-import blue.aodev.animeultimetv.presentation.main.MainActivity
+import blue.aodev.animeultimetv.presentation.screen.main.MainActivity
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 

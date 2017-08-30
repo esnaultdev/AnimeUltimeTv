@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/episodesFragment"
-        android:name="blue.aodev.animeultimetv.presentation.episodes.EpisodesFragment"
+        android:name="blue.aodev.animeultimetv.presentation.screen.episodes.EpisodesFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

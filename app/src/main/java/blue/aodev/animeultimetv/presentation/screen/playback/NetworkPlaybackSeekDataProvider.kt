@@ -1,4 +1,4 @@
-package blue.aodev.animeultimetv.presentation.playback
+package blue.aodev.animeultimetv.presentation.screen.playback
 
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever

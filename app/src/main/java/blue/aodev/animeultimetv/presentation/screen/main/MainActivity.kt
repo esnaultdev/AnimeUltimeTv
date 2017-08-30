@@ -1,4 +1,4 @@
-package blue.aodev.animeultimetv.presentation.main
+package blue.aodev.animeultimetv.presentation.screen.main
 
 import android.os.Bundle
 import blue.aodev.animeultimetv.R

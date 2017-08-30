@@ -1,4 +1,4 @@
-package blue.aodev.animeultimetv.presentation.animedetails
+package blue.aodev.animeultimetv.presentation.screen.animedetails
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -11,7 +11,7 @@ import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.extensions.fromBgToUi
 import blue.aodev.animeultimetv.presentation.application.MyApplication
-import blue.aodev.animeultimetv.presentation.episodes.EpisodesActivity
+import blue.aodev.animeultimetv.presentation.screen.episodes.EpisodesActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition

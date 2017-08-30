@@ -1,11 +1,11 @@
 package blue.aodev.animeultimetv.injection
 
-import blue.aodev.animeultimetv.presentation.animedetails.AnimeDetailsFragment
+import blue.aodev.animeultimetv.presentation.screen.animedetails.AnimeDetailsFragment
 import blue.aodev.animeultimetv.presentation.application.MyApplication
-import blue.aodev.animeultimetv.presentation.episodes.EpisodesFragment
-import blue.aodev.animeultimetv.presentation.launch.LaunchActivity
-import blue.aodev.animeultimetv.presentation.main.MainFragment
-import blue.aodev.animeultimetv.presentation.search.SearchFragment
+import blue.aodev.animeultimetv.presentation.screen.episodes.EpisodesFragment
+import blue.aodev.animeultimetv.presentation.screen.launch.LaunchActivity
+import blue.aodev.animeultimetv.presentation.screen.main.MainFragment
+import blue.aodev.animeultimetv.presentation.screen.search.SearchFragment
 import dagger.Component
 import javax.inject.Singleton
 

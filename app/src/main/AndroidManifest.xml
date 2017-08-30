@@ -29,7 +29,7 @@
         tools:ignore="UnusedAttribute">
 
         <activity
-            android:name=".presentation.launch.LaunchActivity"
+            android:name=".presentation.screen.launch.LaunchActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
 
             <intent-filter>
@@ -40,21 +40,21 @@
         </activity>
 
         <activity
-            android:name=".presentation.main.MainActivity"
+            android:name=".presentation.screen.main.MainActivity"
             android:theme="@style/AppTheme"/>
 
         <activity
-            android:name=".presentation.search.SearchActivity"
+            android:name=".presentation.screen.search.SearchActivity"
             android:theme="@style/AppTheme"/>
 
         <activity
-            android:name=".presentation.animedetails.AnimeDetailsActivity"/>
+            android:name=".presentation.screen.animedetails.AnimeDetailsActivity"/>
 
         <activity
-            android:name=".presentation.playback.PlaybackActivity"/>
+            android:name=".presentation.screen.playback.PlaybackActivity"/>
 
         <activity
-            android:name=".presentation.episodes.EpisodesActivity"/>
+            android:name=".presentation.screen.episodes.EpisodesActivity"/>
 
     </application>
 

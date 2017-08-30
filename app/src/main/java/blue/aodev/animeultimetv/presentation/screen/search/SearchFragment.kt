@@ -1,4 +1,4 @@
-package blue.aodev.animeultimetv.presentation.search
+package blue.aodev.animeultimetv.presentation.screen.search
 
 import android.os.Bundle
 import android.support.v17.leanback.widget.*
@@ -8,7 +8,7 @@ import blue.aodev.animeultimetv.R
 import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.extensions.fromBgToUi
-import blue.aodev.animeultimetv.presentation.animedetails.AnimeDetailsActivity
+import blue.aodev.animeultimetv.presentation.screen.animedetails.AnimeDetailsActivity
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.common.AnimeCardPresenter
 import io.reactivex.disposables.Disposable

@@ -1,4 +1,4 @@
-package blue.aodev.animeultimetv.presentation.main
+package blue.aodev.animeultimetv.presentation.screen.main
 
 import android.os.Bundle
 import android.support.v17.leanback.app.BrowseFragment
@@ -12,7 +12,7 @@ import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.domain.model.EpisodeReleaseSummary
 import blue.aodev.animeultimetv.extensions.fromBgToUi
 import blue.aodev.animeultimetv.extensions.getColorCompat
-import blue.aodev.animeultimetv.presentation.animedetails.AnimeDetailsActivity
+import blue.aodev.animeultimetv.presentation.screen.animedetails.AnimeDetailsActivity
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.common.AnimeCardPresenter
 import blue.aodev.animeultimetv.presentation.common.EpisodeReleaseCardPresenter
