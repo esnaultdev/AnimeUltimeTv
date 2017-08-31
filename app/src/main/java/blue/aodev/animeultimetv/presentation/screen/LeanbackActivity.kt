@@ -1,4 +1,4 @@
-package blue.aodev.animeultimetv.presentation
+package blue.aodev.animeultimetv.presentation.screen
 
 import android.content.Intent
 import android.support.v4.app.FragmentActivity

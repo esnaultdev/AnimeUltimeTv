@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import blue.aodev.animeultimetv.R
-import blue.aodev.animeultimetv.presentation.LeanbackActivity
+import blue.aodev.animeultimetv.presentation.screen.LeanbackActivity
 
 class SearchActivity : LeanbackActivity() {
 

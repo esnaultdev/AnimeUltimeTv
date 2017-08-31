@@ -2,7 +2,7 @@ package blue.aodev.animeultimetv.presentation.screen.main
 
 import android.os.Bundle
 import blue.aodev.animeultimetv.R
-import blue.aodev.animeultimetv.presentation.LeanbackActivity
+import blue.aodev.animeultimetv.presentation.screen.LeanbackActivity
 
 class MainActivity : LeanbackActivity() {
 
