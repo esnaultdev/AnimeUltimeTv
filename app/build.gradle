@@ -13,6 +13,7 @@ android {
         versionCode 1
         versionName "0.0.1"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -29,6 +30,9 @@ kapt {
 dependencies {
     // Kotlin
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
+
+    // MultiDex
+    compile "com.android.support:multidex:$multidexVersion"
 
     // Support libraries
     compile "com.android.support:appcompat-v7:$androidSupportVersion"
