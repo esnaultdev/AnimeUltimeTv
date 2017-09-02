@@ -32,4 +32,11 @@ data class Playlist(
 
     val hasNextVideo: Boolean
         get() = index < videos.size - 1
+
+    val hasPreviousVideo: Boolean
+        get() = index > 0
+
+    fun next(): Playlist = copy(index = index + 1)
+
+    fun previous(): Playlist = copy(index = index - 1)
 }

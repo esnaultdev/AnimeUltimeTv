@@ -2,7 +2,6 @@ package blue.aodev.animeultimetv.presentation.screen.playback
 
 import android.app.Activity
 import android.net.Uri
-import android.os.Handler
 import android.support.v17.leanback.media.PlaybackGlue
 import android.support.v17.leanback.media.PlaybackTransportControlGlue
 import android.support.v17.leanback.widget.Action
@@ -85,8 +84,6 @@ class PlaylistMediaPlayerGlue(context: Activity, impl: ExoPlayerAdapter, var pla
     private val secondaryActionsAdapter: ArrayObjectAdapter?
         get() = controlsRow?.secondaryActionsAdapter as ArrayObjectAdapter?
 
-    internal var mHandler = Handler()
-
     fun playWhenReady() {
         if (isPrepared) {
             play()
@@ -102,34 +99,24 @@ class PlaylistMediaPlayerGlue(context: Activity, impl: ExoPlayerAdapter, var pla
         }
     }
 
-    private fun pauseAndPlay(block: PlaylistMediaPlayerGlue.() -> Unit) {
-        pause()
-        block()
-        playWhenReady()
-    }
-
     override fun next() {
         if (playlist.hasNextVideo) {
-            pauseAndPlay {
-                playlist = playlist.copy(index = playlist.index + 1)
-                updateCurrentVideo()
-            }
+            playlist = playlist.next()
+            updateCurrentVideo()
+            playWhenReady()
         }
     }
 
     override fun previous() {
-        if (playlist.index > 0) {
-            pauseAndPlay {
-                playlist = playlist.copy(index = playlist.index - 1)
-                updateCurrentVideo()
-            }
+        if (playlist.hasPreviousVideo) {
+            playlist = playlist.previous()
+            updateCurrentVideo()
+            playWhenReady()
         }
     }
 
     override fun onPlayCompleted() {
         super.onPlayCompleted()
-        mHandler.post {
-            next()
-        }
+        next()
     }
 }

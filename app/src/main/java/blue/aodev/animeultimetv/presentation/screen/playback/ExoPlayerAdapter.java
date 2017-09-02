@@ -77,6 +77,7 @@ public class ExoPlayerAdapter extends PlayerAdapter implements ExoPlayer.EventLi
      * before playing a second one.
      */
     public void reset() {
+        mPlayer.setPlayWhenReady(false);
         changeToUninitialized();
         mPlayer.stop();
     }
@@ -313,7 +314,7 @@ public class ExoPlayerAdapter extends PlayerAdapter implements ExoPlayer.EventLi
             }
         } else if (playbackState == ExoPlayer.STATE_BUFFERING) {
             mBufferingStart = true;
-        } else if (playbackState == ExoPlayer.STATE_ENDED) {
+        } else if (playbackState == ExoPlayer.STATE_ENDED && mPlayer.getPlayWhenReady()) {
             getCallback().onPlayStateChanged(ExoPlayerAdapter.this);
             getCallback().onPlayCompleted(ExoPlayerAdapter.this);
         }
