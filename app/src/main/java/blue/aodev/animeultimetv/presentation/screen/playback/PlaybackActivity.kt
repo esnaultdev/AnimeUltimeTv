@@ -13,7 +13,8 @@ import blue.aodev.animeultimetv.domain.model.Playlist
 class PlaybackActivity : Activity() {
 
     companion object {
-        private val EXTRA_PLAYLIST = "extraPlaylist"
+        private const val EXTRA_PLAYLIST = "extraPlaylist"
+        const val EXTRA_RESULT_EPISODE_INDEX = "extraResultEpisodeIndex"
 
         fun getIntent(context: Context, anime: Anime, index: Int): Intent {
             val mapper = AnimeToPlaylistMapper(context)
@@ -25,17 +26,22 @@ class PlaybackActivity : Activity() {
         }
     }
 
-    val playlist: Playlist by lazy {
-        intent.getParcelableExtra<Playlist>(EXTRA_PLAYLIST)
-    }
+    lateinit var playlist: Playlist
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_playback)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
+        playlist = intent.getParcelableExtra<Playlist>(EXTRA_PLAYLIST)
+        setCurrentEpisodeIndex(playlist.index)
+
         fragmentManager.beginTransaction()
                 .add(R.id.videoFragment, PlaybackFragment(), PlaybackFragment.TAG)
                 .commit()
+    }
+
+    fun setCurrentEpisodeIndex(index: Int) {
+        setResult(RESULT_OK, Intent().apply { putExtra(EXTRA_RESULT_EPISODE_INDEX, index) })
     }
 }

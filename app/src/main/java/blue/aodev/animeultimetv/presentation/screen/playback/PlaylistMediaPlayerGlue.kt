@@ -15,23 +15,25 @@ class PlaylistMediaPlayerGlue(context: Activity, impl: ExoPlayerAdapter, var pla
     private val previousAction = PlaybackControlsRow.SkipPreviousAction(context)
     private val nextAction = PlaybackControlsRow.SkipNextAction(context)
 
+    var onPlaylistChanged: (playlist: Playlist) -> Unit = {}
+
     init {
-        updateCurrentVideo()
+        setupVideoAndPlay()
+    }
+
+    private fun setupVideoAndPlay() {
+        setupCurrentVideo()
         playWhenReady()
     }
 
-    private fun updateCurrentVideo() {
+    private fun setupCurrentVideo() {
         val currentVideo = playlist.currentVideo
+
         title = playlist.title
         subtitle = currentVideo.title
+
         playerAdapter.setDataSource(Uri.parse(currentVideo.hdVideoUrl))
         NetworkPlaybackSeekDataProvider.setDemoSeekProvider(this, currentVideo.hdVideoUrl)
-    }
-
-    override fun onCreatePrimaryActions(adapter: ArrayObjectAdapter) {
-        super.onCreatePrimaryActions(adapter)
-        adapter.add(previousAction)
-        adapter.add(nextAction)
     }
 
     fun playWhenReady() {
@@ -49,19 +51,25 @@ class PlaylistMediaPlayerGlue(context: Activity, impl: ExoPlayerAdapter, var pla
         }
     }
 
+    override fun onCreatePrimaryActions(adapter: ArrayObjectAdapter) {
+        super.onCreatePrimaryActions(adapter)
+        adapter.add(previousAction)
+        adapter.add(nextAction)
+    }
+
     override fun next() {
         if (playlist.hasNextVideo) {
             playlist = playlist.next()
-            updateCurrentVideo()
-            playWhenReady()
+            onPlaylistChanged(playlist)
+            setupVideoAndPlay()
         }
     }
 
     override fun previous() {
         if (playlist.hasPreviousVideo) {
             playlist = playlist.previous()
-            updateCurrentVideo()
-            playWhenReady()
+            onPlaylistChanged(playlist)
+            setupVideoAndPlay()
         }
     }
 

@@ -78,7 +78,7 @@ class EpisodesFragment : VerticalGridFragment() {
                 anime?.let { anime ->
                     val episodeIndex = anime.episodes.indexOf(item)
                     val intent = PlaybackActivity.getIntent(activity, anime, episodeIndex)
-                    activity.startActivity(intent)
+                    activity.startActivityForResult(intent, 0)
                 }
             }
         }
