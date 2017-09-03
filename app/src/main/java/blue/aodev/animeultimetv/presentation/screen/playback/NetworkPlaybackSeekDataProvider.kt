@@ -2,8 +2,6 @@ package blue.aodev.animeultimetv.presentation.screen.playback
 
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
-import android.support.v17.leanback.media.PlaybackGlue
-import android.support.v17.leanback.media.PlaybackTransportControlGlue
 import android.util.LruCache
 
 
@@ -48,37 +46,6 @@ class NetworkPlaybackSeekDataProvider(duration: Long, interval: Long, videoUrl: 
                 bitmapCache.put(index, bitmap)
             }
             return bitmap
-        }
-    }
-
-    companion object {
-        /**
-         * Helper function to set a demo seek provider on PlaybackTransportControlGlue based on
-         * duration.
-         */
-        fun setDemoSeekProvider(glue: PlaybackTransportControlGlue<*>, videoUrl: String) {
-            if (glue.isPrepared) {
-                setDemoSeekProviderPrepared(glue, videoUrl)
-            } else {
-                glue.addPlayerCallback(object : PlaybackGlue.PlayerCallback() {
-                    override fun onPreparedStateChanged(glue: PlaybackGlue) {
-                        if (glue.isPrepared) {
-                            glue.removePlayerCallback(this)
-                            val transportControlGlue = glue as PlaybackTransportControlGlue<*>
-                            setDemoSeekProviderPrepared(transportControlGlue, videoUrl)
-                        }
-                    }
-                })
-            }
-        }
-
-        private fun setDemoSeekProviderPrepared(glue: PlaybackTransportControlGlue<*>,
-                                                videoUrl: String) {
-            glue.seekProvider = NetworkPlaybackSeekDataProvider(
-                    glue.duration,
-                    glue.duration / 50,
-                    videoUrl
-            )
         }
     }
 }

@@ -16,6 +16,7 @@ class PlaylistMediaPlayerGlue(context: Activity, impl: ExoPlayerAdapter, var pla
     private val nextAction = PlaybackControlsRow.SkipNextAction(context)
 
     var onPlaylistChanged: (playlist: Playlist) -> Unit = {}
+    private var playerPlayCallback: PlayerCallback? = null
 
     init {
         setupVideoAndPlay()
@@ -23,7 +24,10 @@ class PlaylistMediaPlayerGlue(context: Activity, impl: ExoPlayerAdapter, var pla
 
     private fun setupVideoAndPlay() {
         setupCurrentVideo()
-        playWhenReady()
+        doWhenPrepared {
+            play()
+            setupSeekDataProvider()
+        }
     }
 
     private fun setupCurrentVideo() {
@@ -33,22 +37,31 @@ class PlaylistMediaPlayerGlue(context: Activity, impl: ExoPlayerAdapter, var pla
         subtitle = currentVideo.title
 
         playerAdapter.setDataSource(Uri.parse(currentVideo.hdVideoUrl))
-        NetworkPlaybackSeekDataProvider.setDemoSeekProvider(this, currentVideo.hdVideoUrl)
     }
 
-    fun playWhenReady() {
+    infix private fun doWhenPrepared(block: (glue: PlaybackGlue) -> Unit) {
         if (isPrepared) {
-            play()
+            block(this)
         } else {
-            addPlayerCallback(object : PlayerCallback() {
+            playerPlayCallback?.let { removePlayerCallback(it) }
+            playerPlayCallback = object : PlayerCallback() {
                 override fun onPreparedStateChanged(glue: PlaybackGlue) {
                     if (glue.isPrepared) {
                         glue.removePlayerCallback(this)
-                        glue.play()
+                        block(glue)
                     }
                 }
-            })
+            }
+            addPlayerCallback(playerPlayCallback)
         }
+    }
+
+    private fun setupSeekDataProvider() {
+        seekProvider = NetworkPlaybackSeekDataProvider(
+                duration,
+                duration / 50,
+                playlist.currentVideo.videoUrl
+        )
     }
 
     override fun onCreatePrimaryActions(adapter: ArrayObjectAdapter) {
