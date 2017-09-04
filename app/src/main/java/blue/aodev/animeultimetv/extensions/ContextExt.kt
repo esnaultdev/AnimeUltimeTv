@@ -1,7 +1,9 @@
 package blue.aodev.animeultimetv.extensions
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.support.annotation.ColorRes
+import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
 import blue.aodev.animeultimetv.R
 
@@ -12,3 +14,7 @@ fun Context.formatEpisodeDuration(duration: Int): String {
 }
 
 fun Context.getColorCompat(@ColorRes colorRes: Int): Int = ContextCompat.getColor(this, colorRes)
+
+fun Context.getDrawableCompat(@DrawableRes drawableRes: Int): Drawable {
+    return ContextCompat.getDrawable(this, drawableRes)
+}

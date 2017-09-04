@@ -2,42 +2,33 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
+    android:layout_height="match_parent">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/launch_guideline_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/launch_guideline_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8"/>
 
     <ImageView
         android:id="@+id/launch_logo"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        app:srcCompat="@drawable/logo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/launch_progress"
-        app:layout_constraintVertical_chainStyle="packed"/>
-
-    <ProgressBar
-        android:id="@+id/launch_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/launch_logo"
-        app:layout_constraintBottom_toTopOf="@+id/launch_text"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="32dp"/>
-
-    <TextView
-        android:id="@+id/launch_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/launchScreen_loadingInfo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/launch_progress"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
+        app:layout_constraintTop_toBottomOf="@id/launch_guideline_top"
+        app:layout_constraintBottom_toTopOf="@id/launch_guideline_bottom"
+        app:layout_constraintDimensionRatio="1"
+        tools:src="@drawable/loading_logo_background"/>
 
 </android.support.constraint.ConstraintLayout>

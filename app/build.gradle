@@ -64,6 +64,9 @@ dependencies {
 
     // Media player
     compile "com.google.android.exoplayer:exoplayer:$exoPlayerVersion"
+
+    // Wave loading
+    compile "com.race604.waveloading:library:$waveLoadingVersion"
 }
 repositories {
     mavenCentral()
