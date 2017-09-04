@@ -1,4 +1,4 @@
-package blue.aodev.animeultimetv.extensions
+package blue.aodev.animeultimetv.utils.extensions
 
 import android.content.Context
 import android.graphics.drawable.Drawable

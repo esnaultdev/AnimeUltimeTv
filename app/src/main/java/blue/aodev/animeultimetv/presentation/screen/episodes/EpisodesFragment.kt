@@ -13,7 +13,7 @@ import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.domain.model.Anime
 import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.domain.model.Episode
-import blue.aodev.animeultimetv.extensions.fromBgToUi
+import blue.aodev.animeultimetv.utils.extensions.fromBgToUi
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.common.EpisodeCardPresenter
 import blue.aodev.animeultimetv.presentation.screen.playback.PlaybackActivity

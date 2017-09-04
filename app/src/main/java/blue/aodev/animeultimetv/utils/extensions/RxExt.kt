@@ -1,4 +1,4 @@
-package blue.aodev.animeultimetv.extensions
+package blue.aodev.animeultimetv.utils.extensions
 
 import io.reactivex.Completable
 import io.reactivex.Flowable

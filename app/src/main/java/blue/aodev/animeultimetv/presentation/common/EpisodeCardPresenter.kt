@@ -4,7 +4,7 @@ import android.content.Context
 import android.support.v17.leanback.widget.ImageCardView
 import blue.aodev.animeultimetv.R
 import blue.aodev.animeultimetv.domain.model.Episode
-import blue.aodev.animeultimetv.extensions.formatEpisodeDuration
+import blue.aodev.animeultimetv.utils.extensions.formatEpisodeDuration
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 

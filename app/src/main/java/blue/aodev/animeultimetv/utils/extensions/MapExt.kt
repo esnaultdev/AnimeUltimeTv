@@ -1,4 +1,4 @@
-package blue.aodev.animeultimetv.extensions
+package blue.aodev.animeultimetv.utils.extensions
 
 fun <K, V> mapOf(pairs: List<Pair<K, V>>): Map<K, V> {
     return if (pairs.isNotEmpty()) {

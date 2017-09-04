@@ -7,8 +7,8 @@ import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.domain.model.Episode
 import blue.aodev.animeultimetv.domain.model.EpisodeReleaseSummary
-import blue.aodev.animeultimetv.extensions.mapOf
-import blue.aodev.animeultimetv.extensions.sliceIfPresent
+import blue.aodev.animeultimetv.utils.extensions.mapOf
+import blue.aodev.animeultimetv.utils.extensions.sliceIfPresent
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction

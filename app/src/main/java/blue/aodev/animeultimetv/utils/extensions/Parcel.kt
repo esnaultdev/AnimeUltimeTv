@@ -1,4 +1,4 @@
-package blue.aodev.animeultimetv.extensions
+package blue.aodev.animeultimetv.utils.extensions
 
 import android.os.Parcel
 import android.os.Parcelable

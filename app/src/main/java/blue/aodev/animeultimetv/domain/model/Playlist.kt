@@ -8,7 +8,7 @@ data class Playlist(
 
     companion object {
         @JvmField @Suppress("unused")
-        val CREATOR = blue.aodev.animeultimetv.extensions.createParcel { Playlist(it) }
+        val CREATOR = blue.aodev.animeultimetv.utils.extensions.createParcel { Playlist(it) }
     }
 
     private constructor(parcelIn: android.os.Parcel) : this(

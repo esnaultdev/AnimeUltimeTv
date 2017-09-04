@@ -9,8 +9,8 @@ import android.view.Gravity
 import android.widget.ImageView
 import blue.aodev.animeultimetv.R
 import blue.aodev.animeultimetv.domain.AnimeRepository
-import blue.aodev.animeultimetv.extensions.fromBgToUi
-import blue.aodev.animeultimetv.extensions.getDrawableCompat
+import blue.aodev.animeultimetv.utils.extensions.fromBgToUi
+import blue.aodev.animeultimetv.utils.extensions.getDrawableCompat
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.screen.main.MainActivity
 import butterknife.BindView

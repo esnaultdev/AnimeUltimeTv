@@ -2,7 +2,7 @@ package blue.aodev.animeultimetv.domain.model
 
 import android.os.Parcel
 import android.os.Parcelable
-import blue.aodev.animeultimetv.extensions.createParcel
+import blue.aodev.animeultimetv.utils.extensions.createParcel
 
 data class AnimeSummary(
         val id: Int,

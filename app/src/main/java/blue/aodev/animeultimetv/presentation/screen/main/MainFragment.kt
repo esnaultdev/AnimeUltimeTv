@@ -10,8 +10,8 @@ import blue.aodev.animeultimetv.R
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.domain.model.EpisodeReleaseSummary
-import blue.aodev.animeultimetv.extensions.fromBgToUi
-import blue.aodev.animeultimetv.extensions.getColorCompat
+import blue.aodev.animeultimetv.utils.extensions.fromBgToUi
+import blue.aodev.animeultimetv.utils.extensions.getColorCompat
 import blue.aodev.animeultimetv.presentation.screen.animedetails.AnimeDetailsActivity
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.common.AnimeCardPresenter
