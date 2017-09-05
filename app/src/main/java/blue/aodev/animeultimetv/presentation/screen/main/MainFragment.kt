@@ -1,11 +1,15 @@
 package blue.aodev.animeultimetv.presentation.screen.main
 
+import android.app.Fragment
 import android.os.Bundle
 import android.support.v17.leanback.app.BrowseFragment
 import android.support.v17.leanback.widget.ArrayObjectAdapter
+import android.support.v17.leanback.widget.FocusHighlight
 import android.support.v17.leanback.widget.HeaderItem
-import android.support.v17.leanback.widget.ListRow
 import android.support.v17.leanback.widget.ListRowPresenter
+import android.support.v17.leanback.widget.PageRow
+import android.support.v17.leanback.widget.Row
+import android.support.v17.leanback.widget.VerticalGridPresenter
 import blue.aodev.animeultimetv.R
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.domain.model.AnimeSummary
@@ -16,114 +20,181 @@ import blue.aodev.animeultimetv.presentation.screen.animedetails.AnimeDetailsAct
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.common.AnimeCardPresenter
 import blue.aodev.animeultimetv.presentation.common.EpisodeReleaseCardPresenter
-import blue.aodev.animeultimetv.presentation.common.LoadingObjectAdapter
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
+
 
 class MainFragment : BrowseFragment() {
 
     companion object {
-        private const val ROW_INDEX_TOP_ANIMES = 0
-        private const val ROW_INDEX_RECENT_EPISODES = 1
+        private val HEADER_ID_TOP_ANIMES: Long = 1
+        private val HEADER_ID_RECENT_EPISODES: Long = 2
     }
 
     @Inject
     lateinit var animeRepository: AnimeRepository
 
-    private lateinit var categoryRowAdapter: ArrayObjectAdapter
-    private lateinit var topAnimesAdapter: ArrayObjectAdapter
-    private lateinit var recentEpisodesAdapter: ArrayObjectAdapter
+    private lateinit var rowsAdapter: ArrayObjectAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MyApplication.graph.inject(this)
 
-        animeRepository.getTopAnimes()
-                .fromBgToUi()
-                .subscribeBy(
-                        onNext = { showTopAnimes(it) }
-                )
+        setupUi()
+        loadData()
 
-        animeRepository.getRecentEpisodes()
-                .fromBgToUi()
-                .subscribeBy(
-                        onNext = { showRecentEpisodes(it) }
-                )
+        mainFragmentRegistry.registerFragment(
+                PageRow::class.java, PageRowFragmentFactory(animeRepository))
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    private fun setupUi() {
+        headersState = BrowseFragment.HEADERS_ENABLED
+        isHeadersTransitionOnBackEnabled = true
+        brandColor = activity.getColorCompat(R.color.colorPrimaryDark)
 
         setOnSearchClickedListener {
             activity.onSearchRequested()
         }
+    }
 
-        categoryRowAdapter = ArrayObjectAdapter(ListRowPresenter())
-        adapter = categoryRowAdapter
+    private fun loadData() {
+        rowsAdapter = ArrayObjectAdapter(ListRowPresenter())
+        adapter = rowsAdapter
 
-        setOnItemViewClickedListener { _, item, _, _ ->
-            when (item) {
-                is AnimeSummary -> showAnimeDetails(item)
-                is EpisodeReleaseSummary -> showAnimeDetails(item.animeSummary)
+        createRows()
+    }
+
+    private fun createRows() {
+        val topAnimesTitle = getString(R.string.main_topAnimes_title)
+        val headerItemTopAnimes = HeaderItem(HEADER_ID_TOP_ANIMES, topAnimesTitle)
+        val pageRowTopAnimes = PageRow(headerItemTopAnimes)
+        rowsAdapter.add(pageRowTopAnimes)
+
+        val recentEpisodesTitle = getString(R.string.main_recentEpisodes_title)
+        val headerItemRecentEpisodes = HeaderItem(HEADER_ID_RECENT_EPISODES, recentEpisodesTitle)
+        val pageRowRecentEpisodes = PageRow(headerItemRecentEpisodes)
+        rowsAdapter.add(pageRowRecentEpisodes)
+    }
+
+    private class PageRowFragmentFactory(
+            private val animeRepository: AnimeRepository
+    ) : BrowseFragment.FragmentFactory<Fragment>() {
+
+        override fun createFragment(rowObj: Any): Fragment {
+            val row = rowObj as Row
+            if (row.headerItem.id == HEADER_ID_TOP_ANIMES) {
+                return TopAnimesFragment(animeRepository)
+            } else if (row.headerItem.id == HEADER_ID_RECENT_EPISODES) {
+                return RecentEpisodesFragment(animeRepository)
+            }
+
+            throw IllegalArgumentException(String.format("Invalid row %s", rowObj))
+        }
+    }
+
+
+    class TopAnimesFragment(private val animeRepository: AnimeRepository) : GridFragment() {
+
+        companion object {
+            private val COLUMNS = 4
+            private val ZOOM_FACTOR = FocusHighlight.ZOOM_FACTOR_SMALL
+        }
+
+        private lateinit var adapter: ArrayObjectAdapter
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setupAdapter()
+            loadData()
+            mainFragmentAdapter.fragmentHost.notifyDataReady(mainFragmentAdapter)
+        }
+
+        private fun setupAdapter() {
+            val presenter = VerticalGridPresenter(ZOOM_FACTOR)
+            presenter.numberOfColumns = COLUMNS
+            gridPresenter = presenter
+
+            val cardPresenter = AnimeCardPresenter()
+            adapter = ArrayObjectAdapter(cardPresenter)
+            setAdapter(adapter)
+
+            setOnItemViewClickedListener { _, item, _, _ ->
+                if (item is AnimeSummary) {
+                    showAnimeDetails(item)
+                }
             }
         }
 
-        createEmptyRows()
+        private fun loadData() {
+            animeRepository.getTopAnimes()
+                    .fromBgToUi()
+                    .subscribeBy(
+                            onNext = { showData(it) }
+                    )
+            // TODO dispose this call
+        }
 
-        brandColor = activity.getColorCompat(R.color.colorPrimaryDark)
+        private fun showData(topAnimes: List<AnimeSummary>) {
+            adapter.clear()
+            adapter.addAll(0, topAnimes)
+        }
+
+        private fun showAnimeDetails(anime: AnimeSummary) {
+            val intent = AnimeDetailsActivity.getIntent(activity, anime)
+            activity.startActivity(intent)
+        }
     }
 
-    private fun createEmptyRows() {
-        showTopAnimesLoading()
-        showRecentEpisodesLoading()
-    }
 
-    //region Top animes
+    class RecentEpisodesFragment(private val animeRepository: AnimeRepository) : GridFragment() {
 
-    private val topAnimesHeader: HeaderItem by lazy {
-        HeaderItem(getString(R.string.main_topAnimes_title))
-    }
+        companion object {
+            private val COLUMNS = 4
+            private val ZOOM_FACTOR = FocusHighlight.ZOOM_FACTOR_SMALL
+        }
 
-    private fun showTopAnimesLoading() {
-        val row = ListRow(topAnimesHeader, LoadingObjectAdapter())
-        categoryRowAdapter.add(ROW_INDEX_TOP_ANIMES, row)
-    }
+        private lateinit var adapter: ArrayObjectAdapter
 
-    private fun showTopAnimes(topAnimes: List<AnimeSummary>) {
-        val presenter = AnimeCardPresenter()
-        topAnimesAdapter = ArrayObjectAdapter(presenter)
-        val row = ListRow(topAnimesHeader, topAnimesAdapter)
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setupAdapter()
+            loadData()
+            mainFragmentAdapter.fragmentHost.notifyDataReady(mainFragmentAdapter)
+        }
 
-        topAnimesAdapter.addAll(0, topAnimes)
-        categoryRowAdapter.replace(ROW_INDEX_TOP_ANIMES, row)
-    }
+        private fun setupAdapter() {
+            val presenter = VerticalGridPresenter(ZOOM_FACTOR)
+            presenter.numberOfColumns = COLUMNS
+            gridPresenter = presenter
 
-    //endregion
+            val cardPresenter = EpisodeReleaseCardPresenter()
+            adapter = ArrayObjectAdapter(cardPresenter)
+            setAdapter(adapter)
 
-    //region Recent episodes
+            setOnItemViewClickedListener { _, item, _, _ ->
+                if (item is EpisodeReleaseSummary) {
+                    showAnimeDetails(item.animeSummary)
+                }
+            }
+        }
 
-    private val recentEpisodesHeader: HeaderItem by lazy {
-        HeaderItem(getString(R.string.main_recentEpisodes_title))
-    }
+        private fun loadData() {
+            animeRepository.getRecentEpisodes()
+                    .fromBgToUi()
+                    .subscribeBy(
+                            onNext = { showData(it) }
+                    )
+            // TODO dispose this call
+        }
 
-    private fun showRecentEpisodesLoading() {
-        val row = ListRow(recentEpisodesHeader, LoadingObjectAdapter())
-        categoryRowAdapter.add(ROW_INDEX_RECENT_EPISODES, row)
-    }
+        private fun showData(recentEpisodes: List<EpisodeReleaseSummary>) {
+            adapter.clear()
+            adapter.addAll(0, recentEpisodes)
+        }
 
-    private fun showRecentEpisodes(recentEpisodes: List<EpisodeReleaseSummary>) {
-        val presenter = EpisodeReleaseCardPresenter()
-        recentEpisodesAdapter = ArrayObjectAdapter(presenter)
-        val row = ListRow(recentEpisodesHeader, recentEpisodesAdapter)
-
-        recentEpisodesAdapter.addAll(0, recentEpisodes)
-        categoryRowAdapter.replace(ROW_INDEX_RECENT_EPISODES, row)
-    }
-
-    //endregion
-
-    private fun showAnimeDetails(anime: AnimeSummary) {
-        val intent = AnimeDetailsActivity.getIntent(activity, anime)
-        activity.startActivity(intent)
+        private fun showAnimeDetails(anime: AnimeSummary) {
+            val intent = AnimeDetailsActivity.getIntent(activity, anime)
+            activity.startActivity(intent)
+        }
     }
 }
