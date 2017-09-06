@@ -6,7 +6,7 @@ import blue.aodev.animeultimetv.domain.model.AnimeType
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-class AnimeCardPresenter : BaseCardPresenter() {
+open class AnimeCardPresenter : BaseCardPresenter() {
 
     override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
         val animeInfo = item as AnimeSummary

@@ -41,6 +41,7 @@ class LaunchActivity: AppCompatActivity() {
                         onNext = { if (it) showMain() },
                         onError = { /* TODO: Display an error */ }
                 )
+                // TODO dispose
     }
 
     private fun initViews() {
