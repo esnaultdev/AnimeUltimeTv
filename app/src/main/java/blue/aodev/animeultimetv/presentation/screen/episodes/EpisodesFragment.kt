@@ -59,7 +59,7 @@ class EpisodesFragment : VerticalGridFragment() {
         gridPresenter.numberOfColumns = COLUMNS
         setGridPresenter(gridPresenter)
 
-        val cardPresenterSelector = EpisodeCardPresenter()
+        val cardPresenterSelector = EpisodeCardPresenter(activity)
         episodesAdapter = ArrayObjectAdapter(cardPresenterSelector)
         adapter = episodesAdapter
 

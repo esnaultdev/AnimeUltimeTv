@@ -22,7 +22,7 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
     lateinit var animeRepository: AnimeRepository
 
     private val rowsAdapter = ArrayObjectAdapter(ListRowPresenter())
-    private val animeAdapter = ArrayObjectAdapter(AnimeCardPresenter())
+    private lateinit var animeAdapter: ArrayObjectAdapter
 
     private var query = ""
     private var hasResults = false
@@ -32,6 +32,7 @@ class SearchFragment : android.support.v17.leanback.app.SearchFragment(),
         super.onCreate(savedInstanceState)
         MyApplication.graph.inject(this)
 
+        animeAdapter = ArrayObjectAdapter(AnimeCardPresenter.default(activity))
         setSearchResultProvider(this)
         setOnItemViewClickedListener { _, item, _, _ ->
             if (item is AnimeSummary) { showAnimeDetails(item) } }

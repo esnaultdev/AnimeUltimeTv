@@ -7,7 +7,18 @@ import blue.aodev.animeultimetv.domain.model.EpisodeReleaseSummary
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-class EpisodeReleaseCardPresenter : BaseCardPresenter() {
+class EpisodeReleaseCardPresenter(cardImageWidth: Int, cardImageHeight: Int)
+    : BaseCardPresenter(cardImageWidth, cardImageHeight) {
+
+    companion object {
+        fun forMain(context: Context): EpisodeReleaseCardPresenter {
+            val res = context.resources
+            return EpisodeReleaseCardPresenter(
+                    res.getDimensionPixelSize(R.dimen.main_card_width),
+                    res.getDimensionPixelSize(R.dimen.main_card_height)
+            )
+        }
+    }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
         val context = viewHolder.view.context
@@ -26,13 +37,5 @@ class EpisodeReleaseCardPresenter : BaseCardPresenter() {
                     .apply(RequestOptions.centerCropTransform())
                     .into(cardView.mainImageView)
         }
-    }
-
-    override fun initResources(context: Context) {
-        super.initResources(context)
-
-        val res = context.resources
-        cardImageWidth = res.getDimensionPixelSize(R.dimen.main_card_width)
-        cardImageHeight = res.getDimensionPixelSize(R.dimen.main_card_height)
     }
 }

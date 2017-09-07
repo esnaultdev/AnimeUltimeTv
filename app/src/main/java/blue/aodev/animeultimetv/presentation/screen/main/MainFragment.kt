@@ -20,7 +20,6 @@ import blue.aodev.animeultimetv.presentation.screen.animedetails.AnimeDetailsAct
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.common.AnimeCardPresenter
 import blue.aodev.animeultimetv.presentation.common.EpisodeReleaseCardPresenter
-import blue.aodev.animeultimetv.presentation.common.MainAnimeCardPresenter
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 
@@ -115,7 +114,7 @@ class MainFragment : BrowseFragment() {
             presenter.numberOfColumns = COLUMNS
             gridPresenter = presenter
 
-            val cardPresenter = MainAnimeCardPresenter()
+            val cardPresenter = AnimeCardPresenter.forMain(activity)
             adapter = ArrayObjectAdapter(cardPresenter)
             setAdapter(adapter)
 
@@ -168,7 +167,7 @@ class MainFragment : BrowseFragment() {
             presenter.numberOfColumns = COLUMNS
             gridPresenter = presenter
 
-            val cardPresenter = EpisodeReleaseCardPresenter()
+            val cardPresenter = EpisodeReleaseCardPresenter.forMain(activity)
             adapter = ArrayObjectAdapter(cardPresenter)
             setAdapter(adapter)
 

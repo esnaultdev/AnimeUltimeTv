@@ -9,15 +9,20 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import blue.aodev.animeultimetv.R
 
-abstract class BaseCardPresenter : Presenter() {
+abstract class BaseCardPresenter(
+        val cardImageWidth: Int,
+        val cardImageHeight: Int
+) : Presenter() {
 
+    private var hasResources = false
     protected var selectedBackgroundColor = -1
     protected var defaultBackgroundColor = -1
-    protected var cardImageWidth = -1
-    protected var cardImageHeight = -1
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
-        if (defaultBackgroundColor == -1) initResources(parent.context)
+        if (!hasResources) {
+            initResources(parent.context)
+            hasResources = true
+        }
 
         val cardView = object : ImageCardView(parent.context) {
             override fun setSelected(selected: Boolean) {
@@ -37,13 +42,9 @@ abstract class BaseCardPresenter : Presenter() {
         return ViewHolder(cardView)
     }
 
-    protected open fun initResources(context: Context) {
+    private fun initResources(context: Context) {
         defaultBackgroundColor = ContextCompat.getColor(context, R.color.card_background_default)
         selectedBackgroundColor = ContextCompat.getColor(context, R.color.card_background_selected)
-
-        val res = context.resources
-        cardImageWidth = res.getDimensionPixelSize(R.dimen.anime_card_width)
-        cardImageHeight = res.getDimensionPixelSize(R.dimen.anime_card_height)
     }
 
     private fun updateCardBackgroundColor(view: ImageCardView, selected: Boolean) {

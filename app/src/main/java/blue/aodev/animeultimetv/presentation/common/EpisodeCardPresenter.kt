@@ -8,15 +8,10 @@ import blue.aodev.animeultimetv.utils.extensions.formatEpisodeDuration
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-class EpisodeCardPresenter : BaseCardPresenter() {
-
-    override fun initResources(context: Context) {
-        super.initResources(context)
-
-        val res = context.resources
-        cardImageWidth = res.getDimensionPixelSize(R.dimen.episode_card_width)
-        cardImageHeight = res.getDimensionPixelSize(R.dimen.episode_card_height)
-    }
+class EpisodeCardPresenter(context: Context) : BaseCardPresenter(
+        context.resources.getDimensionPixelSize(R.dimen.episode_card_width),
+        context.resources.getDimensionPixelSize(R.dimen.episode_card_height)
+) {
 
     override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
         val context = viewHolder.view.context

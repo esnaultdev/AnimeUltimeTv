@@ -5,7 +5,6 @@
     <dimen name="episode_card_width">224dp</dimen>
     <dimen name="episode_card_height">126dp</dimen>
 
-    <!-- TODO Remove this to manually compute the width -->
     <dimen name="main_card_width">200dp</dimen>
     <dimen name="main_card_height">200dp</dimen>
 
