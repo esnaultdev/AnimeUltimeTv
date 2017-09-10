@@ -18,6 +18,7 @@ import butterknife.ButterKnife
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 import com.race604.drawable.wave.WaveDrawable
+import io.reactivex.disposables.Disposable
 
 
 class LaunchActivity: AppCompatActivity() {
@@ -28,6 +29,8 @@ class LaunchActivity: AppCompatActivity() {
     @BindView(R.id.launch_logo)
     lateinit var logoView: ImageView
 
+    private var disposable: Disposable? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MyApplication.graph.inject(this)
@@ -35,13 +38,17 @@ class LaunchActivity: AppCompatActivity() {
         setContentView(R.layout.activity_launch)
         initViews()
 
-        animeRepository.isInitialized()
+        disposable = animeRepository.isInitialized()
                 .fromBgToUi()
                 .subscribeBy(
                         onNext = { if (it) showMain() },
                         onError = { /* TODO: Display an error */ }
                 )
-                // TODO dispose
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable?.let { if (!it.isDisposed) it.dispose() }
     }
 
     private fun initViews() {

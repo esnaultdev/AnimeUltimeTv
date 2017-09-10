@@ -20,6 +20,7 @@ import blue.aodev.animeultimetv.presentation.screen.animedetails.AnimeDetailsAct
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.common.AnimeCardPresenter
 import blue.aodev.animeultimetv.presentation.common.EpisodeReleaseCardPresenter
+import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 
@@ -101,12 +102,18 @@ class MainFragment : BrowseFragment() {
         }
 
         private lateinit var adapter: ArrayObjectAdapter
+        private var disposable: Disposable? = null
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setupAdapter()
             loadData()
             mainFragmentAdapter.fragmentHost.notifyDataReady(mainFragmentAdapter)
+        }
+
+        override fun onDestroy() {
+            super.onDestroy()
+            disposable?.let { if (!it.isDisposed) it.dispose() }
         }
 
         private fun setupAdapter() {
@@ -126,12 +133,12 @@ class MainFragment : BrowseFragment() {
         }
 
         private fun loadData() {
-            animeRepository.getTopAnimes()
+            disposable = animeRepository.getTopAnimes()
                     .fromBgToUi()
                     .subscribeBy(
-                            onNext = { showData(it) }
+                            onNext = { showData(it) },
+                            onError = { /* TODO Display an error */ }
                     )
-                    // TODO dispose this call
         }
 
         private fun showData(topAnimes: List<AnimeSummary>) {
@@ -154,12 +161,18 @@ class MainFragment : BrowseFragment() {
         }
 
         private lateinit var adapter: ArrayObjectAdapter
+        private var disposable: Disposable? = null
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setupAdapter()
             loadData()
             mainFragmentAdapter.fragmentHost.notifyDataReady(mainFragmentAdapter)
+        }
+
+        override fun onDestroy() {
+            super.onDestroy()
+            disposable?.let { if (!it.isDisposed) it.dispose() }
         }
 
         private fun setupAdapter() {
@@ -179,12 +192,12 @@ class MainFragment : BrowseFragment() {
         }
 
         private fun loadData() {
-            animeRepository.getRecentEpisodes()
+            disposable = animeRepository.getRecentEpisodes()
                     .fromBgToUi()
                     .subscribeBy(
-                            onNext = { showData(it) }
+                            onNext = { showData(it) },
+                            onError = { /* TODO Display an error */ }
                     )
-                    // TODO dispose this call
         }
 
         private fun showData(recentEpisodes: List<EpisodeReleaseSummary>) {
