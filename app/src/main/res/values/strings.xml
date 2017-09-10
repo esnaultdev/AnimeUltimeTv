@@ -16,6 +16,10 @@
     <string name="details_productionYears">%1$d - %2$d</string>
     <string name="details_action_episodes">Épisodes</string>
 
+    <string name="anime_type_anime">Anime</string>
+    <string name="anime_type_movie">Film</string>
+    <string name="anime_type_oav">OAV</string>
+
     <string name="episode_title">Épisode %02d</string>
     <string name="episode_duration">%1$02d:%2$02d</string>
 
