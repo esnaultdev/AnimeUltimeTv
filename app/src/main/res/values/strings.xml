@@ -25,5 +25,5 @@
 
     <string name="mediaPlayer_error">Erreur du lecteur média, code %1$d (%2$d)</string>
 
-    <string name="launchScreen_loadingInfo">Récupération des informations</string>
+    <string name="launchScreen_error">Échec de la récupération des données</string>
 </resources>

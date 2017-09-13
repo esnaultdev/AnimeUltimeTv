@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/launch_root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -29,6 +30,20 @@
         app:layout_constraintTop_toBottomOf="@id/launch_guideline_top"
         app:layout_constraintBottom_toTopOf="@id/launch_guideline_bottom"
         app:layout_constraintDimensionRatio="1"
-        tools:src="@drawable/loading_logo_background"/>
+        tools:background="@color/colorPrimary"/>
+
+    <TextView
+        android:id="@+id/launch_error_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/launch_guideline_bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/launchScreen_error"
+        android:textSize="26sp"
+        android:textColor="@color/colorError"
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
 </android.support.constraint.ConstraintLayout>

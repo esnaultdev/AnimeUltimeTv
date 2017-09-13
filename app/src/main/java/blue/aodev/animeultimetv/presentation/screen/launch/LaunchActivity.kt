@@ -9,11 +9,15 @@ import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.os.Bundle
 import android.support.graphics.drawable.ArgbEvaluator
+import android.support.transition.TransitionManager
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
+import android.widget.TextView
 import blue.aodev.animeultimetv.R
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.utils.extensions.fromBgToUi
@@ -35,8 +39,12 @@ class LaunchActivity: AppCompatActivity() {
     @Inject
     lateinit var animeRepository: AnimeRepository
 
+    @BindView(R.id.launch_root_view)
+    lateinit var rootView: ViewGroup
     @BindView(R.id.launch_logo)
     lateinit var logoView: ImageView
+    @BindView(R.id.launch_error_text)
+    lateinit var errorTextView: TextView
 
     private var disposable: Disposable? = null
 
@@ -64,7 +72,6 @@ class LaunchActivity: AppCompatActivity() {
         initViews()
 
         disposable = animeRepository.isInitialized()
-                .map { if (it) throw IllegalStateException() else it }
                 .fromBgToUi()
                 .subscribeBy(
                         onNext = { if (it) showMainAfterAnimation() },
@@ -113,6 +120,12 @@ class LaunchActivity: AppCompatActivity() {
     }
 
     private fun showError() {
+        setupColorAnimation()
+        TransitionManager.beginDelayedTransition(rootView)
+        errorTextView.visibility = View.VISIBLE
+    }
+
+    private fun setupColorAnimation() {
         waveAnimator.repeatCount = 0
 
         val argbEvaluator = ArgbEvaluator()
