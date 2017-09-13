@@ -5,9 +5,13 @@ import android.animation.ValueAnimator
 import android.content.Intent
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.ScaleDrawable
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.OvalShape
 import android.os.Bundle
+import android.support.graphics.drawable.ArgbEvaluator
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import blue.aodev.animeultimetv.R
@@ -17,6 +21,7 @@ import blue.aodev.animeultimetv.utils.extensions.getDrawableCompat
 import blue.aodev.animeultimetv.presentation.application.MyApplication
 import blue.aodev.animeultimetv.presentation.screen.main.MainActivity
 import blue.aodev.animeultimetv.utils.SimpleAnimatorListener
+import blue.aodev.animeultimetv.utils.extensions.getColorCompat
 import butterknife.BindView
 import butterknife.ButterKnife
 import io.reactivex.rxkotlin.subscribeBy
@@ -34,6 +39,10 @@ class LaunchActivity: AppCompatActivity() {
     lateinit var logoView: ImageView
 
     private var disposable: Disposable? = null
+
+    private lateinit var backgroundDrawable: ShapeDrawable
+    private val defaultColor: Int by lazy { getColorCompat(R.color.colorPrimary) }
+    private val errorColor: Int by lazy { getColorCompat(R.color.colorError) }
 
     private lateinit var waveDrawable: WaveDrawable
     private val waveAnimator: ValueAnimator =
@@ -55,10 +64,11 @@ class LaunchActivity: AppCompatActivity() {
         initViews()
 
         disposable = animeRepository.isInitialized()
+                .map { if (it) throw IllegalStateException() else it }
                 .fromBgToUi()
                 .subscribeBy(
                         onNext = { if (it) showMainAfterAnimation() },
-                        onError = { /* TODO: Display an error */ }
+                        onError = { showError() }
                 )
     }
 
@@ -72,7 +82,7 @@ class LaunchActivity: AppCompatActivity() {
     private fun initViews() {
         ButterKnife.bind(this)
 
-        val backgroundDrawable = getDrawableCompat(R.drawable.loading_logo_background)
+        backgroundDrawable = ShapeDrawable(OvalShape()).apply { paint.color = defaultColor }
         val logoDrawable = getDrawableCompat(R.drawable.logo)
         val scaledLogoDrawable = ScaleDrawable(logoDrawable, Gravity.CENTER, 1f, 1f)
                 .apply { level = 7000 }
@@ -100,5 +110,25 @@ class LaunchActivity: AppCompatActivity() {
 
             override fun onAnimationCancel(p0: Animator) { p0.removeListener(this) }
         })
+    }
+
+    private fun showError() {
+        waveAnimator.repeatCount = 0
+
+        val argbEvaluator = ArgbEvaluator()
+        val animator = ValueAnimator.ofFloat(0f, 1f)
+                .apply {
+                    interpolator = AccelerateDecelerateInterpolator()
+                    repeatCount = 0
+                    duration = 1000L
+
+                    addUpdateListener { animator ->
+                        val fraction = animator.animatedFraction
+                        val color = argbEvaluator.evaluate(fraction, defaultColor, errorColor)
+                        backgroundDrawable.paint.color = color as Int
+                    }
+                }
+
+        animator.start()
     }
 }

@@ -7,6 +7,7 @@
 
     <!-- Common -->
     <color name="white">#ffffff</color>
+    <color name="colorError">#E53935</color>
 
     <!-- Card -->
     <color name="card_background_selected">@color/colorAccent</color>
