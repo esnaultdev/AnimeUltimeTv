@@ -4,6 +4,7 @@ import android.app.Application
 import blue.aodev.animeultimetv.injection.ApplicationComponent
 import blue.aodev.animeultimetv.injection.DaggerApplicationComponent
 import blue.aodev.animeultimetv.injection.DomainModule
+import io.realm.Realm
 
 class MyApplication : Application() {
 
@@ -18,5 +19,7 @@ class MyApplication : Application() {
                 .domainModule(DomainModule())
                 .build()
         graph.inject(this)
+
+        Realm.init(this)
     }
 }

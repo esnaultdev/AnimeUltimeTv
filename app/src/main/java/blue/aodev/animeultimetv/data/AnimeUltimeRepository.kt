@@ -1,5 +1,6 @@
 package blue.aodev.animeultimetv.data
 
+import blue.aodev.animeultimetv.data.local.ILocalSourceSet
 import blue.aodev.animeultimetv.data.model.AnimeDetails
 import blue.aodev.animeultimetv.data.model.EpisodeReleaseId
 import blue.aodev.animeultimetv.domain.model.Anime
@@ -7,8 +8,10 @@ import blue.aodev.animeultimetv.domain.model.AnimeSummary
 import blue.aodev.animeultimetv.domain.AnimeRepository
 import blue.aodev.animeultimetv.domain.model.Episode
 import blue.aodev.animeultimetv.domain.model.EpisodeReleaseSummary
+import blue.aodev.animeultimetv.domain.model.Timing
 import blue.aodev.animeultimetv.utils.extensions.mapOf
 import blue.aodev.animeultimetv.utils.extensions.sliceIfPresent
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
@@ -19,7 +22,10 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AnimeUltimeRepository(val animeUltimeService: AnimeUltimeService) : AnimeRepository {
+class AnimeUltimeRepository(
+        private val animeUltimeService: AnimeUltimeService,
+        private val localSourceSet: ILocalSourceSet
+) : AnimeRepository {
 
     private val historyPeriodFormat: DateFormat by lazy {
         SimpleDateFormat("MMyyyy")
@@ -125,5 +131,13 @@ class AnimeUltimeRepository(val animeUltimeService: AnimeUltimeService) : AnimeR
             }
             result
         }
+    }
+
+    override fun getTimings(): Single<List<Timing>> {
+        return localSourceSet.getTimings()
+    }
+
+    override fun saveTiming(timing: Timing): Completable {
+        return localSourceSet.saveTiming(timing)
     }
 }
